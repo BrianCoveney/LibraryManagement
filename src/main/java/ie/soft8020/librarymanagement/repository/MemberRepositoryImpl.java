@@ -23,7 +23,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 	@Override
 	public Member get(int id) {
 		sql = "SELECT * FROM members WHERE member_id = ?";
-		Member member = jdbcTemplate.queryForObject(sql, new Object[] { 1 },
+		Member member = jdbcTemplate.queryForObject(sql, new Object[] { id },
 				new MemberRowMapper());
 		return member;
 	}
