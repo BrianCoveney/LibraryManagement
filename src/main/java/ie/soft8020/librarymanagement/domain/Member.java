@@ -12,7 +12,7 @@ public class Member {
 	private Date dateOfBirth;
 	private int loanLimit;
 	private int loanLength;
-	private int finesOutstanding;
+	private Double finesOutstanding;
 	private List<Book> books; 
 	
 	
@@ -61,10 +61,10 @@ public class Member {
 	public void setLoanLength(int loanLength) {
 		this.loanLength = loanLength;
 	}
-	public int getFinesOutstanding() {
+	public Double getFinesOutstanding() {
 		return finesOutstanding;
 	}
-	public void setFinesOutstanding(int finesOutstanding) {
+	public void setFinesOutstanding(Double finesOutstanding) {
 		this.finesOutstanding = finesOutstanding;
 	}
 	public String getName() {

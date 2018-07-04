@@ -19,7 +19,7 @@ public class MemberRowMapper implements RowMapper<Member> {
 		member.setDateOfBirth(rs.getDate("date_of_birth"));
 		member.setLoanLimit(rs.getInt("loan_limit"));
 		member.setLoanLength(rs.getInt("loan_length"));
-		member.setFinesOutstanding(rs.getInt("fines_outstanding"));
+		member.setFinesOutstanding(rs.getDouble("fines_outstanding"));
 		
 		return member;
 	}

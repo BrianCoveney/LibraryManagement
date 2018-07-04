@@ -1,5 +1,8 @@
 package ie.soft8020.librarymanagement;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,18 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 import ie.soft8020.librarymanagement.domain.Book;
 import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.repository.IMemberRepository;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
+import ie.soft8020.librarymanagement.service.IMemberService;
 
 @SpringBootApplication
 public class LibraryManagementApplication implements CommandLineRunner	 {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	IMemberRepository iMemberRepository;
+	
+	@Autowired
+	IMemberService iMemberService;
+	
 	private String sql;
 	
 	public static void main(String[] args) {
@@ -32,6 +46,9 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		queryForAggregate();
 		queryForJoin1();
 		queryForJoin2();
+		queryResultSetExtractor();
+		repositoryExample();
+		serviceExample();
 	}
 	
 	public void query01() {
@@ -115,9 +132,76 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		List<Member> members = jdbcTemplate.query(sql, new Object[] { 1 }, 
 				new MemberRowMapper());
 		
-		book.setMambers(members);
+		book.setMembers(members);
 		
 		System.out.println(book.toString());
 	}
-}
 	
+	public void queryResultSetExtractor() {
+		System.out.println("\nQuery 7 \n----------");
+		
+		sql = "SELECT m.member_id, m.name, m.address, m.date_of_birth, b.book_id, b.title "
+				+ "FROM members m, books b, loan l "
+				+ "WHERE b.book_id = l.book_id AND m.member_id = l.member_id "
+				+ "AND l.member_id = ?";
+		
+		Member member = jdbcTemplate.query(sql, new Object[] { 1 },
+				new ResultSetExtractor<Member>() {
+
+					@Override
+					public Member extractData(ResultSet rs) throws SQLException, DataAccessException { 
+						Member member = null;
+						List<Book> books = new ArrayList<>();
+						
+						while (rs.next()) {
+							if(member == null) {
+								member = new Member();
+								member.setMemberID(rs.getInt("member_id"));
+								member.setName(rs.getString("name"));
+								member.setAddress(rs.getString("address"));
+								member.setDateOfBirth(rs.getDate("date_of_birth"));
+							}
+							Book book = new Book();
+							book.setBookID(rs.getInt("book_id"));
+							book.setTitle(rs.getString("title"));
+							
+							books.add(book);
+						}
+						
+						member.setBooks(books);
+						return member;
+					}
+		});
+					
+		System.out.println(member.toString());
+	}
+	
+	public void repositoryExample() {
+		System.out.println("\nRepository Example \n----------");
+		
+		Member member = iMemberRepository.get(1);
+		System.out.println(member.toString());
+		
+		member.setLoanLength(7);
+		member.setFinesOutstanding(6.5);
+		iMemberRepository.save(member);
+		System.out.println(member.toString());
+		
+		System.out.println("All members:");
+		List<Member> members = iMemberRepository.findAll();
+		for (Member m : members) {
+			System.out.println(m.toString());
+		}
+	}
+	
+	public void serviceExample() {
+		System.out.println("\nService Example \n----------");
+		
+		Member member = iMemberService.get(2);
+		member.setName("Jack Jones");
+		iMemberService.save(member);
+		System.out.println("Updated via service:\n " + member.toString());
+		
+	}
+}
+
