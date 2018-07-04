@@ -79,9 +79,10 @@ public class Member {
 		String out = "Member [memberID=" + memberID + ", name=" + name + ", address=" + address + ", dateOfBirth="
 				+ dateOfBirth + ", loanLimit=" + loanLimit + ", loanLength=" + loanLength + ", finesOutstanding="
 				+ finesOutstanding + "books=[";
-				for (Book book : books) {
-					out += book.toString();
-				}
+		for (Book book : books) {
+			out += book.toString();
+		}
+		out += "]]";
 		return out;
 	}	
 }

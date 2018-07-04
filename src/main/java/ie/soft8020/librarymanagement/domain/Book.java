@@ -74,9 +74,10 @@ public class Book {
 	public String toString() {
 		String out = "Book [bookID=" + bookID + ", title=" + title + ", isbn=" + isbn + ", author=" + author + ", publisher="
 				+ publisher + ", edition=" + edition + ", yearOfPublication=" + yearOfPublication + "members=[";
-				for (Member member : members) {
-					out += member.toString();
-				}
+		for (Member member : members) {
+			out += member.toString();
+		}
+		out += "]]";
 		return out;
 	}
 }
