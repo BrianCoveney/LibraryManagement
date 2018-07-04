@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import ie.soft8020.librarymanagement.domain.Book;
 import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.repository.IMemberRepository;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
 
@@ -24,6 +25,10 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	IMemberRepository iMemberRepository;
+	
 	private String sql;
 	
 	public static void main(String[] args) {
@@ -40,6 +45,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		queryForJoin1();
 		queryForJoin2();
 		queryResultSetExtractor();
+		repositoryExample();
 	}
 	
 	public void query01() {
@@ -166,15 +172,26 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 					
 		System.out.println(member.toString());
 	}
-}
 	
-
-
-
-
-
-
-
+	public void repositoryExample() {
+		
+		System.out.println("\nRepository Example \n----------");
+		
+		Member member = iMemberRepository.get(1);
+		System.out.println(member.toString());
+		
+		member.setLoanLength(7);
+		member.setFinesOutstanding(6.5);
+		iMemberRepository.save(member);
+		System.out.println(member.toString());
+		
+		System.out.println("All members:");
+		List<Member> members = iMemberRepository.findAll();
+		for (Member m : members) {
+			System.out.println(m.toString());
+		}
+	}
+}
 
 
 
