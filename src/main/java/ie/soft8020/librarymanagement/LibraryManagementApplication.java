@@ -20,6 +20,7 @@ import ie.soft8020.librarymanagement.repository.IBookRepository;
 import ie.soft8020.librarymanagement.repository.IMemberRepository;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
+import ie.soft8020.librarymanagement.service.IBookService;
 import ie.soft8020.librarymanagement.service.IMemberService;
 
 @SpringBootApplication
@@ -36,6 +37,9 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	
 	@Autowired
 	IMemberService iMemberService;
+	
+	@Autowired
+	IBookService iBookService;
 	
 	private String sql;
 	
@@ -54,6 +58,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		repositoryExample();
 		serviceExample();
 		repositoryBookExample();
+		serviceBookExample();
 	}
 	
 	public void query01() {
@@ -205,8 +210,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		Member member = iMemberService.get(2);
 		member.setName("Jack Jones");
 		iMemberService.save(member);
-		System.out.println("Updated via service:\n " + member.toString());
-		
+		System.out.println("Updated member via service:\n " + member.toString());
 	}
 	
 	public void repositoryBookExample() {
@@ -223,8 +227,16 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		List<Book> books = iBookRepository.findAll();
 		for (Book b : books) {
 			System.out.println(b.toString());
-		}
+		}	
+	}
+	
+	public void serviceBookExample() {
+		System.out.println("\nService Book Example \n----------");
 		
+		Book book = iBookService.get(2);
+		book.setTitle("Effictive Java");
+		iBookService.save(book);
+		System.out.println("Updated book via service:\n " + book.toString());
 	}
 }
 
