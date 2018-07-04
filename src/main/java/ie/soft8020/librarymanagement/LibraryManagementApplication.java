@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import ie.soft8020.librarymanagement.domain.Book;
 import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.repository.IBookRepository;
 import ie.soft8020.librarymanagement.repository.IMemberRepository;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
@@ -29,6 +30,9 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	
 	@Autowired
 	IMemberRepository iMemberRepository;
+	
+	@Autowired
+	IBookRepository iBookRepository;
 	
 	@Autowired
 	IMemberService iMemberService;
@@ -49,6 +53,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		queryResultSetExtractor();
 		repositoryExample();
 		serviceExample();
+		repositoryBookExample();
 	}
 	
 	public void query01() {
@@ -177,9 +182,9 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	}
 	
 	public void repositoryExample() {
-		System.out.println("\nRepository Example \n----------");
+		System.out.println("\nRepository Member Example \n----------");
 		
-		Member member = iMemberRepository.get(1);
+		Member member = iMemberRepository.get(2);
 		System.out.println(member.toString());
 		
 		member.setLoanLength(7);
@@ -195,12 +200,30 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	}
 	
 	public void serviceExample() {
-		System.out.println("\nService Example \n----------");
+		System.out.println("\nService Member Example \n----------");
 		
 		Member member = iMemberService.get(2);
 		member.setName("Jack Jones");
 		iMemberService.save(member);
 		System.out.println("Updated via service:\n " + member.toString());
+		
+	}
+	
+	public void repositoryBookExample() {
+		System.out.println("\nRepository Book Example \n----------");
+		
+		Book book = iBookRepository.get(2);
+		System.out.println(book.toString());
+		
+		book.setTitle("Fective Java");
+		iBookRepository.save(book);
+		System.out.println(book.toString());
+		
+		System.out.println("All books: \n");
+		List<Book> books = iBookRepository.findAll();
+		for (Book b : books) {
+			System.out.println(b.toString());
+		}
 		
 	}
 }
