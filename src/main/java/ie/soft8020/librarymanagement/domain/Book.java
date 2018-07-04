@@ -23,7 +23,7 @@ public class Book {
 		return members;
 	}
 	
-	public void setMambers(List<Member> members) {
+	public void setMembers(List<Member> members) {
 		this.members = members;
 	}
 	

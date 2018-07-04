@@ -1,5 +1,8 @@
 package ie.soft8020.librarymanagement;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 import ie.soft8020.librarymanagement.domain.Book;
 import ie.soft8020.librarymanagement.domain.Member;
@@ -117,9 +122,45 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		List<Member> members = jdbcTemplate.query(sql, new Object[] { 1 }, 
 				new MemberRowMapper());
 		
-		book.setMambers(members);
+		book.setMembers(members);
 		
 		System.out.println(book.toString());
+	}
+	
+	public void queryResultSetExtractor() {
+		System.out.println("\nQuery 7 \n----------");
+		
+		sql = "SELECT m.member_id as memberID, m.name, m.address, m.date_of_birth, b.book_id, b.title"
+				+ "FROM members m, books b, loan l "
+				+ "WHERE b.book_id = l.book_id AND m.member_id = l.member_id "
+				+ "AND l.member_id = ?";
+		
+		Member member = jdbcTemplate.query(sql, new Object[] { 1 },
+				new ResultSetExtractor<Member>() {
+
+					@Override
+					public Member extractData(ResultSet rs) throws SQLException, DataAccessException {
+						Member member = null;
+						List<Book> books = new ArrayList<>();
+						
+						while (rs.next()) {
+							if(member != null) {
+								member = new Member();
+								member.setName(rs.getString("name"));
+								member.setAddress(rs.getString("address"));
+								member.setDateOfBirth(rs.getDate("date_of_birth"));
+							}
+							Book book = new Book();
+							book.setBookID(rs.getInt("book_id"));
+							book.setTitle(rs.getString("title"));
+						}
+						
+						member.setBooks(books);
+						return member;
+					}
+		});
+					
+		System.out.println(member.toString());
 	}
 }
 	
