@@ -39,6 +39,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		queryForAggregate();
 		queryForJoin1();
 		queryForJoin2();
+		queryResultSetExtractor();
 	}
 	
 	public void query01() {
@@ -130,7 +131,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	public void queryResultSetExtractor() {
 		System.out.println("\nQuery 7 \n----------");
 		
-		sql = "SELECT m.member_id as memberID, m.name, m.address, m.date_of_birth, b.book_id, b.title"
+		sql = "SELECT m.member_id, m.name, m.address, m.date_of_birth, b.book_id, b.title "
 				+ "FROM members m, books b, loan l "
 				+ "WHERE b.book_id = l.book_id AND m.member_id = l.member_id "
 				+ "AND l.member_id = ?";
@@ -139,13 +140,14 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 				new ResultSetExtractor<Member>() {
 
 					@Override
-					public Member extractData(ResultSet rs) throws SQLException, DataAccessException {
+					public Member extractData(ResultSet rs) throws SQLException, DataAccessException { 
 						Member member = null;
 						List<Book> books = new ArrayList<>();
 						
 						while (rs.next()) {
-							if(member != null) {
+							if(member == null) {
 								member = new Member();
+								member.setMemberID(rs.getInt("member_id"));
 								member.setName(rs.getString("name"));
 								member.setAddress(rs.getString("address"));
 								member.setDateOfBirth(rs.getDate("date_of_birth"));
@@ -153,6 +155,8 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 							Book book = new Book();
 							book.setBookID(rs.getInt("book_id"));
 							book.setTitle(rs.getString("title"));
+							
+							books.add(book);
 						}
 						
 						member.setBooks(books);
