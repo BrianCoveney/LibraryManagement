@@ -19,6 +19,7 @@ import ie.soft8020.librarymanagement.domain.Member;
 import ie.soft8020.librarymanagement.repository.IMemberRepository;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
+import ie.soft8020.librarymanagement.service.IMemberService;
 
 @SpringBootApplication
 public class LibraryManagementApplication implements CommandLineRunner	 {
@@ -28,6 +29,9 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	
 	@Autowired
 	IMemberRepository iMemberRepository;
+	
+	@Autowired
+	IMemberService iMemberService;
 	
 	private String sql;
 	
@@ -46,6 +50,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		queryForJoin2();
 		queryResultSetExtractor();
 		repositoryExample();
+		serviceExample();
 	}
 	
 	public void query01() {
@@ -174,7 +179,6 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	}
 	
 	public void repositoryExample() {
-		
 		System.out.println("\nRepository Example \n----------");
 		
 		Member member = iMemberRepository.get(1);
@@ -190,6 +194,16 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		for (Member m : members) {
 			System.out.println(m.toString());
 		}
+	}
+	
+	public void serviceExample() {
+		System.out.println("\nService Example \n----------");
+		
+		Member member = iMemberService.get(2);
+		member.setName("Jack Jones");
+		iMemberService.save(member);
+		System.out.println("Updated via service:\n " + member.toString());
+		
 	}
 }
 
