@@ -13,6 +13,10 @@ public class BookServiceImpl implements IBookService {
 	
 	@Autowired
 	IBookRepository iBookRepository;
+	
+	public BookServiceImpl(IBookRepository iBookRepository) {
+		this.iBookRepository = iBookRepository;
+	}
 
 	@Override
 	public void save(Book book) {

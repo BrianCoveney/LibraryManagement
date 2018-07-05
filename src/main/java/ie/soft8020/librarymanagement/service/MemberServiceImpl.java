@@ -14,6 +14,11 @@ public class MemberServiceImpl implements IMemberService {
 	@Autowired
 	IMemberRepository iMemberRepository;
 
+	
+	public MemberServiceImpl(IMemberRepository iMemberServiceRepository) {
+		this.iMemberRepository = iMemberServiceRepository;
+	}
+	
 	@Override
 	public void save(Member member) {
 		iMemberRepository.save(member);
