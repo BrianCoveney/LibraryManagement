@@ -20,7 +20,7 @@ import ie.soft8020.librarymanagement.domain.Book;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = LibraryManagementApplication.class, webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = LibraryManagementApplication.class, webEnvironment= SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
 @DirtiesContext(classMode=ClassMode.AFTER_EACH_TEST_METHOD)
 public class IBookRepositoryTest {

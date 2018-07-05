@@ -1,4 +1,4 @@
-CREATE TABLE books ( 
+CREATE TABLE IF NOT EXISTS books ( 
   book_id INT(11) NOT NULL AUTO_INCREMENT, 
   title VARCHAR(50) NOT NULL, 
   isbn VARCHAR(50) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE books (
   PRIMARY KEY (book_id) 
 );
 
-CREATE TABLE members ( 
+CREATE TABLE IF NOT EXISTS members ( 
   member_id INT(11) NOT NULL AUTO_INCREMENT, 
   name VARCHAR(50) NOT NULL, 
   address VARCHAR(50) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE members (
   PRIMARY KEY (member_id) 
 );
 
-CREATE TABLE loan (
+CREATE TABLE IF NOT EXISTS loan (
   book_id INT(11) NOT NULL,
   member_id INT(11) NOT NULL,
   loan_date DATE NOT NULL,
