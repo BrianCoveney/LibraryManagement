@@ -37,9 +37,8 @@ public class BookRepositoryImpl implements IBookRepository {
 
 	@Override
 	public void remove(Book book) {
-		sql = "DELETE books WHERE book_id = ?";
+		sql = "DELETE FROM books WHERE book_id = ?";
 		jdbcTemplate.update(sql, new Object[] { book.getBookID() } );
-		
 	}
 
 	@Override

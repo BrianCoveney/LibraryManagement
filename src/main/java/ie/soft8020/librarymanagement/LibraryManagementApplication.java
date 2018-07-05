@@ -234,7 +234,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		System.out.println("\nService Book Example \n----------");
 		
 		Book book = iBookService.get(2);
-		book.setTitle("Effictive Java");
+		book.setTitle("Effective Java");
 		iBookService.save(book);
 		System.out.println("Updated book via service:\n " + book.toString());
 	}

@@ -39,7 +39,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 
 	@Override
 	public void remove(Member member) {
-		sql = "DELETE members WHERE member_id = ?";
+		sql = "DELETE FROM members WHERE member_id = ?";
 		jdbcTemplate.update(sql, new Object[] { member.getMemberID() } );
 	}
 

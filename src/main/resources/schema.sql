@@ -25,7 +25,7 @@ CREATE TABLE loan (
   member_id INT(11) NOT NULL,
   loan_date DATE NOT NULL,
   return_date DATE NOT NULL,
-  CONSTRAINT fk_book_id FOREIGN KEY (book_id) REFERENCES books(book_id),
-  CONSTRAINT fk_member_id FOREIGN KEY (member_id) REFERENCES members(member_id),
+  CONSTRAINT fk_book_id FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE CASCADE,
+  CONSTRAINT fk_member_id FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE,
   PRIMARY KEY (book_id, member_id, loan_date)
 );
