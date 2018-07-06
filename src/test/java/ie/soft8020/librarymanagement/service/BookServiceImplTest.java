@@ -1,6 +1,6 @@
 package ie.soft8020.librarymanagement.service;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,7 +37,6 @@ public class BookServiceImplTest {
 		Book bookTwo = new Book();
 		bookTwo.setTitle("My Funny Book");
 		
-		
 		List<Book> books = new ArrayList<>();
 		books.add(bookOne);
 		books.add(bookTwo);
@@ -52,14 +51,14 @@ public class BookServiceImplTest {
 
 	@Test
 	public void testGet() {
-		assertThat(bookService.get(1).getTitle(), is("My Car"));
-		assertThat(bookService.get(1).getIsbn(), is("123, 456"));
-		assertThat(bookService.get(1).getAuthor(), is("Henry Ford"));
-		assertThat(bookService.get(1).getPublisher(), is("Motors Inc"));
-		assertThat(bookService.get(1).getEdition(), is("First edition"));
-		assertThat(bookService.get(1).getYearOfPublication(), is(sqlDate));
+		assertThat(bookService.get(1).getTitle(), equalTo("My Car"));
+		assertThat(bookService.get(1).getIsbn(), equalTo("123, 456"));
+		assertThat(bookService.get(1).getAuthor(), equalTo("Henry Ford"));
+		assertThat(bookService.get(1).getPublisher(), equalTo("Motors Inc"));
+		assertThat(bookService.get(1).getEdition(), equalTo("First edition"));
+		assertThat(bookService.get(1).getYearOfPublication(), equalTo(sqlDate));
 		
-		assertThat(bookService.get(2).getTitle(), is("My Funny Book"));
+		assertThat(bookService.get(2).getTitle(), equalTo("My Funny Book"));
 	}
 	
 	@Test

@@ -1,6 +1,6 @@
 package ie.soft8020.librarymanagement.service;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,14 +52,14 @@ public class MemberServiceImplTest {
 	
 	@Test
 	public void testGet() {
-		assertThat(memberService.get(1).getName(), is("Mary Peterson"));
-		assertThat(memberService.get(1).getAddress(), is("345 Rockestown Cork"));
-		assertThat(memberService.get(1).getDateOfBirth(), is(sqlDate));
-		assertThat(memberService.get(1).getLoanLimit(), is(4));
-		assertThat(memberService.get(1).getLoanLength(), is(7));
-		assertThat(memberService.get(1).getFinesOutstanding(), is(7.5));
+		assertThat(memberService.get(1).getName(), equalTo("Mary Peterson"));
+		assertThat(memberService.get(1).getAddress(), equalTo("345 Rockestown Cork"));
+		assertThat(memberService.get(1).getDateOfBirth(), equalTo(sqlDate));
+		assertThat(memberService.get(1).getLoanLimit(), equalTo(4));
+		assertThat(memberService.get(1).getLoanLength(), equalTo(7));
+		assertThat(memberService.get(1).getFinesOutstanding(), equalTo(7.5));
 		
-		assertThat(memberService.get(2).getName(), is("Kate Upton"));
+		assertThat(memberService.get(2).getName(), equalTo("Kate Upton"));
 	}
 	
 	@Test

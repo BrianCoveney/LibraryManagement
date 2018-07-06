@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Member {
 	
+	
 	private int memberID;
 	private String name;
 	private String address;

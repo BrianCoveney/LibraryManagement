@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Book {
 	
+	// Required fields
 	private int bookID;
 	private String title;
 	private String isbn;
@@ -13,6 +14,8 @@ public class Book {
 	private String publisher;
 	private String edition;
 	private Date yearOfPublication;
+	
+	// Optional fields
 	private List<Member> members;
 	
 	public Book () {
