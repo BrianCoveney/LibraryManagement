@@ -35,7 +35,7 @@ public class MemberRepositoryImplTest {
 	@Test
 	public void testGet() {
 		Member member = repo.get(ID);
-		assertThat(member.getName(), equalTo("Jack Jones"));
+		assertThat(member.getName(), equalTo("John Smyth"));
 	}
 	
 	@Test

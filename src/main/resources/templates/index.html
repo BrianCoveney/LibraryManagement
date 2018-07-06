@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started...</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <article th:each="p : ${memberskey}">
+    	
+    	Id: <span th:text=${p.memberID}></span>
+    	| Name: <span th:text=${p.name}></span>
+    	| Address: <span th:text=${p.address}></span>
+    	| Loan Limit: <span th:text=${p.loanLimit}></span>
+    	| Loan Length: <span th:text=${p.loanLength}></span>
+    	| Fines Outstanding: <span th:text=${p.finesOutstanding}></span>
+    	| Books: <span th:text=${p.books}></span>
+    </article>
+</body>
+</html>

@@ -4,10 +4,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+
 public class Member {
 	
-	
+	@Id
 	private int memberID;
+	
 	private String name;
 	private String address;
 	private Date dateOfBirth;
