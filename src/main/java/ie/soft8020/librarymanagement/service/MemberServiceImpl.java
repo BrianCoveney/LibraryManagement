@@ -26,7 +26,7 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public Member get(int id) {
-		return iMemberRepository.get(id);
+		return iMemberRepository.getById(id);
 	}
 
 	@Override

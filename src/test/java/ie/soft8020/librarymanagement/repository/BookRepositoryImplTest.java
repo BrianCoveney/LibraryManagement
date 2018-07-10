@@ -28,12 +28,12 @@ public class BookRepositoryImplTest {
 	@Autowired
 	IBookRepository repo;
 	
-	private static int DEFAULT_DB_SIZE = 10;
+	private static int DEFAULT_DB_SIZE = 20;
 	private static int ID = 2;
 
 	@Test
 	public void testGet() {
-		Book book = repo.get(ID);
+		Book book = repo.getById(ID);
 		assertThat(book.getTitle(), equalTo("Effective Java"));
 	}
 
@@ -48,7 +48,7 @@ public class BookRepositoryImplTest {
 	public void testRemove() {
 		// @Transactional at method level and @Roolback at the class level,
 		// will ensure that the database rolls back at the end of testing.
-		Book book = repo.get(ID);
+		Book book = repo.getById(ID);
 		repo.remove(book);
 		List<Book> books = repo.findAll();
 		assertThat(books, hasSize(DEFAULT_DB_SIZE -1));
@@ -69,5 +69,32 @@ public class BookRepositoryImplTest {
 		List<Book> newBooks = repo.findAll();
 		assertThat(newBooks, hasSize(DEFAULT_DB_SIZE + 1));
 	}
+	
+	@Test
+	public void testGetBookByAuthor() {
+		String author = "Joshua Bloch";
+		Book book = repo.getByAuthor(author);
+		assertThat(book.getAuthor(), equalTo(author));
+	}
+	
+	@Test
+	public void testGetBookByTitle() {
+		String title = "Clean Code";
+		Book book = repo.getByTitle(title);
+		assertThat(book.getTitle(), equalTo(title));
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

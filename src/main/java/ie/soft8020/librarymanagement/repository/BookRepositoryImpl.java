@@ -19,7 +19,7 @@ public class BookRepositoryImpl implements IBookRepository {
 	}
 
 	@Override
-	public Book get(int id) {
+	public Book getById(int id) {
 		sql = "SELECT * FROM books WHERE book_id = ?";
 		Book book = jdbcTemplate.queryForObject(sql, new Object[] { id },
 				new BookRowMapper());
@@ -48,6 +48,22 @@ public class BookRepositoryImpl implements IBookRepository {
 		return books;
 	}
 
+	@Override
+	public Book getByTitle(String title) {
+		sql = "SELECT * FROM books WHERE title = ?";
+		Book book = jdbcTemplate.queryForObject(sql, new Object[] { title },
+				new BookRowMapper());
+		return book;
+	}
+	
+	@Override
+	public Book getByAuthor(String author) {
+		sql = "SELECT * FROM books WHERE author = ?";
+		Book book = jdbcTemplate.queryForObject(sql, new Object[] { author },
+				new BookRowMapper());
+		return book;
+	}
+	
 	private void update(Book book) {
 		sql = "UPDATE books SET title=?, isbn=?, author=?, publisher=?, edition=?, year_of_publication=?"
 				+ " WHERE book_id = ?";
@@ -62,6 +78,8 @@ public class BookRepositoryImpl implements IBookRepository {
 		jdbcTemplate.update(sql, new Object[] {book.getTitle(), book.getIsbn(), book.getAuthor(), book.getPublisher(),
 				book.getEdition(), book.getYearOfPublication()});
 	}
+	
+	
 	
 }
  

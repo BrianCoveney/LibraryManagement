@@ -3,14 +3,18 @@
 <head lang="en" th:replace="fragments/head :: head"></head>
 <body>
 	<header th:replace="fragments/header :: header"></header>
+	<main>
 	<article th:each="p : ${memberskey}">
-		Id: <span th:text=${p.memberID}></span> | Name: <span
-			th:text=${p.name}></span> | Address: <span th:text=${p.address}></span>
-		| Loan Limit: <span th:text=${p.loanLimit}></span> | Loan Length: <span
-			th:text=${p.loanLength}></span> | Fines Outstanding: <span
-			th:text=${p.finesOutstanding}></span> | Books: <span
-			th:text=${p.books}></span>
+		Id: <span th:text=${p.memberID}></span> 
+		| Name: <span th:text=${p.name}></span> 
+		| Address: <span th:text=${p.address}></span>
+		| Date of birth: <span th:text=${p.dateOfBirth}></span>
+		| Loan Limit: <span th:text=${p.loanLimit}></span>
+		| Loan Length: <span th:text=${p.loanLength}></span> 
+		| Fines Outstanding: <span th:text=${p.finesOutstanding}></span> 
+		| Books: <span th:text=${p.books}></span>
 	</article>
+	</main>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

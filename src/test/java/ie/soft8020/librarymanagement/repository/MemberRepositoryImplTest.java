@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ie.soft8020.librarymanagement.LibraryManagementApplication;
 import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.domain.MemberFactory;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,12 +31,15 @@ public class MemberRepositoryImplTest {
 	@Autowired
 	IMemberRepository repo;
 	
-	private static int DEFAULT_DB_SIZE = 5;
+	private Date dateOfBirth = new Date();
+	private String name = "name";
+	
+	private static int DEFAULT_DB_SIZE = 7;
 	private static int ID = 2;
 	
 	@Test
 	public void testGet() {
-		Member member = repo.get(ID);
+		Member member = repo.getById(ID);
 		assertThat(member.getName(), equalTo("John Smyth"));
 	}
 	
@@ -47,7 +52,7 @@ public class MemberRepositoryImplTest {
 	@Test
 	@Transactional
 	public void testRemove() {
-		Member member = repo.get(ID);
+		Member member = repo.getById(ID);
 		repo.remove(member);
 		List<Member> members = repo.findAll();
 		assertThat(members, hasSize(DEFAULT_DB_SIZE - 1));
@@ -59,7 +64,7 @@ public class MemberRepositoryImplTest {
 		List<Member> members = repo.findAll();
 		assertThat(members, hasSize(DEFAULT_DB_SIZE));
 		
-		Member member = new Member();
+		Member member = MemberFactory.createMember(name, dateOfBirth);
 		member.setName("My New Book");
 		
 		repo.save(member);

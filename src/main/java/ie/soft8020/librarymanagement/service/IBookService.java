@@ -6,7 +6,9 @@ import ie.soft8020.librarymanagement.domain.Book;
 
 public interface IBookService {
 	void save(Book book);
-	Book get(int id);
+	Book getById(int id);
 	void remove(Book book);
-	List<Book> findAll();	
+	List<Book> findAll();
+	Book getByTitle(String title);
+	Book getByAuthor(String author);
 }

@@ -5,8 +5,10 @@ import java.util.List;
 import ie.soft8020.librarymanagement.domain.Book;
 
 public interface IBookRepository {
-	public Book get(int id);
-	public void save(Book book);
-	public void remove(Book book);
-	public List<Book> findAll();
+	Book getById(int id);
+	void save(Book book);
+	void remove(Book book);
+	List<Book> findAll();
+	Book getByTitle(String title);
+	Book getByAuthor(String author);
 }

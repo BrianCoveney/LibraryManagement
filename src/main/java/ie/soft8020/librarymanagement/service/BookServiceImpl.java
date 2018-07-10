@@ -24,8 +24,8 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public Book get(int id) {
-		return iBookRepository.get(id);
+	public Book getById(int id) {
+		return iBookRepository.getById(id);
 	}
 
 	@Override
@@ -37,5 +37,15 @@ public class BookServiceImpl implements IBookService {
 	@Override
 	public List<Book> findAll() {
 		return iBookRepository.findAll();
+	}
+
+	@Override
+	public Book getByTitle(String title) {
+		return iBookRepository.getByTitle(title);
+	}
+
+	@Override
+	public Book getByAuthor(String author) {
+		return iBookRepository.getByAuthor(author);
 	}
 }

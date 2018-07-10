@@ -7,14 +7,25 @@ REPLACE INTO books VALUES (1, 'Spring in action', '161729120X, 9781617291203', '
 (7, 'Design patterns', '978-0201633610, 0201633612', 'Erich Gamma, et al', 'Addison Wesley', 'First edition', '1994-01-01'), 
 (8, 'The Clean Coder', '978-0137081073, 0137081073', 'Robert C. Martin', 'Prentice Hall', 'First edition', '2011-01-01'), 
 (9, 'Clean Architecture', '978-0134494166, 0134494164', 'Robert C. Martin', 'Prentice Hall', 'First edition', '2017-01-01'), 
-(10, 'Head First Design Patterns', '978-0596007126, 0596007124', 'Erich Freeman, et al', 'OReilly Media', 'First edition', '2004-01-01');
-
+(10, 'Head First Design Patterns', '978-0596007126, 0596007124', 'Erich Freeman, et al', 'OReilly Media', 'First edition', '2004-01-01'), 
+(11, 'The Android developers cookbook', '9780321897534, 0321897536', 'Ronan Schwarz, et al', 'Addison-Wesley', 'Second edition', '2013-01-01'), 
+(12, 'Design patterns', '0201633612, 9780201633610', 'Erich Gamma, et al', 'Addison-Wesley', 'First edition', '1995-01-01'), 
+(13, 'Physics', '0321611136, 9780321541635', ' James S Walker', 'Addison-Wesley', 'Fourth edition', '2010-01-01'), 
+(14, 'Economics', '0132041227, 140826868X', 'Michael; Parkin', 'Addison-Wesley', 'Seventh edition', '2007-01-01'), 
+(15, 'UML Distilled', '0321193687, 9780321193681', 'Martin Fowler', 'Addison-Wesley', 'Third edition', '2004-01-01'), 
+(16, 'Secure architectures with OpenBSD', '9780321193667, 0321193660', 'Brandon Palmer, et al', 'Addison-Wesley', 'First edition', '2004-01-01'), 
+(17, 'The age of the economist', '9780321088123, 0321088123', 'Daniel R Fusfeld', 'Addison-Wesley', 'Ninth edition', '2002-01-01'), 
+(18, 'Hadoop in action', '1935182196, 9781935182191', 'Chuck Lam', 'Manning Publications', 'First edition', '2011-01-01'), 
+(19, 'Windows PowerShell in action', '9781935182139, 1935182137', 'Bruce G Payette', 'Manning Publications', 'First edition', '2011-01-01'), 
+(20, 'Spring integration in action', '9781935182139, 1935182137', 'Mark Fisher', 'Manning Publications', 'First edition', '2012-01-01');
 
 REPLACE INTO members VALUES (1, 'Brian Bloggs', '123 Glen Village Douglas, Cork', '1977-09-18', 4, 14, 3.5),
-(2, 'John Smyth', 'Seaview Monkstown Cork', '1999-05-11', 2, 7, 1.75), 
-(3, 'Emma Stone', 'Park Head Blarney Cork', '2000-03-01', 2, 7, 1.75), 
-(4, 'Meghan Markle', 'Fairy Fort Jobstown Dublin', '2001-03-01', 2, 7, 1.75), 
-(5, 'Liam Gallagher', '421 Knockrae Kerry', '1998-03-01', 4, 14, 3.5);
+(2, 'John Smyth', 'Monkstown Cork', '1999-05-11', 2, 7, 1.75), 
+(3, 'Emma Stone', 'Blarney Cork', '2000-09-01', 2, 7, 1.75), 
+(4, 'Meghan Markle', 'Jobstown Dublin', '2001-03-01', 2, 7, 1.75), 
+(5, 'Liam Gallagher', 'Knockrae Kerry', '1998-03-01', 4, 14, 3.5), 
+(6, 'Gerry Kelly', 'Knockrae Kerry', '2001-03-01', 7, 14, 3.5), 
+(7, 'Billy Jones', 'Knockrae Kerry', '2000-07-10', 7, 14, 3.5);
 
 REPLACE INTO loan VALUES (10, 1, '2018-06-01', '2018-06-20'), 
 (6, 3, '2018-06-01', '2018-06-14'), 
