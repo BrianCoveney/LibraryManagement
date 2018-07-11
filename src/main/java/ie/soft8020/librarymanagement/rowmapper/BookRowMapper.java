@@ -11,9 +11,7 @@ public class BookRowMapper implements RowMapper<Book> {
 	
 	@Override
 	public Book mapRow(ResultSet rs, int arg1) throws SQLException {
-
 		Book book = new Book();
-		
 		book.setBookID(rs.getInt("book_id"));
 		book.setTitle(rs.getString("title"));
 		book.setIsbn(rs.getString("isbn"));

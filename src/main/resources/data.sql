@@ -20,15 +20,15 @@ REPLACE INTO books VALUES (1, 'Spring in action', '161729120X, 9781617291203', '
 (20, 'Spring integration in action', '9781935182139, 1935182137', 'Mark Fisher', 'Manning Publications', 'First edition', '2012-01-01');
 
 REPLACE INTO members VALUES (1, 'Brian Bloggs', '123 Glen Village Douglas, Cork', '1977-09-18', 4, 14, 3.5),
-(2, 'John Smyth', 'Monkstown Cork', '1999-05-11', 2, 7, 1.75), 
-(3, 'Emma Stone', 'Blarney Cork', '2000-09-01', 2, 7, 1.75), 
+(2, 'John Smyth', 'Monkstown Cork', '1999-05-11', 4, 7, 1.75), 
+(3, 'Emma Stone', 'Blarney Cork', '2000-09-01', 2, 2, 1.75), 
 (4, 'Meghan Markle', 'Jobstown Dublin', '2001-03-01', 2, 7, 1.75), 
 (5, 'Liam Gallagher', 'Knockrae Kerry', '1998-03-01', 4, 14, 3.5), 
-(6, 'Gerry Kelly', 'Knockrae Kerry', '2001-03-01', 7, 14, 3.5), 
-(7, 'Billy Jones', 'Knockrae Kerry', '2000-07-10', 7, 14, 3.5);
+(6, 'Gerry Kelly', 'Knockrae Kerry', '2001-03-01', 2, 14, 3.5), 
+(7, 'Billy Jones', 'Knockrae Kerry', '2000-07-10', 4, 14, 3.5);
 
 REPLACE INTO loan VALUES (10, 1, '2018-06-01', '2018-06-20'), 
-(6, 3, '2018-06-01', '2018-06-14'), 
-(8, 2, '2018-06-01', '2018-06-14'), 
-(3, 4, '2018-06-01', '2018-06-14'), 
-(2, 5, '2018-06-01', '2018-06-14');
+(1, 2, '2001-03-01', '2018-06-14'), 
+(2, 1, '2001-03-01', '2018-06-14'), 
+(3, 4, '2001-03-01', '2018-06-14'), 
+(4, 5, '2001-03-01', '2018-06-14');
