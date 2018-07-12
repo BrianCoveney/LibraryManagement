@@ -21,7 +21,6 @@ public class MemberRowMapper implements RowMapper<Member> {
 		String name = "name";
 		
 		Member member = MemberFactory.createMember(name, dateOfBirth);
-		
 		member.setMemberID(rs.getInt("member_id"));
 		member.setName(rs.getString("name"));
 		member.setAddress(rs.getString("address"));
@@ -29,9 +28,6 @@ public class MemberRowMapper implements RowMapper<Member> {
 		member.setLoanLimit(rs.getInt("loan_limit"));
 		member.setLoanLength(rs.getInt("loan_length"));
 		member.setFinesOutstanding(rs.getDouble("fines_outstanding"));
-		
-		System.out.println("Object: " + member);
-
 		
 		return member;
 	}

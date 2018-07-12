@@ -167,7 +167,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 	public void queryResultSetExtractor() {
 		System.out.println("\nQuery 7 \n----------");
 		
-		sql = "SELECT m.member_id, m.name, m.address, m.date_of_birth, b.book_id, b.title, l.book_id, l.loan_date, l.return_date "
+		sql = "SELECT m.member_id, m.name, m.address, m.date_of_birth, m.fines_outstanding, b.book_id, b.title, l.book_id, l.loan_date, l.return_date "
 				+ "FROM members m, books b, loan l "
 				+ "WHERE b.book_id = l.book_id AND m.member_id = l.member_id "
 				+ "AND l.member_id = ?";
@@ -189,6 +189,7 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 								member.setName(rs.getString("name"));
 								member.setAddress(rs.getString("address"));
 								member.setDateOfBirth(rs.getDate("date_of_birth"));
+								member.setFinesOutstanding(rs.getDouble("fines_outstanding"));
 							}
 							Book book = new Book();
 							book.setBookID(rs.getInt("book_id"));
@@ -204,7 +205,6 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 							loans.add(loan);
 							
 						}
-						
 						member.setBooks(books);
 						member.setLoans(loans);
 						return member;
@@ -266,4 +266,6 @@ public class LibraryManagementApplication implements CommandLineRunner	 {
 		iBookService.save(book);
 		System.out.println("Updated book via service:\n " + book.toString());
 	}
+	
+	
 }
