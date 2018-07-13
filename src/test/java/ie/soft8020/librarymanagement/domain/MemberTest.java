@@ -70,11 +70,11 @@ public class MemberTest {
         // Create 'Adult' and 'Child' objects. Then confirm they are of the correct type and book limit allowance.
         adultMember = MemberFactory.createMember("Tom Jones", adultDateOfBirth);
         assertThat(adultMember, instanceOf(Adult.class));
-        assertThat(adultMember.getLoanLimit(), equalTo(Const.LoanLength.MAX_NUMBER_OF_DAYS_ADULT_CAN_BORROW)); // = 14
+        assertThat(adultMember.getLoanLength(), equalTo(Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW)); // = 14
 
         childMember = MemberFactory.createMember("Tom Jones", childDateOfBirth);
         assertThat(childMember, instanceOf(Child.class));
-        assertThat(childMember.getLoanLimit(), equalTo(Const.LoanLength.MAX_NUMBER_OF_DAYS_CHILD_CAN_BORROW)); // = 7
+        assertThat(childMember.getLoanLength(), equalTo(Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW)); // = 7
 
         // Add the list of 'books' and 'loans' to each member, and validate.
         adultMember.setBooks(books);
