@@ -1,5 +1,16 @@
 package ie.soft8020.librarymanagement.service;
 
+import ie.soft8020.librarymanagement.domain.*;
+import ie.soft8020.librarymanagement.repository.IMemberRepository;
+import ie.soft8020.librarymanagement.util.DateUtilility;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -7,27 +18,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import ie.soft8020.librarymanagement.domain.Adult;
-import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.domain.Child;
-import ie.soft8020.librarymanagement.domain.Member;
-import ie.soft8020.librarymanagement.domain.MemberFactory;
-import ie.soft8020.librarymanagement.repository.IMemberRepository;
-import ie.soft8020.librarymanagement.util.DateUtil;
-
 public class MemberServiceImplTest {
 	private IMemberService memberService;
 	private IMemberRepository repoMock;
-	private Date adultDateOfBirth = DateUtil.parseStringToDate("1998-03-01");
-	private Date childDateOfBirth = DateUtil.parseStringToDate("2010-07-11");
+	private Date adultDateOfBirth = DateUtilility.parseStringToDate("1998-03-01");
+	private Date childDateOfBirth = DateUtilility.parseStringToDate("2010-07-11");
 	private Book bookOne;
 	private Book bookTwo;
 
@@ -40,6 +35,8 @@ public class MemberServiceImplTest {
 		memberOne.setLoanLimit(4);
 		memberOne.setLoanLength(7);
 		memberOne.setFinesOutstanding(7.5);
+
+		System.out.println(memberOne.getFinesOutstanding());
 
 		Member memberTwo = MemberFactory.createMember("Kate Upton", childDateOfBirth);
 		memberTwo.setBooks(createBookListForTest());
