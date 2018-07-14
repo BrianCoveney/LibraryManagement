@@ -11,4 +11,8 @@ public final class Const {
 		public static final int MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW = 14;
 		public static final int MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW = 7;
 	}
+
+	public static class FineAccrued {
+		public static final double FINE_VALUE = 0.25;
+	}
 }

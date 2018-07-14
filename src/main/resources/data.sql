@@ -19,8 +19,8 @@ REPLACE INTO books VALUES (1, 'Spring in action', '161729120X, 9781617291203', '
 (19, 'Windows PowerShell in action', '9781935182139, 1935182137', 'Bruce G Payette', 'Manning Publications', 'First edition', '2011-01-01'),
 (20, 'Spring integration in action', '9781935182139, 1935182137', 'Mark Fisher', 'Manning Publications', 'First edition', '2012-01-01');
 
-REPLACE INTO members VALUES (1, 'Brian Bloggs', '123 Glen Village Douglas, Cork', '1977-09-18', 4, 14, 3.5),
-(2, 'John Smyth', 'Monkstown Cork', '2001-03-01', 4, 7, 1.75),
+REPLACE INTO members VALUES (1, 'Brian Bloggs', '123 Glen Village Douglas, Cork', '1977-09-18', 4, 14, 1),
+(2, 'John Smyth', 'Monkstown Cork', '2001-03-01', 4, 7, 1),
 (3, 'Emma Stone', 'Blarney Cork', '2005-09-01', 2, 2, 1.75),
 (4, 'Meghan Markle', 'Jobstown Dublin', '2001-03-01', 2, 7, 1.75),
 (5, 'Liam Gallagher', 'Knockrae Kerry', '1998-03-01', 4, 14, 3.5),

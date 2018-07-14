@@ -19,6 +19,11 @@ import static org.junit.Assert.assertThat;
 public class MemberTest {
 
     private Member adultMember, childMember;
+    private Date adultDateOfBirth = DateUtilility.parseStringToDate("1998-03-01");
+    private Date childDateOfBirth = DateUtilility.parseStringToDate("2010-07-11");
+
+    private List<Book> books = new ArrayList<>();
+    private List<Loan> loans = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -55,17 +60,12 @@ public class MemberTest {
         loanTwo.setLoanDate(loanDateTwo);
         loanTwo.setReturnDate(returnDateTwo);
 
-        // Create lists to hold books and loans
-        List<Book> books = new ArrayList<>();
+        // Add items to lists
         books.add(bookOne);
         books.add(bookTwo);
-        List<Loan> loans = new ArrayList<>();
         loans.add(loanOne);
         loans.add(loanTwo);
 
-        // Create dobs
-        Date adultDateOfBirth = DateUtilility.parseStringToDate("1998-03-01");
-        Date childDateOfBirth = DateUtilility.parseStringToDate("2010-07-11");
 
         // Create 'Adult' and 'Child' objects. Then confirm they are of the correct type and book limit allowance.
         adultMember = MemberFactory.createMember("Tom Jones", adultDateOfBirth);
@@ -91,17 +91,46 @@ public class MemberTest {
     // depending on the member type.
     @Test
     public void testSetTotalDaysOverLoanLimitForAdult() {
-        int numDaysOverdue = adultMember.setTotalDaysOverLoanLimit(adultMember.getLoans(), adultMember);
+        double numDaysOverdue = adultMember.getTotalDaysOverLoanLimit(adultMember);
 
         // For the Adult, book one is 0 days and book two is 7 days overdue.
-        assertThat(numDaysOverdue, equalTo(7));
+        assertThat(numDaysOverdue, equalTo(7.0));
     }
 
     @Test
     public void testSetTotalDaysOverLoanLimitForChild() {
-        int numDaysOverdue = childMember.setTotalDaysOverLoanLimit(childMember.getLoans(), childMember);
+        double numDaysOverdue = childMember.getTotalDaysOverLoanLimit(childMember);
 
         // For the Child, book one is 7 days and book two is 14 days overdue.
-        assertThat(numDaysOverdue, equalTo(21));
+        assertThat(numDaysOverdue, equalTo(21.0));
     }
+
+    @Test
+    public void testGetFinesOutstanding() {
+
+        // Test Child
+        double childDaysOver = childMember.getTotalDaysOverLoanLimit(childMember);
+        double childFine = childMember.calculateFine(childDaysOver);
+        childMember.setFinesOutstanding(childFine);
+        assertThat(childMember.getFinesOutstanding(), equalTo(5.25));
+
+        // Test Adult
+        double adutDaysOver = adultMember.getTotalDaysOverLoanLimit(adultMember);
+        double adultFine = adultMember.calculateFine(adutDaysOver);
+        adultMember.setFinesOutstanding(adultFine);
+        assertThat(adultMember.getFinesOutstanding(), equalTo(1.75));
+
+
+        // Adult borrows more books that have the same days overdue.
+        adultMember.setBooks(books);
+        adultMember.setLoans(loans);
+        double currAdultFine = adultMember.getFinesOutstanding();
+        double days = adultMember.getTotalDaysOverLoanLimit(adultMember);
+        double fine = adultMember.calculateFine(days);
+        adultMember.setFinesOutstanding(fine);
+
+        // Test that the fine has incremented correctly
+        assertThat(adultMember.getFinesOutstanding(), equalTo(currAdultFine * 2));
+    }
+
 }
