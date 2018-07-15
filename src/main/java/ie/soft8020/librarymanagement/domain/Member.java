@@ -1,7 +1,5 @@
 package ie.soft8020.librarymanagement.domain;
 
-import ie.soft8020.librarymanagement.util.Const;
-import ie.soft8020.librarymanagement.util.DateUtilility;
 import org.springframework.data.annotation.Id;
 
 import java.util.Collections;
@@ -19,7 +17,6 @@ public abstract class Member {
 	private double finesOutstanding;
 	private List<Loan> loans;
 	private List<Book> books;
-//	private double totalDaysOverLoanLimit;
 
 	public Member(String name, Date dateOfBirth) {
 		this.name = name;
@@ -95,33 +92,4 @@ public abstract class Member {
 		this.finesOutstanding = finesOutstanding;
 	}
 
-	public double getTotalDaysOverLoanLimit(Member member) {
-		double totalDaysOverLoanLimit = 0.0;
-		// For each loan in the list
-		for (Loan loan : getLoans()) {
-			// We get the num of days books have been borrowed
-			int daysOnLoan = DateUtilility.calculatePeriodBetweenDays(loan.getLoanDate(), loan.getReturnDate());
-
-			// We check weather the member is an Adult or Child.
-			// When the daysOnLoan are over the members' limit, we increment a value and pass it to daysPastLoanLimit.
-			if (member instanceof Adult) {
-				if (daysOnLoan > Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW) {
-					totalDaysOverLoanLimit += daysOnLoan - Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW;
-				}
-			} else if (member instanceof Child) {
-				if (daysOnLoan > Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW) {
-					totalDaysOverLoanLimit += daysOnLoan - Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW;
-				}
-			}
-		}
-		return totalDaysOverLoanLimit;
-	}
-
-	public double calculateFine(double totalDaysOverLoanLimit) {
-		double fine = totalDaysOverLoanLimit * Const.FineAccrued.FINE_VALUE;
-		if (fine > 0.0) {
-			return this.finesOutstanding += fine;
-		}
-		return 0.0;
-	}
 }

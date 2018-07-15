@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
 
 public class MemberTest {
 
-    private Member adultMember, childMember;
+    private Member adult, child;
     private Date adultDateOfBirth = DateUtilility.parseStringToDate("1998-03-01");
     private Date childDateOfBirth = DateUtilility.parseStringToDate("2010-07-11");
 
@@ -68,69 +68,50 @@ public class MemberTest {
 
 
         // Create 'Adult' and 'Child' objects. Then confirm they are of the correct type and book limit allowance.
-        adultMember = MemberFactory.createMember("Tom Jones", adultDateOfBirth);
-        assertThat(adultMember, instanceOf(Adult.class));
-        assertThat(adultMember.getLoanLength(), equalTo(Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW)); // = 14
+        adult = MemberFactory.createMember("Tom Jones", adultDateOfBirth);
+        assertThat(adult, instanceOf(Adult.class));
+        assertThat(adult.getLoanLength(), equalTo(Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW)); // = 14
 
-        childMember = MemberFactory.createMember("Tom Jones", childDateOfBirth);
-        assertThat(childMember, instanceOf(Child.class));
-        assertThat(childMember.getLoanLength(), equalTo(Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW)); // = 7
+        child = MemberFactory.createMember("Tom Jones", childDateOfBirth);
+        assertThat(child, instanceOf(Child.class));
+        assertThat(child.getLoanLength(), equalTo(Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW)); // = 7
 
         // Add the list of 'books' and 'loans' to each member, and validate.
-        adultMember.setBooks(books);
-        adultMember.setLoans(loans);
-        assertThat(adultMember.getBooks(), hasSize(2));
-        assertThat(adultMember.getLoans(), hasSize(2));
-        childMember.setBooks(books);
-        childMember.setLoans(loans);
-        assertThat(childMember.getBooks(), hasSize(2));
-        assertThat(childMember.getLoans(), hasSize(2));
-    }
-
-    // This method takes the list of loans and a member object. It will return a number calculated differently,
-    // depending on the member type.
-    @Test
-    public void testSetTotalDaysOverLoanLimitForAdult() {
-        double numDaysOverdue = adultMember.getTotalDaysOverLoanLimit(adultMember);
-
-        // For the Adult, book one is 0 days and book two is 7 days overdue.
-        assertThat(numDaysOverdue, equalTo(7.0));
+        adult.setBooks(books);
+        adult.setLoans(loans);
+        assertThat(adult.getBooks(), hasSize(2));
+        assertThat(adult.getLoans(), hasSize(2));
+        child.setBooks(books);
+        child.setLoans(loans);
+        assertThat(child.getBooks(), hasSize(2));
+        assertThat(child.getLoans(), hasSize(2));
     }
 
     @Test
-    public void testSetTotalDaysOverLoanLimitForChild() {
-        double numDaysOverdue = childMember.getTotalDaysOverLoanLimit(childMember);
-
-        // For the Child, book one is 7 days and book two is 14 days overdue.
-        assertThat(numDaysOverdue, equalTo(21.0));
+    public void testGetFinesOutstandingForChild() {
+        IFineCalculator calculator = new FineCalculatorChildImpl();
+        double daysOverLoanLimit = calculator.getDaysOverLoanLimit(child);
+        double fine = calculator.calculateFine(child, daysOverLoanLimit);
+        child.setFinesOutstanding(fine);
+        assertThat(child.getFinesOutstanding(), equalTo(5.25));
     }
 
     @Test
-    public void testGetFinesOutstanding() {
-
-        // Test Child
-        double childDaysOver = childMember.getTotalDaysOverLoanLimit(childMember);
-        double childFine = childMember.calculateFine(childDaysOver);
-        childMember.setFinesOutstanding(childFine);
-        assertThat(childMember.getFinesOutstanding(), equalTo(5.25));
-
-        // Test Adult
-        double adutDaysOver = adultMember.getTotalDaysOverLoanLimit(adultMember);
-        double adultFine = adultMember.calculateFine(adutDaysOver);
-        adultMember.setFinesOutstanding(adultFine);
-        assertThat(adultMember.getFinesOutstanding(), equalTo(1.75));
-
+    public void testGetFinesOutstandingForAdult() {
+        IFineCalculator calculator = new FineCalculatorAdultImpl();
+        double daysOverLoanLimit = calculator.getDaysOverLoanLimit(adult);
+        double fine = calculator.calculateFine(adult, daysOverLoanLimit);
+        adult.setFinesOutstanding(fine);
+        assertThat(adult.getFinesOutstanding(), equalTo(1.75));
 
         // Adult borrows more books that have the same days overdue.
-        adultMember.setBooks(books);
-        adultMember.setLoans(loans);
-        double currAdultFine = adultMember.getFinesOutstanding();
-        double days = adultMember.getTotalDaysOverLoanLimit(adultMember);
-        double fine = adultMember.calculateFine(days);
-        adultMember.setFinesOutstanding(fine);
-
-        // Test that the fine has incremented correctly
-        assertThat(adultMember.getFinesOutstanding(), equalTo(currAdultFine * 2));
+        adult.setBooks(books);
+        adult.setLoans(loans);
+        double newDaysOverLoanLimit = calculator.getDaysOverLoanLimit(adult);
+        double newFine = calculator.calculateFine(adult, newDaysOverLoanLimit);
+        double currentAdultFine = adult.getFinesOutstanding();
+        adult.setFinesOutstanding(newFine);
+        assertThat(adult.getFinesOutstanding(), equalTo(currentAdultFine * 2));
     }
 
 }
