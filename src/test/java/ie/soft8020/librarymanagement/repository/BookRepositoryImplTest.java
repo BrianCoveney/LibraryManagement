@@ -101,20 +101,7 @@ public class BookRepositoryImplTest {
 
 		// Test that our hardcoded DB contains members with 6 books on loan
         for (Book book : books) {
-            assertThat(book.getMembers(), hasSize(6));
+			assertThat(book.getMembers(), hasSize(6));
         }
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -91,30 +91,29 @@ public class BookRepositoryImpl implements IBookRepository {
 		sql = "SELECT b.book_id, b.title, m.member_id, m.name from books b, members m, loan l " +
 				"WHERE b.book_id = l.book_id and m.member_id = l.member_id";
 
-		List<Book> books = jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
+		return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
+
 			@Override
 			public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
-				Book book = new Book();
-				List<Member> members = new ArrayList<>();
-				List<Book> bookList = new ArrayList<>();
+                List<Member> members = new ArrayList<>();
+				List<Book> books = new ArrayList<>();
 				while (rs.next()) {
-					if (book == null) {
-						book.setBookID(rs.getInt("book_id"));
-						book.setTitle(rs.getString("title"));
-					}
-					Member member = MemberFactory.createMember("name", new Date());
+                    Book book = new Book();
+                    book.setBookID(rs.getInt("book_id"));
+					book.setTitle(rs.getString("title"));
+					books.add(book);
+                    books.add(book);
+
+                    Member member = MemberFactory.createMember("name", new Date());
 					member.setMemberID(rs.getInt("member_id"));
 					member.setName(rs.getString("name"));
 					members.add(member);
-				}
-				book.setMembers(members);
-				bookList.add(book);
 
-
-				return bookList;
+                    book.setMembers(members);
+                }
+				return books;
 			}
 		});
-		return books;
 	}
 
 
