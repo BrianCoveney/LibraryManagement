@@ -1,23 +1,23 @@
-CREATE TABLE IF NOT EXISTS books ( 
-  book_id INT(11) NOT NULL AUTO_INCREMENT, 
-  title VARCHAR(50) NOT NULL, 
+CREATE TABLE IF NOT EXISTS books (
+  book_id INT(11) NOT NULL AUTO_INCREMENT,
+  title VARCHAR(50) NOT NULL,
   isbn VARCHAR(50) NOT NULL,
-  author VARCHAR(50) NOT NULL, 
+  author VARCHAR(50) NOT NULL,
   publisher VARCHAR(50) NOT NULL,
   edition VARCHAR(50) NOT NULL,
   year_of_publication DATE NOT NULL,
-  PRIMARY KEY (book_id) 
+  PRIMARY KEY (book_id)
 );
 
-CREATE TABLE IF NOT EXISTS members ( 
-  member_id INT(11) NOT NULL AUTO_INCREMENT, 
-  name VARCHAR(50) NOT NULL, 
+CREATE TABLE IF NOT EXISTS members (
+  member_id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
   address VARCHAR(50) NOT NULL,
-  date_of_birth DATE NOT NULL, 
+  date_of_birth DATE NOT NULL,
   loan_limit INT(11) NOT NULL,
   loan_length INT(11) NOT NULL,
   fines_outstanding DECIMAL(6,4) NOT NULL,
-  PRIMARY KEY (member_id) 
+  PRIMARY KEY (member_id)
 );
 
 CREATE TABLE IF NOT EXISTS loan (

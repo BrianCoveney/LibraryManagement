@@ -1,8 +1,8 @@
 package ie.soft8020.librarymanagement.repository;
 
-import java.util.List;
-
 import ie.soft8020.librarymanagement.domain.Book;
+
+import java.util.List;
 
 public interface IBookRepository {
 	Book getById(int id);
@@ -11,4 +11,5 @@ public interface IBookRepository {
 	List<Book> findAll();
 	Book getByTitle(String title);
 	Book getByAuthor(String author);
+	List<Book> findBooksLoanedByMembers();
 }

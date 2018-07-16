@@ -1,8 +1,8 @@
 package ie.soft8020.librarymanagement.service;
 
-import java.util.List;
-
 import ie.soft8020.librarymanagement.domain.Book;
+
+import java.util.List;
 
 public interface IBookService {
 	void save(Book book);
@@ -11,4 +11,5 @@ public interface IBookService {
 	List<Book> findAll();
 	Book getByTitle(String title);
 	Book getByAuthor(String author);
+	List<Book> findAllBooksOverdue();
 }

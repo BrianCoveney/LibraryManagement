@@ -1,25 +1,23 @@
 package ie.soft8020.librarymanagement.repository;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.*;
-
-import java.util.Date;
-import java.util.List;
-
+import ie.soft8020.librarymanagement.LibraryManagementApplication;
+import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.domain.MemberFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import ie.soft8020.librarymanagement.LibraryManagementApplication;
-import ie.soft8020.librarymanagement.domain.Member;
-import ie.soft8020.librarymanagement.domain.MemberFactory;
+import java.util.Date;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,45 +28,52 @@ public class MemberRepositoryImplTest {
 
 	@Autowired
 	IMemberRepository repo;
-	
+
 	private Date dateOfBirth = new Date();
 	private String name = "name";
-	
+
 	private static int DEFAULT_DB_SIZE = 7;
-	private static int ID = 2;
-	
+	private static int MEMBER_ID = 2;
+
 	@Test
 	public void testGet() {
-		Member member = repo.getById(ID);
-		assertThat(member.getName(), equalTo("John Smyth"));
+		Member member = repo.getById(MEMBER_ID);
+		assertThat(member.getName(), equalTo("Jack Jones"));
 	}
-	
+
 	@Test
 	public void testFindAll() {
 		List<Member> members = repo.findAll();
 		assertThat(members, hasSize(DEFAULT_DB_SIZE));
 	}
-	
+
 	@Test
 	@Transactional
 	public void testRemove() {
-		Member member = repo.getById(ID);
+		Member member = repo.getById(MEMBER_ID);
 		repo.remove(member);
 		List<Member> members = repo.findAll();
 		assertThat(members, hasSize(DEFAULT_DB_SIZE - 1));
 	}
-	
+
 	@Test
 	@Transactional
 	public void testSave() {
 		List<Member> members = repo.findAll();
 		assertThat(members, hasSize(DEFAULT_DB_SIZE));
-		
+
 		Member member = MemberFactory.createMember(name, dateOfBirth);
 		member.setName("My New Book");
-		
+
 		repo.save(member);
 		List<Member> newMembers = repo.findAll();
 		assertThat(newMembers, hasSize(DEFAULT_DB_SIZE + 1));
+	}
+
+	@Test
+	public void testGetMemberWithBooksTheyHaveOnLoan() {
+		Member member = repo.getMemberWithBooks(MEMBER_ID);
+		assertThat(member.getMemberID(), equalTo(MEMBER_ID));
+		assertThat("Member with an id of 2, has 2 books on loan.", member.getBooks(), hasSize(2));
 	}
 }

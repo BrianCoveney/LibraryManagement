@@ -1,9 +1,8 @@
 package ie.soft8020.librarymanagement.repository;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
+import ie.soft8020.librarymanagement.LibraryManagementApplication;
+import ie.soft8020.librarymanagement.domain.Book;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +12,21 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import ie.soft8020.librarymanagement.LibraryManagementApplication;
-import ie.soft8020.librarymanagement.domain.Book;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = LibraryManagementApplication.class, webEnvironment= SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("default")
 @Rollback
 public class BookRepositoryImplTest {
-	
+
 	@Autowired
 	IBookRepository repo;
-	
+
 	private static int DEFAULT_DB_SIZE = 20;
 	private static int ID = 2;
 
@@ -42,9 +41,9 @@ public class BookRepositoryImplTest {
 		List<Book> books = repo.findAll();
 		assertThat(books, hasSize(DEFAULT_DB_SIZE));
 	}
-	
+
 	@Test
-	@Transactional 
+	@Transactional
 	public void testRemove() {
 		// @Transactional at method level and @Roolback at the class level,
 		// will ensure that the database rolls back at the end of testing.
@@ -53,30 +52,30 @@ public class BookRepositoryImplTest {
 		List<Book> books = repo.findAll();
 		assertThat(books, hasSize(DEFAULT_DB_SIZE -1));
 	}
-	
+
 	@Test
 	@Transactional
 	public void testSave() {
-		// Our database has rolled back to its default size, 
+		// Our database has rolled back to its default size,
 		// due to the @Transactional and @Roolback annotations.
 		List<Book> books = repo.findAll();
 		assertThat(books, hasSize(DEFAULT_DB_SIZE));
-		
+
 		Book book = new Book();
 		book.setTitle("My New Book");
-		
+
 		repo.save(book);
 		List<Book> newBooks = repo.findAll();
 		assertThat(newBooks, hasSize(DEFAULT_DB_SIZE + 1));
 	}
-	
+
 	@Test
 	public void testGetBookByAuthor() {
 		String author = "Joshua Bloch";
 		Book book = repo.getByAuthor(author);
 		assertThat(book.getAuthor(), equalTo(author));
 	}
-	
+
 	@Test
 	public void testGetBookByTitle() {
 		String title = "Clean Code";
@@ -84,6 +83,27 @@ public class BookRepositoryImplTest {
 		assertThat(book.getTitle(), equalTo(title));
 	}
 
+    @Test
+    public void testFindBooksLoanedByMembers_BookIdNotNull() {
+        List<Book> books = repo.findBooksLoanedByMembers();
+        books.stream().map(book -> book.getBookID()).forEach(Assert::assertNotNull);
+    }
+
+    @Test
+    public void testFindBooksLoanedByMembers_MemberNotNull() {
+        List<Book> books = repo.findBooksLoanedByMembers();
+        books.stream().map(book -> book.getMembers()).forEach(Assert::assertNotNull);
+    }
+
+	@Test
+	public void testFindBooksLoanedByMembers_ValidDBSize() {
+		List<Book> books = repo.findBooksLoanedByMembers();
+
+		// Test that our hardcoded DB contains members with 6 books on loan
+        for (Book book : books) {
+            assertThat(book.getMembers(), hasSize(6));
+        }
+	}
 }
 
 

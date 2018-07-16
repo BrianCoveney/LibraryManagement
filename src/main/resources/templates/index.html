@@ -4,16 +4,22 @@
 <body>
 	<header th:replace="fragments/header :: header"></header>
 	<main>
-	<article th:each="p : ${memberskey}">
-		Id: <span th:text=${p.memberID}></span> 
-		| Name: <span th:text=${p.name}></span> 
-		| Address: <span th:text=${p.address}></span>
-		| Date of birth: <span th:text=${p.dateOfBirth}></span>
-		| Loan Limit: <span th:text=${p.loanLimit}></span>
-		| Loan Length: <span th:text=${p.loanLength}></span> 
-		| Fines Outstanding: <span th:text=${p.finesOutstanding}></span> 
-		| Books: <span th:text=${p.books}></span>
-	</article>
+	<article th:each="member : ${memberskey}">
+		Id: <span th:text=${member.memberID}></span>
+		| Name: <span th:text=${member.name}></span>
+		| Address: <span th:text=${member.address}></span>
+		| Date of birth: <span th:text=${member.dateOfBirth}></span>
+		| Loan Limit: <span th:text=${member.loanLimit}></span>
+		| Loan Length: <span th:text=${member.loanLength}></span>
+		| Fines Outstanding: <span th:text=${member.finesOutstanding}></span>
+    | Loans: <span th:each="loan : ${member.loans}"></span>
+    Loan: <span th:text=${loan}></span>
+    | Books: <span th:each="book : ${member.books}"></span>
+    Book: <span th:text=${book}></span>
+
+
+
+  </article>
 	</main>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>
