@@ -9,8 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ReportBooksOverdue {
@@ -20,14 +19,20 @@ public class ReportBooksOverdue {
 
 	@RequestMapping(value="/reportoverdue", method=RequestMethod.GET)
 	public String reportBookOverdue(Model model) {
+
+		Map<Book, Member> map = new LinkedHashMap<>();
 		List<Book> books = bookService.findAllBooksOverdue();
-		model.addAttribute("books", books);
 
 		List<Member> members = new ArrayList<>();
-        for (Book b : books) {
+		for (Book b : books) {
             members = b.getMembers();
         }
-        model.addAttribute("members", members);
+
+		for (int i = 0; i < books.size(); i++) {
+			map.put(books.get(i), members.get(i));
+		}
+
+        model.addAttribute("bookmembermap", map);
 
 
 		return "reportoverdue";

@@ -4,14 +4,15 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-  <section th:each="b : ${books}">
-    Book Id: <span th:text=${b.bookID}></span>
-    Book Title: <span th:text=${b.title}></span>
-  </section>
-  <article th:each="member : ${members}">
-    Member Id: <span th:text=${member.memberID}></span>
-    Member Name: <span th:text=${member.name}></span>
-  </article>
+
+  <div id="title-container" > <span>Book Id</span> <span>Book Title</span> <span>Member Id</span> <span>Member Name</span></div>
+  <div id="container" th:each="element: ${bookmembermap}">
+    <p id="book-id" th:text="${element.key.bookID}">No Id!</p>
+    <p id="book-title" th:text="${element.key.title}">No Id!</p>
+    <p id="member-id" th:text="${element.value.memberID}">No Name!</p>
+    <p id="member-name" th:text="${element.value.name}">No Name!</p>
+  </div>
+
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
