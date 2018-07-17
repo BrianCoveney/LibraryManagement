@@ -36,8 +36,6 @@ public class MemberServiceImplTest {
 		memberOne.setLoanLength(7);
 		memberOne.setFinesOutstanding(7.5);
 
-		System.out.println(memberOne.getFinesOutstanding());
-
 		Member memberTwo = MemberFactory.createMember("Kate Upton", childDateOfBirth);
 		memberTwo.setBooks(createBookListForTest());
 

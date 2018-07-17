@@ -3,6 +3,7 @@ package ie.soft8020.librarymanagement.domain;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Book {
 
@@ -15,8 +16,7 @@ public class Book {
 	private Date yearOfPublication;
 
 	private List<Member> members;
-	
-	
+
 	public Book() {
 		members = Collections.<Member>emptyList();
 	}
@@ -81,19 +81,15 @@ public class Book {
 		return yearOfPublication;
 	}
 
-	public void setYearOfPublication(Date date) {
-		this.yearOfPublication = date;
+	public void setYearOfPublication(Date yearOfPublication) {
+		this.yearOfPublication = yearOfPublication;
 	}
 
-	@Override
+    @Override
 	public String toString() {
 		String out = "Book [bookID=" + bookID + ", title=" + title + ", isbn=" + isbn + ", author=" + author
 				+ ", publisher=" + publisher + ", edition=" + edition + ", yearOfPublication=" + yearOfPublication
-				+ "members=[";
-		for (Member member : members) {
-			out += member.toString();
-		}
-		out += "]]";
+				+ "members=[" + getMembers().stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]]";
 		return out;
 	}
 }

@@ -28,9 +28,7 @@ public class BookRepositoryImpl implements IBookRepository {
 	@Override
 	public Book getById(int id) {
 		sql = "SELECT * FROM books WHERE book_id = ?";
-		Book book = jdbcTemplate.queryForObject(sql, new Object[] { id },
-				new BookRowMapper());
-		return book;
+        return jdbcTemplate.queryForObject(sql, new Object[] { id }, new BookRowMapper());
 	}
 
 	@Override
@@ -51,39 +49,36 @@ public class BookRepositoryImpl implements IBookRepository {
 	@Override
 	public List<Book> findAll() {
 		sql = "SELECT * from books";
-		List<Book> books = jdbcTemplate.query(sql, new BookRowMapper());
-		return books;
+        return jdbcTemplate.query(sql, new BookRowMapper());
 	}
 
 	@Override
 	public Book getByTitle(String title) {
 		sql = "SELECT * FROM books WHERE title = ?";
-		Book book = jdbcTemplate.queryForObject(sql, new Object[] { title },
-				new BookRowMapper());
-		return book;
+        return jdbcTemplate.queryForObject(sql, new Object[] { title }, new BookRowMapper());
 	}
 
 	@Override
 	public Book getByAuthor(String author) {
 		sql = "SELECT * FROM books WHERE author = ?";
-		Book book = jdbcTemplate.queryForObject(sql, new Object[] { author },
-				new BookRowMapper());
-		return book;
+        return jdbcTemplate.queryForObject(sql, new Object[] { author }, new BookRowMapper());
 	}
 
 	private void update(Book book) {
 		sql = "UPDATE books SET title=?, isbn=?, author=?, publisher=?, edition=?, year_of_publication=?"
 				+ " WHERE book_id = ?";
-		jdbcTemplate.update(sql, new Object[] { book.getTitle(), book.getIsbn(), book.getAuthor(), book.getPublisher(),
-				book.getEdition(), book.getYearOfPublication(),
-				book.getBookID()});
+
+		jdbcTemplate.update(sql, book.getTitle(), book.getIsbn(), book.getAuthor(), book.getPublisher(),
+                book.getEdition(), book.getYearOfPublication(),
+                book.getBookID());
 	}
 
 	private void add(Book book) {
 		sql = "INSERT into books (title, isbn, author, publisher, edition, year_of_publication)"
 				+ " VALUES (?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, new Object[] {book.getTitle(), book.getIsbn(), book.getAuthor(), book.getPublisher(),
-				book.getEdition(), book.getYearOfPublication()});
+
+		jdbcTemplate.update(sql, book.getTitle(), book.getIsbn(), book.getAuthor(), book.getPublisher(),
+                book.getEdition(), book.getYearOfPublication());
 	}
 
 	@Override
@@ -102,7 +97,6 @@ public class BookRepositoryImpl implements IBookRepository {
                     book.setBookID(rs.getInt("book_id"));
 					book.setTitle(rs.getString("title"));
 					books.add(book);
-                    books.add(book);
 
                     Member member = MemberFactory.createMember("name", new Date());
 					member.setMemberID(rs.getInt("member_id"));
@@ -115,6 +109,4 @@ public class BookRepositoryImpl implements IBookRepository {
 			}
 		});
 	}
-
-
 }

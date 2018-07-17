@@ -11,5 +11,5 @@ public class ReportFinesController {
 	public String reportFines() {
 		return "reportfines";
 	}
-	
+
 }

@@ -5,9 +5,7 @@ import ie.soft8020.librarymanagement.repository.IBookRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -22,30 +20,18 @@ public class BookServiceImplTest {
 	private IBookService bookService;
 	private IBookRepository repoMock;
 
-	private Date sqlDate = new Date(Calendar.getInstance().getTime().getTime());
 	private String title1 = "My Car";
 	private String title2 = "My Funny Book";
-	private String isbn = "123, 456";
 	private String author1 = "Henry Ford";
 	private String author2 = "David Jones";
-	private String publisher = "Motors Inc";
-	private String edition = "First edition";
+
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		repoMock = mock(IBookRepository.class);
 
-		Book bookOne = new Book();
-		bookOne.setTitle(title1);
-		bookOne.setIsbn(isbn);
-		bookOne.setAuthor(author1);
-		bookOne.setPublisher(publisher);
-		bookOne.setEdition(edition);
-		bookOne.setYearOfPublication(sqlDate);
-
-		Book bookTwo = new Book();
-		bookTwo.setTitle(title2);
-		bookTwo.setAuthor(author2);
+        Book bookOne = createValidBookObject(title1, author1);
+        Book bookTwo = createValidBookObject(title2, author2);
 
 		List<Book> books = new ArrayList<>();
 		books.add(bookOne);
@@ -68,13 +54,10 @@ public class BookServiceImplTest {
 	@Test
 	public void testGet() {
 		assertThat(bookService.getById(1).getTitle(), equalTo(title1));
-		assertThat(bookService.getById(1).getIsbn(), equalTo(isbn));
 		assertThat(bookService.getById(1).getAuthor(), equalTo(author1));
-		assertThat(bookService.getById(1).getPublisher(), equalTo(publisher));
-		assertThat(bookService.getById(1).getEdition(), equalTo(edition));
-		assertThat(bookService.getById(1).getYearOfPublication(), equalTo(sqlDate));
 
 		assertThat(bookService.getById(2).getTitle(), equalTo(title2));
+        assertThat(bookService.getById(2).getAuthor(), equalTo(author2));
 	}
 
 	@Test
@@ -90,6 +73,13 @@ public class BookServiceImplTest {
 	@Test
 	public void testGetByTitle() {
 		assertThat(bookService.getByTitle(title2).getTitle(), equalTo(title2));
+	}
+
+	private Book createValidBookObject(String title, String author) {
+		Book book = new Book();
+		book.setTitle(title);
+		book.setAuthor(author);
+		return book;
 	}
 
 }

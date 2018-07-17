@@ -1,10 +1,12 @@
 package ie.soft8020.librarymanagement.domain;
 
 
+import ie.soft8020.librarymanagement.repository.IBookRepository;
 import ie.soft8020.librarymanagement.util.Const;
 import ie.soft8020.librarymanagement.util.DateUtilility;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,12 +20,15 @@ import static org.junit.Assert.assertThat;
 
 public class MemberTest {
 
+    @Autowired
+    IBookRepository repo;
+
     private Member adult, child;
     private Date adultDateOfBirth = DateUtilility.parseStringToDate("1998-03-01");
     private Date childDateOfBirth = DateUtilility.parseStringToDate("2010-07-11");
-
     private List<Book> books = new ArrayList<>();
     private List<Loan> loans = new ArrayList<>();
+
 
     @Before
     public void setUp() {

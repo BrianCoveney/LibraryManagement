@@ -16,13 +16,9 @@ public class MemberController {
 	@Autowired
 	IMemberService memberService;
 
-
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String index(Model model) {
 		List<Member> members = memberService.findAll();
-		for (Member m : members) {
-			System.out.println(m.getBooks());
-		}
 		model.addAttribute("memberskey", members);
 		return "index";
 	}

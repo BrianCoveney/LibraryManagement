@@ -96,7 +96,7 @@ public class BookRepositoryImplTest {
     }
 
 	@Test
-	public void testFindBooksLoanedByMembers_ValidDBSize() {
+	public void testFindBooksLoanedByMembers_ValidCountOfMembersInDB() {
 		List<Book> books = repo.findBooksLoanedByMembers();
 
 		// Test that our hardcoded DB contains members with 6 books on loan
@@ -104,4 +104,5 @@ public class BookRepositoryImplTest {
 			assertThat(book.getMembers(), hasSize(6));
         }
 	}
+
 }

@@ -41,12 +41,12 @@ public class Child extends Member {
 		String out = "Child [memberID=" + getMemberID() + ", name=" + getName() + ", address=" + getAddress()
 				+ ", dateOfBirth=" + getDateOfBirth() + ", loanLimit=" + getLoanLimit() + ", loanLength="
 				+ getLoanLength() + ", finesOutstanding=" + getFinesOutstanding() + "\n"
-				+ "books=[" + getListToString(getBooks()) + "]]\n"
-				+ "loan=[" + getListToString(getLoans()) + "]]";
+				+ "books=[" + listToString(getBooks()) + "]]\n"
+				+ "loan=[" + listToString(getLoans()) + "]]";
 		return out;
 	}
 
-	private String getListToString(List<?> list) {
+	private String listToString(List<?> list) {
 		return list.stream().map(e -> e.toString()).collect(Collectors.joining(","));
 	}
 }

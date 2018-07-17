@@ -1,10 +1,17 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tr="http://www.w3.org/1999/html">
 <head lang="en" th:replace="fragments/head :: head"></head>
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-  <h1>Report Books Overdue</h1>
+  <section th:each="b : ${books}">
+    Book Id: <span th:text=${b.bookID}></span>
+    Book Title: <span th:text=${b.title}></span>
+  </section>
+  <article th:each="member : ${members}">
+    Member Id: <span th:text=${member.memberID}></span>
+    Member Name: <span th:text=${member.name}></span>
+  </article>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

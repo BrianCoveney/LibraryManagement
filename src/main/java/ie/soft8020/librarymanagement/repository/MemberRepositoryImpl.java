@@ -31,9 +31,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 	@Override
 	public Member getById(int id) {
 		sql = "SELECT * FROM members WHERE member_id = ?";
-		Member member = jdbcTemplate.queryForObject(sql, new Object[] { id },
-				new MemberRowMapper());
-		return member;
+		return jdbcTemplate.queryForObject(sql, new Object[] { id }, new MemberRowMapper());
 	}
 
 	@Override
@@ -48,14 +46,13 @@ public class MemberRepositoryImpl implements IMemberRepository {
 	@Override
 	public void remove(Member member) {
 		sql = "DELETE FROM members WHERE member_id = ?";
-		jdbcTemplate.update(sql, new Object[] { member.getMemberID() } );
+		jdbcTemplate.update(sql, member.getMemberID());
 	}
 
 	@Override
 	public List<Member> findAll() {
 		sql = "SELECT * from members";
-		List<Member> members = jdbcTemplate.query(sql, new MemberRowMapper());
-		return members;
+		return jdbcTemplate.query(sql, new MemberRowMapper());
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 				"WHERE b.book_id = l.book_id AND m.member_id = l.member_id " +
 				"AND m.member_id = ?";
 
-		Member member = jdbcTemplate.query(sql, new Object[] { id },
+		return jdbcTemplate.query(sql, new Object[] { id },
 				new ResultSetExtractor<Member>() {
 
 					@Override
@@ -98,25 +95,23 @@ public class MemberRepositoryImpl implements IMemberRepository {
 						return member;
 					}
 				});
-		return member;
 	}
 
 	private void update(Member member) {
 		sql = "UPDATE members SET name=?, address=?, date_of_birth=?, loan_limit=?, loan_length=?, fines_outstanding=?"
 				+ " WHERE member_id = ?";
-		jdbcTemplate.update(sql,
-				new Object[] { member.getName(), member.getAddress(), member.getDateOfBirth(), member.getLoanLimit(),
-						member.getLoanLength(), member.getFinesOutstanding(),
-						member.getMemberID()});
+
+		jdbcTemplate.update(sql, member.getName(), member.getAddress(), member.getDateOfBirth(), member.getLoanLimit(),
+				member.getLoanLength(), member.getFinesOutstanding(),
+				member.getMemberID());
 	}
 
 	private void add(Member member) {
 		sql = "INSERT INTO members (name, address, date_of_birth, loan_limit, loan_length, fines_outstanding)"
 				+ " VALUES(?, ?, ?, ?, ?, ?)";
 
-		jdbcTemplate.update(sql,
-				new Object[] {  member.getName(), member.getAddress(),  member.getDateOfBirth(), member.getLoanLimit(),
-						member.getLoanLength(), member.getFinesOutstanding()});
+		jdbcTemplate.update(sql, member.getName(), member.getAddress(), member.getDateOfBirth(), member.getLoanLimit(),
+				member.getLoanLength(), member.getFinesOutstanding());
 	}
 
 }
