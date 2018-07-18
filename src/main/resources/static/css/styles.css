@@ -35,10 +35,14 @@ p {
     display: flex;
 }
 
-#title1, #title2 {
+#title2, #title4 {
     min-width: 20%;
 }
-mvn
+
+#title1, #title3, #title5 {
+    min-width: 10%;
+}
+
 #title-container {
     display: flex;
     width: 100%;
