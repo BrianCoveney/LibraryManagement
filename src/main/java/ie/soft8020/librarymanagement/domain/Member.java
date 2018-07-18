@@ -1,16 +1,12 @@
 package ie.soft8020.librarymanagement.domain;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public abstract class Member {
 
-	@Id
 	private int memberID;
-
 	private String name;
 	private String address;
 	private Date dateOfBirth;

@@ -4,7 +4,14 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-   <h1>Report Fines</h1>
+  <div id="title-container">
+    <span>Member Name</span>
+    <span>Member Fine</span>
+  </div>
+  <div id="container" th:each="element: ${memberLoanMap}">
+    <p id="title1" th:text="${element.key}">No Name!</p>
+    <p id="title2" th:text="${element.value}">No Fine!</p>
+  </div>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

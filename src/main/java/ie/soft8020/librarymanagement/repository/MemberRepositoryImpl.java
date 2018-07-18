@@ -1,10 +1,8 @@
 package ie.soft8020.librarymanagement.repository;
 
-import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.domain.Member;
-import ie.soft8020.librarymanagement.domain.MemberFactory;
+import ie.soft8020.librarymanagement.domain.*;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
-import ie.soft8020.librarymanagement.util.DateUtilility;
+import ie.soft8020.librarymanagement.util.FineCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -70,15 +67,13 @@ public class MemberRepositoryImpl implements IMemberRepository {
 					public Member extractData(ResultSet rs) throws SQLException, DataAccessException {
 						Member member = null;
 						List<Book> books = new ArrayList<>();
-						Date date = DateUtilility.parseStringToDate("1998-03-01");
 
 						while (rs.next()) {
 							if (member == null) {
-								member = MemberFactory.createMember("name", date);
+								member = MemberFactory.createMember("name", rs.getDate("date_of_birth"));
 								member.setMemberID(rs.getInt("member_id"));
 								member.setName(rs.getString("name"));
 								member.setAddress(rs.getString("address"));
-								member.setDateOfBirth(rs.getDate("date_of_birth"));
 								member.setFinesOutstanding(rs.getDouble("fines_outstanding"));
 							}
 							Book book = new Book();
@@ -95,6 +90,46 @@ public class MemberRepositoryImpl implements IMemberRepository {
 						return member;
 					}
 				});
+	}
+
+	@Override
+	public List<Member> findMembersWithFines() {
+		sql = "SELECT m.member_id, m.name, m.fines_outstanding, m.date_of_birth, b.book_id, b.title, b.author, "
+                + "l.book_id, l.member_id, l.loan_date, l.return_date "
+				+ "FROM members m, books b, loan l "
+                + "WHERE m.member_id = l.member_id AND b.book_id = l.book_id";
+
+		return jdbcTemplate.query(sql, new ResultSetExtractor<List<Member>>() {
+
+			@Override
+			public List<Member> extractData(ResultSet rs) throws SQLException, DataAccessException {
+				List<Member> members = new ArrayList<>();
+				List<Loan> loans = new ArrayList<>();
+				while (rs.next()) {
+					Member member = MemberFactory.createMember("name", rs.getDate("date_of_birth"));
+					member.setMemberID(rs.getInt("member_id"));
+					member.setName(rs.getString("name"));
+					member.setFinesOutstanding(rs.getInt("fines_outstanding")); // May be updated by FineCalculator below
+
+                    Loan loan = new Loan();
+                    loan.setBookId(rs.getInt("book_id"));
+                    loan.setMemberId(rs.getInt("member_id"));
+                    loan.setLoanDate(rs.getDate("loan_date"));
+                    loan.setReturnDate(rs.getDate("return_date"));
+                    loans.add(loan);
+                    member.setLoans(loans); // set the list of member's loans
+
+                    FineCalculator calculator = new FineCalculator();
+                    double daysOverLoanLimit = calculator.getDaysOverLoanLimit(member);
+                    double fine = calculator.calculateFine(member, daysOverLoanLimit);
+                    member.setFinesOutstanding(fine);
+
+
+					members.add(member);
+				}
+				return members;
+			}
+		});
 	}
 
 	private void update(Member member) {

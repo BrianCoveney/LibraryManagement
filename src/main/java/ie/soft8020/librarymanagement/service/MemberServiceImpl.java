@@ -39,6 +39,11 @@ public class MemberServiceImpl implements IMemberService {
 	}
 
 	@Override
+	public List<Member> findMembersWithFines() {
+		return iMemberRepository.findMembersWithFines();
+	}
+
+	@Override
 	public Member getMemberWithBooks(int id) {
 		return iMemberRepository.getMemberWithBooks(id);
 	}

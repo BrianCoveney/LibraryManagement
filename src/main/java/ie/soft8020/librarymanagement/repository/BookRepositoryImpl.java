@@ -1,8 +1,6 @@
 package ie.soft8020.librarymanagement.repository;
 
-import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.domain.Member;
-import ie.soft8020.librarymanagement.domain.MemberFactory;
+import ie.soft8020.librarymanagement.domain.*;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,8 +81,8 @@ public class BookRepositoryImpl implements IBookRepository {
 
 	@Override
 	public List<Book> findBooksLoanedByMembers() {
-		sql = "SELECT b.book_id, b.title, m.member_id, m.name from books b, members m, loan l " +
-				"WHERE b.book_id = l.book_id and m.member_id = l.member_id";
+		sql = "SELECT b.book_id, b.title, m.member_id, m.name, m.fines_outstanding "
+                + "from books b, members m, loan l WHERE b.book_id = l.book_id and m.member_id = l.member_id";
 
 		return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
 

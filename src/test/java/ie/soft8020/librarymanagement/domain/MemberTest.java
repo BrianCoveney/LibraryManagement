@@ -4,6 +4,7 @@ package ie.soft8020.librarymanagement.domain;
 import ie.soft8020.librarymanagement.repository.IBookRepository;
 import ie.soft8020.librarymanagement.util.Const;
 import ie.soft8020.librarymanagement.util.DateUtilility;
+import ie.soft8020.librarymanagement.util.FineCalculator;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,16 @@ public class MemberTest {
 
         // Create loan and return dates
         Date loanDateOne = DateUtilility.parseStringToDate("2018-06-01");
-        Date returnDateOne = DateUtilility.parseStringToDate("2018-06-22");
+        Date returnDateOne = DateUtilility.parseStringToDate("2018-06-16");
         Date loanDateTwo = DateUtilility.parseStringToDate("2018-06-01");
-        Date returnDateTwo = DateUtilility.parseStringToDate("2018-06-15");
+        Date returnDateTwo = DateUtilility.parseStringToDate("2018-06-09");
 
         // Test dates
         assertThat("Testing the correct period of days is returned",
-                DateUtilility.calculatePeriodBetweenDays(loanDateOne, returnDateOne), equalTo(21));
+                DateUtilility.calculatePeriodBetweenDays(loanDateOne, returnDateOne), equalTo(15));
 
         assertThat("Testing the correct period of days is returned",
-                DateUtilility.calculatePeriodBetweenDays(loanDateTwo, returnDateTwo), equalTo(14));
+                DateUtilility.calculatePeriodBetweenDays(loanDateTwo, returnDateTwo), equalTo(8));
 
         // Create books and loans
         Book bookOne = new Book();
@@ -90,24 +91,26 @@ public class MemberTest {
         child.setLoans(loans);
         assertThat(child.getBooks(), hasSize(2));
         assertThat(child.getLoans(), hasSize(2));
+
     }
 
     @Test
     public void testGetFinesOutstandingForChild() {
-        IFineCalculator calculator = new FineCalculatorChildImpl();
+        FineCalculator calculator = new FineCalculator();
         double daysOverLoanLimit = calculator.getDaysOverLoanLimit(child);
+        assertThat(daysOverLoanLimit, equalTo(9.0));
         double fine = calculator.calculateFine(child, daysOverLoanLimit);
         child.setFinesOutstanding(fine);
-        assertThat(child.getFinesOutstanding(), equalTo(5.25));
+        assertThat(child.getFinesOutstanding(), equalTo(daysOverLoanLimit * Const.FineAccrued.FINE_VALUE));
     }
 
     @Test
     public void testGetFinesOutstandingForAdult() {
-        IFineCalculator calculator = new FineCalculatorAdultImpl();
+        FineCalculator calculator = new FineCalculator();
         double daysOverLoanLimit = calculator.getDaysOverLoanLimit(adult);
         double fine = calculator.calculateFine(adult, daysOverLoanLimit);
         adult.setFinesOutstanding(fine);
-        assertThat(adult.getFinesOutstanding(), equalTo(1.75));
+        assertThat(adult.getFinesOutstanding(), equalTo(daysOverLoanLimit * Const.FineAccrued.FINE_VALUE));
 
         // Adult borrows more books that have the same days overdue.
         adult.setBooks(books);
@@ -117,6 +120,55 @@ public class MemberTest {
         double currentAdultFine = adult.getFinesOutstanding();
         adult.setFinesOutstanding(newFine);
         assertThat(adult.getFinesOutstanding(), equalTo(currentAdultFine * 2));
+    }
+
+    @Test
+    public void testGetFinesOutstandingForChild_WithNoBooksOverDue() {
+
+        // Create child member
+        Member child = MemberFactory.createMember("Tom Jones", childDateOfBirth);
+        assertThat(child, instanceOf(Child.class));
+
+        // Set the members loans
+        List<Loan> loans = createListOfLoans();
+        child.setLoans(loans);
+
+        // Create FineCalculator to calculate days on loan and fine
+        FineCalculator calculator = new FineCalculator();
+
+        double daysOverLoanLimit = calculator.getDaysOverLoanLimit(child);
+        assertThat(daysOverLoanLimit, equalTo(0.0));
+
+        double fine = calculator.calculateFine(child, daysOverLoanLimit);
+        assertThat(fine, equalTo(0.0));
+
+        child.setFinesOutstanding(fine);
+        assertThat(child.getFinesOutstanding(), equalTo(0.0));
+
+    }
+
+    private List<Loan> createListOfLoans() {
+        // Create loan date that does not exceed child's allowance
+        Date loanDateOne = DateUtilility.parseStringToDate("2018-06-01");
+        Date returnDateOne = DateUtilility.parseStringToDate("2018-06-03");
+        Date loanDateTwo = DateUtilility.parseStringToDate("2018-06-01");
+        Date returnDateTwo = DateUtilility.parseStringToDate("2018-06-03");
+
+        // Create a loan objects with those dates
+        Loan loanOne = new Loan();
+        loanOne.setBookId(1);
+        loanOne.setMemberId(1);
+        loanOne.setLoanDate(loanDateOne);
+        loanOne.setReturnDate(returnDateOne);
+        Loan loanTwo = new Loan();
+        loanTwo.setBookId(2);
+        loanTwo.setMemberId(2);
+        loanTwo.setLoanDate(loanDateTwo);
+        loanTwo.setReturnDate(returnDateTwo);
+        List<Loan> loans = new ArrayList<>();
+        loans.add(loanOne);
+        loans.add(loanTwo);
+        return loans;
     }
 
 }

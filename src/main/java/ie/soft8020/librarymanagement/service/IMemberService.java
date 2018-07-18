@@ -10,4 +10,5 @@ public interface IMemberService {
 	Member getMemberWithBooks(int id);
 	void remove(Member member);
 	List<Member> findAll();
+    List<Member> findMembersWithFines();
 }
