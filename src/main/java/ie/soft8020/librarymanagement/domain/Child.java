@@ -1,6 +1,7 @@
 package ie.soft8020.librarymanagement.domain;
 
 import ie.soft8020.librarymanagement.util.Const;
+import ie.soft8020.librarymanagement.util.DateUtilility;
 
 import java.util.Date;
 import java.util.List;
@@ -10,10 +11,11 @@ public class Child extends Member {
 	private int loanLimit;
 	private int loanLength;
 
-	public Child(String name, Date dateOfBirth) {
+
+    public Child(String name, Date dateOfBirth) {
 		super(name, dateOfBirth);
 		setLoanLimit(Const.LoanLimit.MAX_NUMBER_OF_BOOKS_FOR_CHILD);
-		setLoanLength(Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW);
+		setLoanLength(Const.LoanLength.MAX_CHILD_DAYS);
 	}
 
 	@Override
@@ -37,6 +39,31 @@ public class Child extends Member {
 	}
 
 	@Override
+    public void calculateFine(Member member) {
+        double daysOver = getDaysOverLimit();
+        double currFine = member.getFinesOutstanding();
+        double fine = daysOver * Const.FineAccrued.FINE_VALUE;
+        setFinesOutstanding(currFine + fine);
+    }
+
+    private int getDaysOnLoan() {
+        int days = 0;
+        for (Loan loan : getLoans()) {
+            days = DateUtilility.calculatePeriodBetweenDays(loan.getLoanDate(), loan.getReturnDate());
+        }
+        return days;
+    }
+
+    private double getDaysOverLimit() {
+        double daysOverLoanLimit = 0;
+        int days = getDaysOnLoan();
+        if (days > Const.LoanLength.MAX_CHILD_DAYS) {
+            daysOverLoanLimit += days - Const.LoanLength.MAX_CHILD_DAYS;
+        }
+        return daysOverLoanLimit;
+    }
+
+	@Override
 	public String toString() {
 		String out = "Child [memberID=" + getMemberID() + ", name=" + getName() + ", address=" + getAddress()
 				+ ", dateOfBirth=" + getDateOfBirth() + ", loanLimit=" + getLoanLimit() + ", loanLength="
@@ -49,4 +76,5 @@ public class Child extends Member {
 	private String listToString(List<?> list) {
 		return list.stream().map(e -> e.toString()).collect(Collectors.joining(","));
 	}
+
 }

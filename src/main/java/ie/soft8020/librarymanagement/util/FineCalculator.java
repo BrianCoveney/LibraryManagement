@@ -4,38 +4,39 @@ import ie.soft8020.librarymanagement.domain.Adult;
 import ie.soft8020.librarymanagement.domain.Child;
 import ie.soft8020.librarymanagement.domain.Loan;
 import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.util.Const.LoanLength;
 
+// This class will work fine, but I'm moving the logic back to the domain objects for now
 public class FineCalculator {
 
-    public double getDaysOverLoanLimit(Member member) {
-        double totalDaysOverLoanLimit = 0;
-        // For each loan in the list
-        for (Loan loan : member.getLoans()) {
-            // We get the num of days books have been borrowed
-            int daysOnLoan = DateUtilility.calculatePeriodBetweenDays(loan.getLoanDate(), loan.getReturnDate());
-
-            // We check weather the member is an Adult or Child.
-            // When the daysOnLoan are over the members' limit, we increment a value and pass it to daysPastLoanLimit.
-            if (member instanceof Adult) {
-                if (daysOnLoan > Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW) {
-                    totalDaysOverLoanLimit += daysOnLoan - Const.LoanLength.MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW;
-                }
-            } else if (member instanceof Child) {
-                if (daysOnLoan > Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW) {
-                    totalDaysOverLoanLimit += daysOnLoan - Const.LoanLength.MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW;
-                }
-            }
-        }
-
-        return totalDaysOverLoanLimit;
+    public double calculateFine(Member member) {
+        double daysOver = getDaysOverLimit(member);
+        double currFine = member.getFinesOutstanding();
+        double fine = daysOver * Const.FineAccrued.FINE_VALUE;
+        return currFine + fine;
     }
 
-    public double calculateFine(Member member,  double daysOverLoanLimit) {
-        double fine = daysOverLoanLimit * Const.FineAccrued.FINE_VALUE;
-        double currentFine = member.getFinesOutstanding();
-        if (fine > 0.0) {
-            return currentFine + fine;
+    public int getDaysOnLoan(Member member) {
+        int days = 0;
+        for (Loan loan : member.getLoans()) {
+            days = DateUtilility.calculatePeriodBetweenDays(loan.getLoanDate(), loan.getReturnDate());
         }
-        return currentFine;
+        return days;
+    }
+
+    public double getDaysOverLimit(Member member) {
+        double daysOverLoanLimit = 0;
+        int days = getDaysOnLoan(member);
+        if(member instanceof Adult) {
+            if (days > LoanLength.MAX_ADULT_DAYS) {
+                daysOverLoanLimit += days - LoanLength.MAX_ADULT_DAYS;
+            }
+        }
+        if(member instanceof Child) {
+            if (days > LoanLength.MAX_CHILD_DAYS) {
+                daysOverLoanLimit += days - LoanLength.MAX_CHILD_DAYS;
+            }
+        }
+        return daysOverLoanLimit;
     }
 }

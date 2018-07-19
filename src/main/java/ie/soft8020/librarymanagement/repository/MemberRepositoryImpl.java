@@ -1,8 +1,10 @@
 package ie.soft8020.librarymanagement.repository;
 
-import ie.soft8020.librarymanagement.domain.*;
+import ie.soft8020.librarymanagement.domain.Book;
+import ie.soft8020.librarymanagement.domain.Loan;
+import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.domain.MemberFactory;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
-import ie.soft8020.librarymanagement.util.FineCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -105,7 +107,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 			public List<Member> extractData(ResultSet rs) throws SQLException, DataAccessException {
 				List<Member> members = new ArrayList<>();
 				List<Loan> loans = new ArrayList<>();
-				while (rs.next()) {
+                while (rs.next()) {
 					Member member = MemberFactory.createMember("name", rs.getDate("date_of_birth"));
 					member.setMemberID(rs.getInt("member_id"));
 					member.setName(rs.getString("name"));
@@ -119,11 +121,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
                     loans.add(loan);
                     member.setLoans(loans); // set the list of member's loans
 
-                    FineCalculator calculator = new FineCalculator();
-                    double daysOverLoanLimit = calculator.getDaysOverLoanLimit(member);
-                    double fine = calculator.calculateFine(member, daysOverLoanLimit);
-                    member.setFinesOutstanding(fine);
-
+                    member.calculateFine(member);
 
 					members.add(member);
 				}

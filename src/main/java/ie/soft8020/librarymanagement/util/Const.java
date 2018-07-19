@@ -8,8 +8,8 @@ public final class Const {
 	}
 
 	public static class LoanLength {
-		public static final int MAX_LENGTH_OF_DAYS_ADULT_CAN_BORROW = 14;
-		public static final int MAX_LENGTH_OF_DAYS_CHILD_CAN_BORROW = 7;
+		public static final int MAX_ADULT_DAYS = 14;
+		public static final int MAX_CHILD_DAYS = 7;
 	}
 
 	public static class FineAccrued {

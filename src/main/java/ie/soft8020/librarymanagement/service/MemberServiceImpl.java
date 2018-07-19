@@ -40,6 +40,14 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public List<Member> findMembersWithFines() {
+
+//        List<Member> members= iMemberRepository.findMembersWithFines();
+//        for (Member member : members) {
+//            double x = member.getTotalDaysOverLoanLimit();
+//            member.setFinesOutstanding(x);
+//        }
+
+
 		return iMemberRepository.findMembersWithFines();
 	}
 

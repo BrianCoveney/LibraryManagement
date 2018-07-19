@@ -25,11 +25,11 @@ public class ReportFinesController {
 		// loan member id as the value.
 		Map<String, Double> map = new LinkedHashMap<>();
 
-		List<Member> membersWithFines = memberService.findMembersWithFines();
+		List<Member> members = memberService.findMembersWithFines();
 
 
-		for (int i = 0; i < membersWithFines.size(); i++) {
-		    Member member = membersWithFines.get(i);
+		for (int i = 0; i < members.size(); i++) {
+		    Member member = members.get(i);
 		    map.put(member.getName(), member.getFinesOutstanding());
 		}
 
