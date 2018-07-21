@@ -10,44 +10,61 @@ import java.util.stream.Collectors;
 
 public class Adult extends Member {
 
-	private int loanLimit;
-	private int loanLength;
+    private int loanLimit;
+    private int loanLength;
+    private double finesOutstanding;
 
-	public Adult(String name, Date dateOfBirth) {
-		super(name, dateOfBirth);
-		setLoanLimit(Const.LoanLimit.MAX_NUMBER_OF_BOOKS_FOR_ADULT);
-		setLoanLength(Const.LoanLength.MAX_ADULT_DAYS);
-	}
 
-	@Override
-	public int getLoanLimit() {
-		return loanLimit;
-	}
+    public Adult(String name, Date dateOfBirth) {
+        super(name, dateOfBirth);
+        setLoanLimit(Const.LoanLimit.MAX_NUMBER_OF_BOOKS_FOR_ADULT);
+        setLoanLength(Const.LoanLength.MAX_ADULT_DAYS);
+    }
 
-	@Override
-	public void setLoanLimit(int loanLimit) {
-		this.loanLimit = loanLimit;
-	}
+    @Override
+    public int getLoanLimit() {
+        return loanLimit;
+    }
 
-	@Override
-	public int getLoanLength() {
-		return loanLength;
-	}
+    @Override
+    public void setLoanLimit(int loanLimit) {
+        this.loanLimit = loanLimit;
+    }
 
-	@Override
-	public void setLoanLength(int loanLength) {
-		this.loanLength = loanLength;
-	}
+    @Override
+    public int getLoanLength() {
+        return loanLength;
+    }
 
-	@Override
-    public void calculateFine(Member member) {
+    @Override
+    public void setLoanLength(int loanLength) {
+        this.loanLength = loanLength;
+    }
+
+
+    @Override
+    public double getFinesOutstanding() {
+        return finesOutstanding;
+    }
+
+    @Override
+    public void setFinesOutstanding(double finesOutstanding) {
+        this.finesOutstanding = finesOutstanding;
+    }
+
+    @Override
+    public double calculateFine(Member member) {
         double daysOver = getDaysOverLimit();
         double currFine = member.getFinesOutstanding();
         double fine = daysOver * Const.FineAccrued.FINE_VALUE;
-        setFinesOutstanding(currFine + fine);
+        return currFine + fine;
     }
 
-    private int getDaysOnLoan() {
+    // TODO class variable for daysOverLoanLimit?
+    // Currently updating a will update b
+    // Commented methods prevent this, but adding new book does not update
+
+    public int getDaysOnLoan() {
         int days = 0;
         for (Loan loan : getLoans()) {
             days = DateUtilility.calculatePeriodBetweenDays(loan.getLoanDate(), loan.getReturnDate());
@@ -55,7 +72,7 @@ public class Adult extends Member {
         return days;
     }
 
-    private double getDaysOverLimit() {
+    public double getDaysOverLimit() {
         double daysOverLoanLimit = 0;
         int days = getDaysOnLoan();
 
@@ -67,20 +84,18 @@ public class Adult extends Member {
     }
 
 
-	@Override
-	public String toString() {
-		String out = "Adult [memberID=" + getMemberID() + ", name=" + getName() + ", address=" + getAddress()
-				+ ", dateOfBirth=" + getDateOfBirth() + ", loanLimit=" + getLoanLimit() + ", loanLength="
-				+ getLoanLength() + ", finesOutstanding=" + getFinesOutstanding() + "\n"
-				+ "books=[" + getListToString(getBooks()) + "]]\n"
-				+ "loan=[" + getListToString(getLoans()) + "]]";
-		return out;
-	}
+    @Override
+    public String toString() {
+        String out = "Adult [memberID=" + getMemberID() + ", name=" + getName() + ", address=" + getAddress()
+                + ", dateOfBirth=" + getDateOfBirth() + ", loanLimit=" + getLoanLimit() + ", loanLength="
+                + getLoanLength() + ", finesOutstanding=" + getFinesOutstanding() + "\n"
+                + "books=[" + getListToString(getBooks()) + "]]\n"
+                + "loan=[" + getListToString(getLoans()) + "]]";
+        return out;
+    }
 
-	private String getListToString(List<?> list) {
-		return list.stream().map(e -> e.toString()).collect(Collectors.joining(","));
-	}
-
-
+    private String getListToString(List<?> list) {
+        return list.stream().map(e -> e.toString()).collect(Collectors.joining(","));
+    }
 
 }

@@ -27,7 +27,6 @@ public class ReportFinesController {
 
 		List<Member> members = memberService.findMembersWithFines();
 
-
 		for (int i = 0; i < members.size(); i++) {
 		    Member member = members.get(i);
 		    map.put(member.getName(), member.getFinesOutstanding());

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class Child extends Member {
 	private int loanLimit;
 	private int loanLength;
+    private double finesOutstanding;
 
 
     public Child(String name, Date dateOfBirth) {
@@ -38,12 +39,22 @@ public class Child extends Member {
 		this.loanLength = loanLength;
 	}
 
-	@Override
-    public void calculateFine(Member member) {
+    @Override
+    public double getFinesOutstanding() {
+        return finesOutstanding;
+    }
+
+    @Override
+    public void setFinesOutstanding(double finesOutstanding) {
+        this.finesOutstanding = finesOutstanding;
+    }
+
+    @Override
+    public double calculateFine(Member member) {
         double daysOver = getDaysOverLimit();
         double currFine = member.getFinesOutstanding();
         double fine = daysOver * Const.FineAccrued.FINE_VALUE;
-        setFinesOutstanding(currFine + fine);
+        return currFine + fine;
     }
 
     private int getDaysOnLoan() {
@@ -57,9 +68,11 @@ public class Child extends Member {
     private double getDaysOverLimit() {
         double daysOverLoanLimit = 0;
         int days = getDaysOnLoan();
+
         if (days > Const.LoanLength.MAX_CHILD_DAYS) {
             daysOverLoanLimit += days - Const.LoanLength.MAX_CHILD_DAYS;
         }
+
         return daysOverLoanLimit;
     }
 

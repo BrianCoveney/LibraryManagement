@@ -107,11 +107,10 @@ public class MemberRepositoryImpl implements IMemberRepository {
 			public List<Member> extractData(ResultSet rs) throws SQLException, DataAccessException {
 				List<Member> members = new ArrayList<>();
 				List<Loan> loans = new ArrayList<>();
-                while (rs.next()) {
-					Member member = MemberFactory.createMember("name", rs.getDate("date_of_birth"));
-					member.setMemberID(rs.getInt("member_id"));
-					member.setName(rs.getString("name"));
-					member.setFinesOutstanding(rs.getInt("fines_outstanding")); // May be updated by FineCalculator below
+
+				while (rs.next()) {
+                    Member member = MemberFactory.createMember(rs.getString("name"), rs.getDate("date_of_birth"));
+                    member.setFinesOutstanding(rs.getInt("fines_outstanding"));
 
                     Loan loan = new Loan();
                     loan.setBookId(rs.getInt("book_id"));
@@ -119,16 +118,20 @@ public class MemberRepositoryImpl implements IMemberRepository {
                     loan.setLoanDate(rs.getDate("loan_date"));
                     loan.setReturnDate(rs.getDate("return_date"));
                     loans.add(loan);
-                    member.setLoans(loans); // set the list of member's loans
 
-                    member.calculateFine(member);
-
+                    member.setLoans(loans);
 					members.add(member);
-				}
+                }
+//                for (Member member1: members) {
+//                    System.out.println(member1.getName());
+//
+//                }
 				return members;
-			}
+            }
 		});
+
 	}
+
 
 	private void update(Member member) {
 		sql = "UPDATE members SET name=?, address=?, date_of_birth=?, loan_limit=?, loan_length=?, fines_outstanding=?"
