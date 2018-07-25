@@ -37,6 +37,9 @@ public abstract class Member {
 
     public abstract double calculateFine(Member members);
 
+	public abstract double getDaysOverLimit();
+	public abstract int getDaysOnLoan();
+
 
 	public int getMemberID() {
 		return memberID;

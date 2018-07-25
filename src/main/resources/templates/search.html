@@ -4,7 +4,17 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-  <h1>Search</h1>
+    <h1>Form</h1>
+    <form action="#" th:action="@{/search}" th:object="${book}">
+        <label>Search:</label> <input name="book" id="search">
+        <input type="submit" value="Submit" />
+        </input>
+        <h3>Search Results For Book by Author</h3>
+        <div id="container" th:each="b: ${book}">
+            <p id="title1" th:text="${b.title}">No Name!</p>
+            <p id="title2" th:text="${b.author}">No Fine!</p>
+        </div>
+    </form>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

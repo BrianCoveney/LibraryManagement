@@ -87,9 +87,7 @@ public class Book {
 
     @Override
 	public String toString() {
-		String out = "Book [bookID=" + bookID + ", title=" + title + ", isbn=" + isbn + ", author=" + author
-				+ ", publisher=" + publisher + ", edition=" + edition + ", yearOfPublication=" + yearOfPublication
-				+ "members=[" + getMembers().stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]]";
-		return out;
+		return "Book [bookID=" + bookID + ", title=" + title + ", isbn=" + isbn + ", author=" + author
+				+ ", publisher=" + publisher + ", edition=" + edition + ", yearOfPublication=" + yearOfPublication;
 	}
 }

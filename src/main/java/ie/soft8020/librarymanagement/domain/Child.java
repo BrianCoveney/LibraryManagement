@@ -57,7 +57,7 @@ public class Child extends Member {
         return currFine + fine;
     }
 
-    private int getDaysOnLoan() {
+    public int getDaysOnLoan() {
         int days = 0;
         for (Loan loan : getLoans()) {
             days = DateUtilility.calculatePeriodBetweenDays(loan.getLoanDate(), loan.getReturnDate());
@@ -65,7 +65,7 @@ public class Child extends Member {
         return days;
     }
 
-    private double getDaysOverLimit() {
+    public double getDaysOverLimit() {
         double daysOverLoanLimit = 0;
         int days = getDaysOnLoan();
 

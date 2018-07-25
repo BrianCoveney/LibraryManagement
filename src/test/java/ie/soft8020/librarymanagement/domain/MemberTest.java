@@ -16,6 +16,7 @@ import static ie.soft8020.librarymanagement.util.Const.LoanLength.MAX_ADULT_DAYS
 import static ie.soft8020.librarymanagement.util.Const.LoanLength.MAX_CHILD_DAYS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 
@@ -99,32 +100,51 @@ public class MemberTest {
     public void testGetFinesOutstandingForChild() {
         FineCalculator calculator = new FineCalculator();
 
-        double daysOnLoan = calculator.getDaysOnLoan(child);
-        System.out.println(daysOnLoan);
         double fine = calculator.calculateFine(child);
         child.setFinesOutstanding(fine);
 
-//        System.out.println(fine);
-
-
-//        assertThat(child.getFinesOutstanding(), equalTo(2.25));
+        System.out.println("Days: " + child.getDaysOnLoan());
+        System.out.println("Days over: " + child.getDaysOverLimit());
+        assertThat(child.getFinesOutstanding(), equalTo(2.0));
     }
-//
-//    @Test
-//    public void testGetFinesOutstandingForAdult() {
-//        FineCalculator calculator = new FineCalculator();
-//        double fine = calculator.calculateFine(adult);
-//        adult.setFinesOutstanding(fine);
-//        assertThat(adult.getFinesOutstanding(), equalTo(0.25));
-//
-//        // Adult borrows more books that have the same days overdue.
-//        adult.setBooks(books);
-//        adult.setLoans(loans);
-//        double newFine = calculator.calculateFine(adult);
-//        double currentAdultFine = adult.getFinesOutstanding();
-//        adult.setFinesOutstanding(newFine);
-//        assertThat(adult.getFinesOutstanding(), equalTo(currentAdultFine * 2));
-//    }
+
+    @Test
+    public void testGetFinesOutstandingForChild_FromChild() {
+        double fine = child.calculateFine(child);
+        child.setFinesOutstanding(fine);
+        assertThat(child.getFinesOutstanding(), equalTo(2.0));
+    }
+
+    @Test
+    public void testGetFinesOutstandingForAdult() {
+        FineCalculator calculator = new FineCalculator();
+        double fine = calculator.calculateFine(adult);
+        adult.setFinesOutstanding(fine);
+        assertThat(adult.getFinesOutstanding(), equalTo(0.25));
+
+        // Adult borrows more books that have the same days overdue.
+        adult.setBooks(books);
+        adult.setLoans(loans);
+        double newFine = calculator.calculateFine(adult);
+        double currentAdultFine = adult.getFinesOutstanding();
+        adult.setFinesOutstanding(newFine);
+        assertThat(adult.getFinesOutstanding(), equalTo(currentAdultFine * 2));
+    }
+
+    @Test
+    public void testGetFinesOutstandingForAdult_FromAdult() {
+        double fine = adult.calculateFine(adult);
+        adult.setFinesOutstanding(fine);
+        assertThat(adult.getFinesOutstanding(), equalTo(0.25));
+
+        // Adult borrows more books that have the same days overdue.
+        adult.setBooks(books);
+        adult.setLoans(loans);
+        double newFine = adult.calculateFine(adult);
+        double currentAdultFine = adult.getFinesOutstanding();
+        adult.setFinesOutstanding(newFine);
+        assertThat(adult.getFinesOutstanding(), equalTo(currentAdultFine * 2));
+    }
 
     @Test
     public void testGetFinesOutstandingForChild_WithNoBooksOverDue() {
@@ -147,23 +167,77 @@ public class MemberTest {
     }
 
     @Test
+    public void testGetFinesOutstandingForChild_WithNoBooksOverDue_FromChild() {
+        // Create child member
+        Member child = MemberFactory.createMember("Tom Jones", childDateOfBirth);
+        assertThat(child, instanceOf(Child.class));
+
+        // Set the members loans
+        List<Loan> loans = createListOfLoans("2018-06-01", "2018-06-03");
+        child.setLoans(loans);
+
+        double fine = child.calculateFine(child);
+        assertThat(fine, equalTo(0.0));
+
+        child.setFinesOutstanding(fine);
+        assertThat(child.getFinesOutstanding(), equalTo(0.0));
+    }
+
+    @Test
     public void testGetFinesOutstandingForAdult_WithNoBooksOverDue() {
         // Create child member
         Member adult = MemberFactory.createMember("Billy Bob", adultDateOfBirth);
         assertThat(adult, instanceOf(Adult.class));
 
-        // Set the members loans
+        // Add Loan with zero days overdue
         List<Loan> loans = createListOfLoans("2018-06-01", "2018-06-15");
         adult.setLoans(loans);
 
         // Create FineCalculator to calculate days on loan and fine
         FineCalculator calculator = new FineCalculator();
-
         double fine = calculator.calculateFine(adult);
         assertThat(fine, equalTo(0.0));
 
         adult.setFinesOutstanding(fine);
         assertThat(adult.getFinesOutstanding(), equalTo(0.0));
+
+        // Add another Loan. This time it is overdue by one day
+        List<Loan> loansOver = createListOfLoans("2018-06-01", "2018-06-16");
+        adult.setLoans(loansOver);
+
+        double fineOver = calculator.calculateFine(adult);
+        assertThat(fineOver, not(0.0));
+        assertThat(fineOver, equalTo(0.25));
+
+        assertThat(adult.getLoans(), hasSize(2));
+    }
+
+    @Test
+    public void testGetFinesOutstandingForAdult_WithNoBooksOverDue_FromAdult() {
+        // Create child member
+        Member adult = MemberFactory.createMember("Billy Bob", adultDateOfBirth);
+        assertThat(adult, instanceOf(Adult.class));
+
+        // Add Loan with zero days overdue
+        List<Loan> loans = createListOfLoans("2018-06-01", "2018-06-15");
+        adult.setLoans(loans);
+
+        // Create FineCalculator to calculate days on loan and fine
+        double fine = adult.calculateFine(adult);
+        assertThat(fine, equalTo(0.0));
+
+        adult.setFinesOutstanding(fine);
+        assertThat(adult.getFinesOutstanding(), equalTo(0.0));
+
+        // Add another Loan. This time it is overdue by one day
+        List<Loan> loansOver = createListOfLoans("2018-06-01", "2018-06-16");
+        adult.setLoans(loansOver);
+
+        double fineOver = adult.calculateFine(adult);
+        assertThat(fineOver, not(0.0));
+        assertThat(fineOver, equalTo(0.25));
+
+        assertThat(adult.getLoans(), hasSize(2));
     }
 
 

@@ -5,6 +5,7 @@ import ie.soft8020.librarymanagement.domain.Loan;
 import ie.soft8020.librarymanagement.domain.Member;
 import ie.soft8020.librarymanagement.domain.MemberFactory;
 import ie.soft8020.librarymanagement.rowmapper.MemberRowMapper;
+import ie.soft8020.librarymanagement.util.FineCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -96,7 +97,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 
 	@Override
 	public List<Member> findMembersWithFines() {
-		sql = "SELECT m.member_id, m.name, m.fines_outstanding, m.date_of_birth, b.book_id, b.title, b.author, "
+		sql = "SELECT DISTINCT m.member_id, m.name, m.fines_outstanding, m.date_of_birth, b.book_id, b.title, b.author, "
                 + "l.book_id, l.member_id, l.loan_date, l.return_date "
 				+ "FROM members m, books b, loan l "
                 + "WHERE m.member_id = l.member_id AND b.book_id = l.book_id";
@@ -107,6 +108,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 			public List<Member> extractData(ResultSet rs) throws SQLException, DataAccessException {
 				List<Member> members = new ArrayList<>();
 				List<Loan> loans = new ArrayList<>();
+                FineCalculator calculator = new FineCalculator();
 
 				while (rs.next()) {
                     Member member = MemberFactory.createMember(rs.getString("name"), rs.getDate("date_of_birth"));
@@ -120,12 +122,18 @@ public class MemberRepositoryImpl implements IMemberRepository {
                     loans.add(loan);
 
                     member.setLoans(loans);
-					members.add(member);
+
+//                    double fine = member.calculateFine(member);
+//                    member.setFinesOutstanding(fine);
+
+                    double fine = calculator.calculateFine(member);
+                    member.setFinesOutstanding(fine);
+
+                    members.add(member);
+
                 }
-//                for (Member member1: members) {
-//                    System.out.println(member1.getName());
-//
-//                }
+
+
 				return members;
             }
 		});
