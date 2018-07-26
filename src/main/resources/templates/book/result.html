@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/head :: head"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main>
+    <h3>Search Results For Book by Author</h3>
+    <div id="container" th:each="b: ${bookAuthor}">
+        <p id="title1" th:text="${b.title}">No Name!</p>
+        <p id="title2" th:text="${b.author}">No Fine!</p>
+    </div>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
