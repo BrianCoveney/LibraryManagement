@@ -24,6 +24,7 @@ public class BookServiceImplTest {
 	private String title2 = "My Funny Book";
 	private String author1 = "Henry Ford";
 	private String author2 = "David Jones";
+	private List<Book> books;
 
 
 	@Before
@@ -33,7 +34,7 @@ public class BookServiceImplTest {
         Book bookOne = createValidBookObject(title1, author1);
         Book bookTwo = createValidBookObject(title2, author2);
 
-		List<Book> books = new ArrayList<>();
+		books = new ArrayList<>();
 		books.add(bookOne);
 		books.add(bookTwo);
 
@@ -47,6 +48,8 @@ public class BookServiceImplTest {
 		when(repoMock.getByTitle(title2)).thenReturn(bookTwo);
 
 		when(repoMock.findAll()).thenReturn(books);
+
+		when(repoMock.getBooksByAuthor(author1)).thenReturn(books);
 
 		bookService = new BookServiceImpl(repoMock);
 	}
@@ -73,6 +76,11 @@ public class BookServiceImplTest {
 	@Test
 	public void testGetByTitle() {
 		assertThat(bookService.getByTitle(title2).getTitle(), equalTo(title2));
+	}
+
+	@Test
+	public void testBooksGetByAuthor() {
+		assertThat(bookService.getBooksByAuthor(author1), hasSize(books.size()));
 	}
 
 	private Book createValidBookObject(String title, String author) {

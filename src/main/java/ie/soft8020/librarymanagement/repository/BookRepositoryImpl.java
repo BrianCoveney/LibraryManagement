@@ -62,6 +62,12 @@ public class BookRepositoryImpl implements IBookRepository {
         return jdbcTemplate.queryForObject(sql, new Object[] { author }, new BookRowMapper());
 	}
 
+	@Override
+	public List<Book> getBooksByAuthor(String author) {
+		sql = "SELECT * FROM books WHERE author = ?";
+		return jdbcTemplate.query(sql, new Object[] { author }, new BookRowMapper());
+	}
+
 	private void update(Book book) {
 		sql = "UPDATE books SET title=?, isbn=?, author=?, publisher=?, edition=?, year_of_publication=?"
 				+ " WHERE book_id = ?";

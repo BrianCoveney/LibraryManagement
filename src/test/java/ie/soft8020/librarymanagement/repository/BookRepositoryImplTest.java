@@ -3,6 +3,7 @@ package ie.soft8020.librarymanagement.repository;
 import ie.soft8020.librarymanagement.LibraryManagementApplication;
 import ie.soft8020.librarymanagement.domain.Book;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,24 @@ public class BookRepositoryImplTest {
 	@Autowired
 	IBookRepository repo;
 
-	private static int DEFAULT_DB_SIZE = 20;
-	private static int ID = 2;
+	private int defaultDbSize;
+	private int id = 2;
 
-	@Test
+    @Before
+    public void setUp() throws Exception {
+        defaultDbSize = repo.findAll().size();
+    }
+
+    @Test
 	public void testGet() {
-		Book book = repo.getById(ID);
+		Book book = repo.getById(id);
 		assertThat(book.getTitle(), equalTo("Effective Java"));
 	}
 
 	@Test
 	public void testFindAll() {
 		List<Book> books = repo.findAll();
-		assertThat(books, hasSize(DEFAULT_DB_SIZE));
+		assertThat(books, hasSize(defaultDbSize));
 	}
 
 	@Test
@@ -47,10 +53,10 @@ public class BookRepositoryImplTest {
 	public void testRemove() {
 		// @Transactional at method level and @Roolback at the class level,
 		// will ensure that the database rolls back at the end of testing.
-		Book book = repo.getById(ID);
+		Book book = repo.getById(id);
 		repo.remove(book);
 		List<Book> books = repo.findAll();
-		assertThat(books, hasSize(DEFAULT_DB_SIZE -1));
+		assertThat(books, hasSize(defaultDbSize -1));
 	}
 
 	@Test
@@ -59,14 +65,14 @@ public class BookRepositoryImplTest {
 		// Our database has rolled back to its default size,
 		// due to the @Transactional and @Roolback annotations.
 		List<Book> books = repo.findAll();
-		assertThat(books, hasSize(DEFAULT_DB_SIZE));
+		assertThat(books, hasSize(defaultDbSize));
 
 		Book book = new Book();
 		book.setTitle("My New Book");
 
 		repo.save(book);
 		List<Book> newBooks = repo.findAll();
-		assertThat(newBooks, hasSize(DEFAULT_DB_SIZE + 1));
+		assertThat(newBooks, hasSize(defaultDbSize + 1));
 	}
 
 	@Test
@@ -81,6 +87,15 @@ public class BookRepositoryImplTest {
 		String title = "Clean Code";
 		Book book = repo.getByTitle(title);
 		assertThat(book.getTitle(), equalTo(title));
+	}
+
+	@Test
+	public void testGetBooksByAuthor() {
+        List<Book> books = repo.getBooksByAuthor("Robert Martin");
+        assertThat(books.get(0).getTitle(), equalTo("Clean Code"));
+        assertThat(books.get(1).getTitle(), equalTo("The Clean Coder"));
+        assertThat(books.get(2).getTitle(), equalTo("Clean Architecture"));
+        assertThat("List of books by R.M. is three", books, hasSize(3));
 	}
 
     @Test

@@ -19,14 +19,14 @@ public class SearchController {
     @Autowired
     IBookRepository bookService;
 
-    private Book book;
+    private List<Book> books;
 
     @GetMapping(value = "/search")
     public String search(@RequestParam(value = "book", required = false) String author, Model model) {
         if (author != null) {
-            book = bookService.getByAuthor(author);
+            books = bookService.getBooksByAuthor(author);
         }
-        model.addAttribute("book", book);
+        model.addAttribute("bookKey", books);
         return "search";
     }
 
