@@ -91,7 +91,7 @@ public class MemberRepositoryImplTest {
 
         List<Loan> adultLoan = createListOfLoans("2018-06-01", "2018-06-16");
         member.setLoans(adultLoan);
-//        member.updateFine(member);
+        member.updateFine(member);
 
         assertThat("Validate member with an id of _4_ has 1 book on loan",
                 member.getBooks(), hasSize(1));
