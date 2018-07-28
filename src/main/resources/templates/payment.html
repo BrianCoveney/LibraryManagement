@@ -5,6 +5,17 @@
 <header th:replace="fragments/header :: header"></header>
 <main>
   <h1>Payment</h1>
+  <form id="form" action="#" th:action="@{/payment}" th:object="${memberKey}">
+    <label>Search:</label> <input name="member" id="member">
+    <input id="submit" type="submit" value="Search" />
+    </input>
+    <h3>Member by id:</h3>
+    <section id="container-search" th:each="m: ${memberKey}">
+      <p id="title1" th:text="${m.name}">No Name!</p>
+      <p id="title2" th:text="${m.address}">No Fine!</p>
+      <p id="title3" th:text="${m.finesOutstanding}">No Fine!</p>
+    </section>
+  </form>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

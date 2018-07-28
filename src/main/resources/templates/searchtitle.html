@@ -5,12 +5,12 @@
 <header th:replace="fragments/header :: header"></header>
 <main>
     <h1>Form</h1>
-    <form id="form" action="#" th:action="@{/search}" th:object="${bookAuthor}">
+    <form id="form1" action="#" th:action="@{/searchtitle}" th:object="${bookTitle}">
         <label>Search:</label> <input name="book" id="search">
         <input id="submit" type="submit" value="Search" />
         </input>
-        <h3>Books by author:</h3>
-        <section id="container-search" th:each="b: ${bookAuthor}">
+        <h3>Books by title:</h3>
+            <section id="container-search" th:each="b: ${bookTitle}">
             <p id="title1" th:text="${b.title}">No Name!</p>
             <p id="title2" th:text="${b.author}">No Fine!</p>
         </section>
