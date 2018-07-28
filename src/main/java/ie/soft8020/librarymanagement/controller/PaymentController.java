@@ -25,6 +25,7 @@ public class PaymentController {
 
         if (memberId != null) {
             member = memberService.getMemberWithBooks(memberId);
+            member.updateFine(member);
         }
 
         model.addAttribute("memberKey", member);

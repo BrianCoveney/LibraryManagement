@@ -156,13 +156,8 @@ public class MemberTest {
         List<Loan> loans = createListOfLoans("2018-06-01", "2018-06-03");
         child.setLoans(loans);
 
-        // Create FineCalculator to calculate days on loan and fine
-        FineCalculator calculator = new FineCalculator();
+        child.updateFine(child);
 
-        double fine = calculator.calculateFine(child);
-        assertThat(fine, equalTo(0.0));
-
-        child.setFinesOutstanding(fine);
         assertThat(child.getFinesOutstanding(), equalTo(0.0));
     }
 
@@ -193,23 +188,18 @@ public class MemberTest {
         List<Loan> loans = createListOfLoans("2018-06-01", "2018-06-15");
         adult.setLoans(loans);
 
-        // Create FineCalculator to calculate days on loan and fine
-        FineCalculator calculator = new FineCalculator();
-        double fine = calculator.calculateFine(adult);
-        assertThat(fine, equalTo(0.0));
-
-        adult.setFinesOutstanding(fine);
+        // Update members fine when no books are overdue
+        adult.updateFine(adult);
         assertThat(adult.getFinesOutstanding(), equalTo(0.0));
 
         // Add another Loan. This time it is overdue by one day
         List<Loan> loansOver = createListOfLoans("2018-06-01", "2018-06-16");
         adult.setLoans(loansOver);
-
-        double fineOver = calculator.calculateFine(adult);
-        assertThat(fineOver, not(0.0));
-        assertThat(fineOver, equalTo(0.25));
+        adult.updateFine(adult);
 
         assertThat(adult.getLoans(), hasSize(2));
+        assertThat("Validate that one day overdue will incur a fine",
+                adult.getFinesOutstanding(), equalTo(0.25));
     }
 
     @Test
@@ -229,7 +219,7 @@ public class MemberTest {
         adult.setFinesOutstanding(fine);
         assertThat(adult.getFinesOutstanding(), equalTo(0.0));
 
-        // Add another Loan. This time it is overdue by one day
+        // Add another Loan with book overdue by one day for adult
         List<Loan> loansOver = createListOfLoans("2018-06-01", "2018-06-16");
         adult.setLoans(loansOver);
 
@@ -243,10 +233,8 @@ public class MemberTest {
 
 
     private List<Loan> createListOfLoans(String dateOne, String dateTwo) {
-        // Create loan date that does not exceed child's allowance
         Date loanDate = DateUtilility.parseStringToDate(dateOne);
         Date returnDate = DateUtilility.parseStringToDate(dateTwo);
-
 
         // Create a loan objects with those dates
         Loan loanOne = new Loan();
@@ -259,6 +247,7 @@ public class MemberTest {
         loanTwo.setMemberId(2);
         loanTwo.setLoanDate(loanDate);
         loanTwo.setReturnDate(returnDate);
+
         List<Loan> loans = new ArrayList<>();
         loans.add(loanOne);
         loans.add(loanTwo);

@@ -60,9 +60,13 @@ public class Adult extends Member {
         return currFine + fine;
     }
 
-    // TODO class variable for daysOverLoanLimit?
-    // Currently updating a will update b
-    // Commented methods prevent this, but adding new book does not update
+    @Override
+    public void updateFine(Member member) {
+        double daysOver = getDaysOverLimit();
+        double currFine = member.getFinesOutstanding();
+        double fine = daysOver * Const.FineAccrued.FINE_VALUE;
+        setFinesOutstanding(currFine + fine);
+    }
 
     public int getDaysOnLoan() {
         int days = 0;
@@ -72,8 +76,8 @@ public class Adult extends Member {
         return days;
     }
 
-    public double getDaysOverLimit() {
-        double daysOverLoanLimit = 0;
+    public int getDaysOverLimit() {
+        int daysOverLoanLimit = 0;
         int days = getDaysOnLoan();
 
         if (days > Const.LoanLength.MAX_ADULT_DAYS) {

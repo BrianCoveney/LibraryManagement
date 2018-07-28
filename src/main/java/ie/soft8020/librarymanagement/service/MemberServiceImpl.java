@@ -5,7 +5,6 @@ import ie.soft8020.librarymanagement.repository.IMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,6 +45,6 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public Member getMemberWithBooks(int id) {
-		return iMemberRepository.getMemberWithBooks(id);
+		return iMemberRepository.getMemberByIdWithBooks(id);
 	}
 }

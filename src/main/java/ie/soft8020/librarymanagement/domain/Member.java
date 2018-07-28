@@ -37,7 +37,10 @@ public abstract class Member {
 
     public abstract double calculateFine(Member members);
 
-	public abstract double getDaysOverLimit();
+	public abstract int getDaysOverLimit();
+
+	public abstract void updateFine(Member member);
+
 	public abstract int getDaysOnLoan();
 
 

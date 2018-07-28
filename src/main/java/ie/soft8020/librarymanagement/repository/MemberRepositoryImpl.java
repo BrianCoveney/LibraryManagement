@@ -56,9 +56,10 @@ public class MemberRepositoryImpl implements IMemberRepository {
 	}
 
 	@Override
-	public Member getMemberWithBooks(int id) {
+	public Member getMemberByIdWithBooks(int id) {
 		sql = "SELECT m.member_id, m.name, m.address, m.date_of_birth, m.fines_outstanding, " +
-				"b.book_id, b.title, b.isbn, b.author, b.publisher, b.edition, b.year_of_publication " +
+				"b.book_id, b.title, b.isbn, b.author, b.publisher, b.edition, b.year_of_publication, " +
+                "l.book_id, l.member_id, l.loan_date, l.return_date " +
 				"FROM members m, books b, loan l " +
 				"WHERE b.book_id = l.book_id AND m.member_id = l.member_id " +
 				"AND m.member_id = ?";
@@ -70,6 +71,8 @@ public class MemberRepositoryImpl implements IMemberRepository {
 					public Member extractData(ResultSet rs) throws SQLException, DataAccessException {
 						Member member = null;
 						List<Book> books = new ArrayList<>();
+						List<Loan> loans = new ArrayList<>();
+
 
 						while (rs.next()) {
 							if (member == null) {
@@ -88,8 +91,16 @@ public class MemberRepositoryImpl implements IMemberRepository {
 							book.setEdition(rs.getString("edition"));
 							book.setYearOfPublication(rs.getDate("year_of_publication"));
 							books.add(book);
+
+							Loan loan = new Loan();
+							loan.setBookId(rs.getInt("book_id"));
+							loan.setMemberId(rs.getInt("member_id"));
+							loan.setLoanDate(rs.getDate("loan_date"));
+							loan.setReturnDate(rs.getDate("return_date"));
+							loans.add(loan);
 						}
 						member.setBooks(books);
+						member.setLoans(loans);
 						return member;
 					}
 				});
@@ -126,8 +137,10 @@ public class MemberRepositoryImpl implements IMemberRepository {
 //                    double fine = member.calculateFine(member);
 //                    member.setFinesOutstanding(fine);
 
-                    double fine = calculator.calculateFine(member);
-                    member.setFinesOutstanding(fine);
+//                    double fine = calculator.calculateFine(member);
+//                    member.setFinesOutstanding(fine);
+
+                    member.updateFine(member);
 
                     members.add(member);
 

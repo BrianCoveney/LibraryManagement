@@ -9,6 +9,6 @@ public interface IMemberRepository {
 	void save(Member member);
 	void remove(Member member);
 	List<Member> findAll();
-	Member getMemberWithBooks(int id);
+	Member getMemberByIdWithBooks(int id);
 	List<Member> findMembersWithFines();
 }

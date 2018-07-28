@@ -57,6 +57,14 @@ public class Child extends Member {
         return currFine + fine;
     }
 
+	@Override
+	public void updateFine(Member member) {
+		double daysOver = getDaysOverLimit();
+		double currFine = member.getFinesOutstanding();
+		double fine = daysOver * Const.FineAccrued.FINE_VALUE;
+		setFinesOutstanding(currFine + fine);
+	}
+
     public int getDaysOnLoan() {
         int days = 0;
         for (Loan loan : getLoans()) {
@@ -65,8 +73,8 @@ public class Child extends Member {
         return days;
     }
 
-    public double getDaysOverLimit() {
-        double daysOverLoanLimit = 0;
+    public int getDaysOverLimit() {
+        int daysOverLoanLimit = 0;
         int days = getDaysOnLoan();
 
         if (days > Const.LoanLength.MAX_CHILD_DAYS) {
