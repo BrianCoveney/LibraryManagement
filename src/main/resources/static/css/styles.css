@@ -73,7 +73,28 @@ span:nth-child(2), span:nth-child(4), span:nth-child(6) {
     padding-top: 30px;
     padding-bottom: 20px;
 }
-h3
+
+#form-search-member {
+	margin-bottom: 30px;
+}
+
+.member-title {
+	display: inline-block;
+}
+
+.member-title:first-child{
+    margin-right: 176px;
+}
+
+#memberID {
+    background-color: antiquewhite;
+    padding-left: 20px;
+}
+
+#input-container {
+    flex-direction: column;
+}
+
 footer {
 	display: flex;
 	min-height: 20%;

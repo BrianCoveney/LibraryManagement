@@ -4,24 +4,34 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-  <h1>Payment</h1>
-  <form id="form" action="#" th:action="@{/payment}" th:object="${memberKey}">
-    <label>Search:</label> <input name="member" id="member">
-    <input id="submit" type="submit" value="Search" />
-    </input>
-    <h3>Member by id:</h3>
-    <section id="container-search" th:each="m: ${memberKey}">
-      <p id="title1" th:text="${m.name}">No Name!</p>
-      <p id="title2" th:text="${m.address}">No Fine!</p>
-      <p id="title3" th:text="${m.finesOutstanding}">No Fine!</p>
-    </section>
-  </form>
-
-    <h2>Update fine outstanding</h2>
-    <form action="/update" th:action="@{/update}" method="post">
-        <label>ID<input type="text" name="memberID" id="id"></input></label>
-        <label>Fine<input type="text" name="finesOutstanding" id="fine"></input></label>
-        <input type="submit" value="Submit"></input>
+    <h2 id="search-title">Payment</h2>
+    <form id="form-search-member" action="#" th:action="@{/payment}" th:object="${memberKey}">
+        <label><b>First please enter Member Id:</b></label> <input name="member" id="member">
+        <input id="submit" type="submit" value="Search"/>
+        </input>
+        <div>
+            <h3 class="member-title">Member Name</h3>
+            <h3 class="member-title">Current Fine</h3>
+        </div>
+        <section id="container-search" th:each="m: ${memberKey}">
+            <p id="title1" th:text="${m.name}">No Name!</p>
+            <p id="title3" th:text="${m.finesOutstanding}">No Fine!</p>
+        </section>
+    </form>
+    <form action="/update" th:action="@{/update}" method="post" th:object="${memberKey}">
+        <div th:if="${not #lists.isEmpty(memberKey)}">
+            <h2 id="search-title">Update fine outstanding</h2>
+            <div th:each="m: ${memberKey}">
+                <label>Member Id:<input type="text" name="memberID" id="memberID" th:value="${m.memberID}"
+                                        readonly></label>
+            </div>
+            <section id="container-search"></section>
+            <label><b>Now please make a payment:</b>
+                <input type="text" name="finesOutstanding" id="fine">
+            </label>
+            </section>
+            <input type="submit" value="Submit">
+        </div>
     </form>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
