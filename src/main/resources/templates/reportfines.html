@@ -9,8 +9,8 @@
     <span>Member Fine</span>
   </div>
   <div id="container" th:each="element: ${memberLoanMap}">
-    <p id="title1" th:text="${element.key}">No Name!</p>
-    <p id="title2" th:text="${element.value}">No Fine!</p>
+    <p class="title1" th:text="${element.key}">No Name!</p>
+    <p class="title2" th:text="${element.value}">No Fine!</p>
   </div>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>

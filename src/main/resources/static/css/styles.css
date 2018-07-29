@@ -30,7 +30,7 @@ p {
     display: inline;
 }
 
-#container, #container-search {
+#container, .container-search {
     padding-top: 20px;
     display: flex;
 }
@@ -44,11 +44,11 @@ p {
 }
 
 
-#title2, #title4 {
+.title2, .title4 {
     min-width: 300px;
 }
 
-#title1, #title3, #title5 {
+.title1, .title3, .title5 {
     min-width: 300px;
 }
 
@@ -69,7 +69,7 @@ span:nth-child(2), span:nth-child(4), span:nth-child(6) {
     background-color: #DAE3E7;
 }
 
-#search-title {
+.search-title {
     padding-top: 30px;
     padding-bottom: 20px;
 }

@@ -4,22 +4,22 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-    <h3 id="search-title">Find book by title:</h3>
+    <h3 class="search-title">Find book by title:</h3>
     <form id="form1" action="#" th:action="@{/searchtitle}" th:object="${bookTitle}">
         <label>Search:</label> <input name="book" id="search">
         <input id="submit" type="submit" value="Search" />
         </input>
         <div th:if="${not #lists.isEmpty(bookTitle)}">
             <h3>Search results:</h3>
-                <section id="container-search" th:each="b: ${bookTitle}">
-                <p id="title1" th:text="${b.title}">No Name!</p>
-                <p id="title2" th:text="${b.author}">No Fine!</p>
+                <section class="container-search" th:each="b: ${bookTitle}">
+                <p class="title1" th:text="${b.title}">No Name!</p>
+                <p class="title2" th:text="${b.author}">No Fine!</p>
             </section>
         </div>
         <h3 id="all-books">All books:</h3>
         <section id="container" th:each="b: ${booksAll}">
-            <p id="title1" th:text="${b.title}">No Name!</p>
-            <p id="title2" th:text="${b.author}">No Fine!</p>
+            <p class="title1" th:text="${b.title}">No Name!</p>
+            <p class="title2" th:text="${b.author}">No Fine!</p>
         </section>
     </form>
 </main>

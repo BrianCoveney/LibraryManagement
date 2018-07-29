@@ -11,10 +11,10 @@
     <span>Member Name</span>
   </div>
   <div id="container" th:each="element: ${bookmembermap}">
-    <p id="title1" th:text="${element.key.bookID}">No Id!</p>
-    <p id="title2" th:text="${element.key.title}">No Title!</p>
-    <p id="title3" th:text="${element.value.memberID}">No Id!</p>
-    <p id="title4" th:text="${element.value.name}">No Name!</p>
+    <p class="title1" th:text="${element.key.bookID}">No Id!</p>
+    <p class="title2" th:text="${element.key.title}">No Title!</p>
+    <p class="title3" th:text="${element.value.memberID}">No Id!</p>
+    <p class="title4" th:text="${element.value.name}">No Name!</p>
   </div>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
