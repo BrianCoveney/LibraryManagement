@@ -46,7 +46,7 @@ public abstract class Member {
 
 	public abstract void updateFine(Member member);
 
-	public abstract int getDaysOnLoan();
+    public abstract int getDaysOnLoan();
 
 
 	public int getMemberID() {

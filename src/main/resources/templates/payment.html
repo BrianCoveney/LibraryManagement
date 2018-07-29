@@ -14,13 +14,15 @@
       <p id="title1" th:text="${m.name}">No Name!</p>
       <p id="title2" th:text="${m.address}">No Fine!</p>
       <p id="title3" th:text="${m.finesOutstanding}">No Fine!</p>
-
-      <table>
-        <th></th>
-      </table>
-
     </section>
   </form>
+
+    <h2>Update fine outstanding</h2>
+    <form action="/update" th:action="@{/update}" method="post">
+        <label>ID<input type="text" name="memberID" id="id"></input></label>
+        <label>Fine<input type="text" name="finesOutstanding" id="fine"></input></label>
+        <input type="submit" value="Submit"></input>
+    </form>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
