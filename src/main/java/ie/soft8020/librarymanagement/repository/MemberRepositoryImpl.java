@@ -153,7 +153,6 @@ public class MemberRepositoryImpl implements IMemberRepository {
 
 	}
 
-
 	private void update(Member member) {
 		sql = "UPDATE members SET name=?, address=?, date_of_birth=?, loan_limit=?, loan_length=?, fines_outstanding=?"
 				+ " WHERE member_id = ?";
@@ -170,5 +169,7 @@ public class MemberRepositoryImpl implements IMemberRepository {
 		jdbcTemplate.update(sql, member.getName(), member.getAddress(), member.getDateOfBirth(), member.getLoanLimit(),
 				member.getLoanLength(), member.getFinesOutstanding());
 	}
+
+
 
 }

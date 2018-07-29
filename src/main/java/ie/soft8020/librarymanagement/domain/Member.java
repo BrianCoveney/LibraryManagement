@@ -1,11 +1,16 @@
 package ie.soft8020.librarymanagement.domain;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public abstract class Member {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int memberID;
 	private String name;
 	private String address;

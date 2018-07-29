@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Child extends Member {
+
 	private int loanLimit;
 	private int loanLength;
     private double finesOutstanding;

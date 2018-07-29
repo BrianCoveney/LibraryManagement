@@ -80,7 +80,8 @@ public class MemberRepositoryImplTest {
 
 	@Test
 	public void testGetMemberByIdWithBooks_ForAdult() {
-		Member member = repo.getMemberByIdWithBooks(4); // Member id equal to 4 is an adult in the hardcoded DB
+        int memberId = 4;
+        Member member = repo.getMemberByIdWithBooks(memberId); // Member id equal to 4 is an adult in the hardcoded DB
 		assertThat(member.getMemberID(), equalTo(4));
         assertThat(member.getClass(), equalTo(Adult.class));
         assertThat("Members current days over limit ", member.getDaysOverLimit(), equalTo(0));
@@ -123,6 +124,25 @@ public class MemberRepositoryImplTest {
                 member.getBooks(), hasSize(1));
 
         assertThat(member.getFinesOutstanding(), equalTo(1.0)); // Updated fine after new loan
+    }
+
+    @Test
+    public void testUpdateFineOutstanding() {
+
+        // Given
+	    int memberId = 3;
+	    Member member = repo.getMemberByIdWithBooks(memberId);
+        assertThat("Members current days over limit ", member.getDaysOverLimit(), equalTo(3));
+        member.updateFine(member);
+	    assertThat(member.getFinesOutstanding(), equalTo(0.75));
+
+	    // When
+        member.setFinesOutstanding(0.5);
+        repo.save(member);
+
+        // Then
+        member = repo.getById(memberId);
+        assertThat(member.getFinesOutstanding(), equalTo(0.5));
     }
 
 
