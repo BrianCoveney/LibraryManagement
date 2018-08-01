@@ -5,7 +5,8 @@
 <header th:replace="fragments/header :: header"></header>
 <main>
     <h3 class="search-title">Find book(s) by author:</h3>
-    <form id="form" action="#" th:action="@{/search}" th:object="${bookAuthor}">
+
+    <form id="form1" action="#" th:action="@{/search}" th:object="${bookAuthor}">
         <input name="book" id="search">
         <input id="submit" type="submit" value="Search" />
         </input>
@@ -16,14 +17,39 @@
                 <p class="title2" th:text="${b.author}">No Author!</p>
             </section>
         </div>
-
+    </form>
+    <form id="form2" action="#" th:action="@{/search}" th:object="${booksAll}">
+        <input type="button" id="find-all-button" value="Show All Books" onclick="findAllButtonClick()" />
+        <div id="all-books-cont" style="display: none">
         <h3 id="all-books">All books:</h3>
         <section id="container" th:each="b: ${booksAll}">
             <p class="title1" th:text="${b.title}">No Name!</p>
             <p class="title2" th:text="${b.author}">No Fine!</p>
         </section>
+        </div>
     </form>
+
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
+
+<script>
+    function findAllButtonClick() {
+        var booksDivContainer = document.getElementById("all-books-cont");
+        var toggleButton = document.getElementById("find-all-button");
+
+        if(booksDivContainer.style.display === "none") {
+            booksDivContainer.style.display = "block";
+        } else {
+            booksDivContainer.style.display = "none";
+        }
+        
+        if (toggleButton.value === "Show All Books") {
+            toggleButton.value = "Hide All Books"
+        } else {
+            toggleButton.value = "Show All Books"
+        }
+    }
+</script>
+
 </body>
 </html>

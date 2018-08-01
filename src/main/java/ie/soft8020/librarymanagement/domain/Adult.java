@@ -41,7 +41,6 @@ public class Adult extends Member {
         this.loanLength = loanLength;
     }
 
-
     @Override
     public double getFinesOutstanding() {
         return finesOutstanding;

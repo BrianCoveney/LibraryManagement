@@ -103,4 +103,11 @@ footer {
 	background-color: red;
 }
 
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
 

@@ -16,11 +16,6 @@
                 <p class="title2" th:text="${b.author}">No Fine!</p>
             </section>
         </div>
-        <h3 id="all-books">All books:</h3>
-        <section id="container" th:each="b: ${booksAll}">
-            <p class="title1" th:text="${b.title}">No Name!</p>
-            <p class="title2" th:text="${b.author}">No Fine!</p>
-        </section>
     </form>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>

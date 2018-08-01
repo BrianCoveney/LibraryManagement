@@ -25,7 +25,6 @@ public class PaymentController {
             member = memberService.getMemberWithBooks(memberId);
             member.updateFine(member);
         }
-
         model.addAttribute("memberKey", member);
 
         return "payment";
@@ -42,15 +41,12 @@ public class PaymentController {
             member.updateFine(member);
             double currFine  = member.getFinesOutstanding();
             if (finesOutstanding != null) {
-
                 double calc = currFine - finesOutstanding;
                 double fine = Const.round(calc, 2);
 
                 member.setFinesOutstanding(fine);
             }
-
         }
-
         return "redirect:/payment";
     }
 
