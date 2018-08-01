@@ -6,17 +6,20 @@
 <main>
     <h2 class="search-title">Payment</h2>
     <form id="form-search-member" action="#" th:action="@{/payment}" th:object="${memberKey}">
-        <label><b>First please enter Member Id:</b></label> <input name="member" id="member">
-        <input id="submit" type="submit" value="Search"/>
+        <label><b>First please enter Member Id:</b></label> <input name="member" id="member" type="text">
+        <input id="submit" type="submit" class="button" value="Search"/>
         </input>
-        <div>
-            <h3 class="member-title">Member Name</h3>
-            <h3 class="member-title">Current Fine</h3>
-        </div>
-        <section class="container-search" th:each="m: ${memberKey}">
-            <p class="title1" th:text="${m.name}">No Name!</p>
-            <p class="title3" th:text="${m.finesOutstanding}">No Fine!</p>
-        </section>
+        <table class="members-table">
+          <tr>
+            <th>Member Name</th>
+            <th>Current Fine</th>
+          </tr>
+          <tr th:each="m: ${memberKey}">
+            <td th:text="${m.name}">No Name!</td>
+            <td th:text="${m.finesOutstanding}">No Fine!</td>
+          </tr>
+        </table>
+
     </form>
     <form action="/update" th:action="@{/update}" method="post" th:object="${memberKey}">
         <div th:if="${not #lists.isEmpty(memberKey)}">
@@ -27,10 +30,10 @@
             </div>
             <section class="container-search"></section>
             <label><b>Now please make a payment:</b>
-                <input type="text" name="finesOutstanding" id="fine">
+                <input type="text" name="finesOutstanding">
             </label>
             </section>
-            <input type="submit" value="Submit">
+            <input id="fine-button" type="submit" class="button" value="Submit" onclick="myFunction()">
         </div>
     </form>
 </main>

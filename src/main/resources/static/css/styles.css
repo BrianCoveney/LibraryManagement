@@ -6,6 +6,7 @@
 body, html {
 	height: 100%;
 	width: 100%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
 header {
@@ -45,11 +46,11 @@ p {
 
 
 .title2, .title4 {
-    min-width: 300px;
+    min-width: 400px;
 }
 
 .title1, .title3, .title5 {
-    min-width: 300px;
+    min-width: 400px;
 }
 
 #title-container {
@@ -58,13 +59,13 @@ p {
 }
 
 span:nth-child(1), span:nth-child(3), span:nth-child(5)  {
-    min-width: 300px;
+    min-width: 400px;
     font-weight: bold;
     background-color: #f5f5f5;
 }
 
 span:nth-child(2), span:nth-child(4), span:nth-child(6) {
-    min-width: 300px;
+    min-width: 400px;
     font-weight: bold;
     background-color: #DAE3E7;
 }
@@ -100,7 +101,54 @@ footer {
 	min-height: 20%;
 	align-items: center;
 	justify-content: center;
-	background-color: red;
+	background-color: #FFFF66;
+}
+
+.members-table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+.members-table td, .members-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.members-table tr:nth-child(even){background-color: #f2f2f2;}
+
+.members-table tr:hover {background-color: #ddd;}
+
+.members-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #50BFE6;
+    color: white;
+}
+
+.button{
+    border: none;
+    background:none;
+    background-color:#50BFE6;
+    background-image: -webkit-linear-gradient(top,#50BFE6,#277ac1);
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    height: 35px;
+    border-radius: 12px;
+    -webkit-box-shadow: 0 8px 6px -6px #777;
+    -moz-box-shadow: 0 8px 6px -6px #777;
+    box-shadow: 0 8px 6px -6px #777;
+}
+
+input[type=text], select {
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .hidden {
@@ -110,4 +158,3 @@ footer {
 .visible {
     display: block;
 }
-

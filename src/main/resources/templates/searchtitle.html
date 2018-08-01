@@ -6,8 +6,8 @@
 <main>
     <h3 class="search-title">Find book by title:</h3>
     <form id="form1" action="#" th:action="@{/searchtitle}" th:object="${bookTitle}">
-        <label>Search:</label> <input name="book" id="search">
-        <input id="submit" type="submit" value="Search" />
+        <input name="book" id="search" type="text" placeholder="Author name">
+        <input id="submit" type="submit" class="button" value="Search" />
         </input>
         <div th:if="${not #lists.isEmpty(bookTitle)}">
             <h3>Search results:</h3>

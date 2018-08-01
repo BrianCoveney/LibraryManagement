@@ -7,25 +7,37 @@
     <h3 class="search-title">Find book(s) by author:</h3>
 
     <form id="form1" action="#" th:action="@{/search}" th:object="${bookAuthor}">
-        <input name="book" id="search">
-        <input id="submit" type="submit" value="Search" />
+        <input name="book" id="search" type="text" placeholder="Author name">
+        <input id="submit" class="button" type="submit" value="Search" />
         </input>
         <div th:if="${not #lists.isEmpty(bookAuthor)}">
-            <h3>Search results:</h3>
-            <section class="container-search" th:each="b: ${bookAuthor}">
-                <p class="title1" th:text="${b.title}">No Title!</p>
-                <p class="title2" th:text="${b.author}">No Author!</p>
-            </section>
+          <h3>Search results:</h3>
+          <table class="members-table">
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+            </tr>
+            <tr th:each="b: ${bookAuthor}">
+              <td th:text="${b.title}">No Title!</td>
+              <td th:text="${b.author}">No Author!</td>
+            </tr>
+          </table>
         </div>
     </form>
     <form id="form2" action="#" th:action="@{/search}" th:object="${booksAll}">
-        <input type="button" id="find-all-button" value="Show All Books" onclick="findAllButtonClick()" />
+        <input type="button" class="button" id="find-all-button" value="Show All Books" onclick="findAllButtonClick()" />
         <div id="all-books-cont" style="display: none">
         <h3 id="all-books">All books:</h3>
-        <section id="container" th:each="b: ${booksAll}">
-            <p class="title1" th:text="${b.title}">No Name!</p>
-            <p class="title2" th:text="${b.author}">No Fine!</p>
-        </section>
+        <table class="members-table">
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+          </tr>
+          <tr th:each="b: ${booksAll}">
+            <td th:text="${b.title}">No Title!</td>
+            <td th:text="${b.author}">No Author!</td>
+          </tr>
+        </table>
         </div>
     </form>
 
@@ -42,7 +54,7 @@
         } else {
             booksDivContainer.style.display = "none";
         }
-        
+
         if (toggleButton.value === "Show All Books") {
             toggleButton.value = "Hide All Books"
         } else {
