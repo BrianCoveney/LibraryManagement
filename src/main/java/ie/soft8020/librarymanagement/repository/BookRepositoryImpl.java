@@ -1,6 +1,8 @@
 package ie.soft8020.librarymanagement.repository;
 
-import ie.soft8020.librarymanagement.domain.*;
+import ie.soft8020.librarymanagement.domain.Book;
+import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.domain.MemberFactory;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -50,22 +52,24 @@ public class BookRepositoryImpl implements IBookRepository {
         return jdbcTemplate.query(sql, new BookRowMapper());
 	}
 
-	@Override
-	public Book getByTitle(String title) {
-		sql = "SELECT * FROM books WHERE title = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[] { title }, new BookRowMapper());
-	}
+    @Override
+    public Book getByTitle(String title) {
+        sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? LIMIT 1"; // We limit to 1 because queryForObject expects 1
+        String str= "%" + title.toLowerCase().trim() + "%";
+        return jdbcTemplate.queryForObject(sql, new Object[] { str }, new BookRowMapper());
+    }
+
+    @Override
+    public List<Book> getBooksByAuthor(String author) {
+        sql = "SELECT * FROM books WHERE LOWER(author) LIKE ?";
+        String str= "%" + author.toLowerCase().trim() + "%";
+        return jdbcTemplate.query(sql, new Object[] { str }, new BookRowMapper());
+    }
 
 	@Override
 	public Book getByAuthor(String author) {
-		sql = "SELECT * FROM books WHERE author = ?";
+        sql = "SELECT * FROM books WHERE author = ?";
         return jdbcTemplate.queryForObject(sql, new Object[] { author }, new BookRowMapper());
-	}
-
-	@Override
-	public List<Book> getBooksByAuthor(String author) {
-		sql = "SELECT * FROM books WHERE author = ?";
-		return jdbcTemplate.query(sql, new Object[] { author }, new BookRowMapper());
 	}
 
 	private void update(Book book) {
@@ -113,4 +117,23 @@ public class BookRepositoryImpl implements IBookRepository {
 			}
 		});
 	}
+
+//    @Override
+//    public List<Book> getByTitle(String title) {
+//        sql = "SELECT title, author FROM books WHERE title = ?";
+//        return jdbcTemplate.query(sql, new Object[] { title }, new ResultSetExtractor<List<Book>>() {
+//
+//            @Override
+//            public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
+//                List<Book> books = new ArrayList<>();
+//                while (rs.next()) {
+//                    Book book = new Book();
+//                    book.setTitle(rs.getString("title"));
+//                    book.setAuthor(rs.getString("author"));
+//                    books.add(book);
+//                }
+//                return books;
+//            }
+//        });
+//    }
 }

@@ -45,6 +45,8 @@ public class PaymentController {
                 double fine = Const.round(calc, 2);
 
                 member.setFinesOutstanding(fine);
+
+                memberService.save(member);
             }
         }
         return "redirect:/payment";

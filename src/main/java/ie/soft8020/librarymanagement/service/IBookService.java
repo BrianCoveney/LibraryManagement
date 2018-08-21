@@ -10,7 +10,7 @@ public interface IBookService {
 	void remove(Book book);
 	List<Book> findAll();
 	Book getByTitle(String title);
-	Book getByAuthor(String author);
+    Book getByAuthor(String author);
 	List<Book> getBooksByAuthor(String author);
 	List<Book> findAllBooksOverdue();
 }

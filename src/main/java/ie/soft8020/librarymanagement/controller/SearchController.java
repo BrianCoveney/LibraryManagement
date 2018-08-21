@@ -1,26 +1,25 @@
 package ie.soft8020.librarymanagement.controller;
 
 import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.repository.IBookRepository;
 import ie.soft8020.librarymanagement.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
-public class SearchController {
+public class SearchController implements WebMvcConfigurer {
 
     @Autowired
     IBookService bookService;;
 
-    private List<Book> bookListByAuthor;
-    private Book bookByTitle;
+    private List<Book> books;
     private Book book;
 
 
@@ -29,31 +28,52 @@ public class SearchController {
             @RequestParam(value = "book", required = false) String author,
             Model model) {
 
-        if (author != null) {
-            bookListByAuthor = bookService.getBooksByAuthor(author);
-        }
+        String sanitizedAuthorStr = sanitizeForSearch(author);
 
-        model.addAttribute("bookAuthor", bookService.getBooksByAuthor(author));
+        if (sanitizedAuthorStr != null) {
+            books = bookService.getBooksByAuthor(sanitizedAuthorStr);
+        }
+        model.addAttribute("bookAuthor", books);
         model.addAttribute("booksAll", bookService.findAll());
 
         return "search";
     }
-
 
     @GetMapping(value = "/searchtitle")
     public String searchBooksByTitle(
             @RequestParam (value = "book", required = false) String title,
             Model model) {
 
-        if (title != null) {
-            bookByTitle = bookService.getByTitle(title);
+        String sanitizedTitleStr = sanitizeForSearch(title);
+
+        try {
+            if (sanitizedTitleStr != null) {
+                book = bookService.getByTitle(sanitizedTitleStr);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println(e.getMessage());
         }
 
-        model.addAttribute("bookTitle", bookByTitle);
-
+        model.addAttribute("bookTitle", book);
         model.addAttribute("booksAll", bookService.findAll());
 
         return "searchtitle";
     }
 
+    private String sanitizeForSearch(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str
+                // Remove punctuation
+                .replace("`", " ").replace("!", " ").replace("#", " ").replace("$", " ").replace("^", " ")
+                .replace("&", " ").replace("[", " ").replace("]", " ").replace("{", " ").replace("}", " ").replace("|", " ")
+                .replace(";", " ").replace("*", " ").replace(".", " ").replace("?", " ").replace("'", " ").replace("/", " ")
+                // Prevent injection
+                .replace("=", " ")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                // Remove leading/trailing whitespace
+                .trim();
+    }
 }

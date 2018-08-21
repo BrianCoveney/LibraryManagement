@@ -1,15 +1,20 @@
 package ie.soft8020.librarymanagement.domain;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Book {
 
 	private int bookID;
-	private String title;
-	private String isbn;
+
+    @NotNull
+    @Size(min=2, max=100)
+    private String title;
+
+    private String isbn;
 	private String author;
 	private String publisher;
 	private String edition;

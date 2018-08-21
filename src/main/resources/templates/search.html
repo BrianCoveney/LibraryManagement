@@ -4,10 +4,9 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-    <h3 class="search-title">Find book(s) by author:</h3>
-
     <form id="form1" action="#" th:action="@{/search}" th:object="${bookAuthor}">
-        <input name="book" id="search" type="text" placeholder="Author name">
+      <label class="search-label">Find book(s) by author:</label>
+        <input name="book" id="search" type="text" placeholder="e.g, Robert Martin">
         <input id="submit" class="button" type="submit" value="Search" />
         </input>
         <div th:if="${not #lists.isEmpty(bookAuthor)}">
@@ -18,7 +17,7 @@
               <th>Author</th>
             </tr>
             <tr th:each="b: ${bookAuthor}">
-              <td th:text="${b.title}">No Title!</td>
+              <td th:text="${b.title}">No Title!</td>z
               <td th:text="${b.author}">No Author!</td>
             </tr>
           </table>
@@ -40,7 +39,6 @@
         </table>
         </div>
     </form>
-
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 
