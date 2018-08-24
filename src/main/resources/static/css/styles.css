@@ -163,3 +163,44 @@ input[type=text], select {
 .visible {
     display: block;
 }
+
+#form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.form-input-container {
+    flex-direction: row;
+}
+
+input:focus{
+    background-color: #FAFFBD;
+}
+
+h2, h4{
+    margin-bottom: 40px;
+}
+
+.span-asterisk {
+    color: red;
+}
+
+.form-controls{
+    margin-top: 40px;
+    width: 100px;
+}
+
+.form-controls:first-child {
+    margin-right: 30px;
+}
+
+#form-controls-container {
+    display: inline;
+}
+
+
+
+
+
+

@@ -6,8 +6,15 @@ import ie.soft8020.librarymanagement.util.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+@Validated
 @Controller
 public class PaymentController {
 
@@ -16,9 +23,10 @@ public class PaymentController {
 
 	private Member member;
 
+
     @GetMapping(value="/payment")
     public String payment(
-            @RequestParam(value = "member", required = false) Integer memberId,
+            @RequestParam(value = "member", required = false) @Min(0) @Max(50) Integer memberId,
             Model model) {
 
         if (memberId != null) {
@@ -30,11 +38,11 @@ public class PaymentController {
         return "payment";
     }
 
-
+    // The value matches the 'action' of the second form in payment.html
     @PostMapping(value = "/update")
     public String updateMember(
-            @RequestParam(required=false, name="memberID")  Integer memberId,
-            @RequestParam(required=false, name="finesOutstanding")  Double finesOutstanding) {
+            @RequestParam(required=false, name="memberID") @Min(0) Integer memberId,
+            @RequestParam(required=false, name="finesOutstanding") @Min(0) Double finesOutstanding) {
 
         if (memberId != null) {
             member = memberService.getMemberWithBooks(memberId);
@@ -51,5 +59,4 @@ public class PaymentController {
         }
         return "redirect:/payment";
     }
-
 }
