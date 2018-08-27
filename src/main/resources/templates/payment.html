@@ -13,7 +13,7 @@
               th:errors="*{memberID}">Invalid id</span>
         <input id="submit" type="submit" class="button" value="Search"/>
         </input>
-        <div th:if="${paymentForm.memberID &gt; 0 and paymentForm.memberID &lt; 2}">
+        <div th:if="${paymentForm.memberID &gt; 0 and paymentForm.memberID &lt; 10}">
           <table class="members-table">
             <tr>
               <th>Member Name</th>
@@ -28,7 +28,7 @@
     </form>
 
   <form action="/update" th:action="@{/update}" th:object="${paymentForm}" method="post">
-      <div th:if="${paymentForm.memberID &gt; 0 and paymentForm.memberID &lt; 2}" >
+      <div th:if="${paymentForm.memberID &gt; 0 and paymentForm.memberID &lt; 10}" >
             <h2 class="search-title">Update fine outstanding</h2>
             <div th:each="m: ${paymentForm}">
                 <label>Member Id:
