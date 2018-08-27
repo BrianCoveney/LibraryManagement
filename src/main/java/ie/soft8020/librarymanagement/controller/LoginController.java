@@ -1,6 +1,6 @@
 package ie.soft8020.librarymanagement.controller;
 
-import ie.soft8020.librarymanagement.domain.User;
+import ie.soft8020.librarymanagement.forms.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,19 +14,19 @@ import javax.validation.Valid;
 public class LoginController {
 
     @RequestMapping("/users/login")
-    public String addUser(User user) {
+    public String addUser(UserForm userForm) {
         return "users/login";
     }
 
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute @Valid User newUser,
+    public String addUser(@ModelAttribute @Valid UserForm newUserForm,
             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");
             return "users/login";
         } else {
-            model.addAttribute("user", newUser);
+            model.addAttribute("user", newUserForm);
             return "redirect:/";
         }
     }

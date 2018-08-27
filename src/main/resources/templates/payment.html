@@ -5,37 +5,48 @@
 <header th:replace="fragments/header :: header"></header>
 <main>
     <h2 class="search-title">Payment</h2>
-    <form id="form-search-member" action="#" th:action="@{/payment}" th:object="${memberKey}">
-        <label><b>First please enter Member Id:</b></label> <input name="member" id="member" type="text">
+
+  <form id="form-search-member" action="#" th:action="@{/payment}" th:object="${paymentForm}" method="post">
+        <label><b>First please enter Member Id:</b></label> <input name="memberID" id="member" type="text">
+        <span class="form-error"
+              th:if="${#fields.hasErrors('memberID')}"
+              th:errors="*{memberID}">Invalid id</span>
         <input id="submit" type="submit" class="button" value="Search"/>
         </input>
-        <table class="members-table">
-          <tr>
-            <th>Member Name</th>
-            <th>Current Fine</th>
-          </tr>
-          <tr th:each="m: ${memberKey}">
-            <td th:text="${m.name}">No Name!</td>
-            <td th:text="${m.finesOutstanding}">No Fine!</td>
-          </tr>
-        </table>
-
+        <div th:if="${paymentForm.memberID &gt; 0 and paymentForm.memberID &lt; 2}">
+          <table class="members-table">
+            <tr>
+              <th>Member Name</th>
+              <th>Current Fine</th>
+            </tr>
+            <tr th:each="m: ${paymentForm}">
+              <td th:text="${m.name}">No Name!</td>
+              <td th:text="${m.finesOutstanding}">No Fine!</td>
+            </tr>
+          </table>
+        </div>
     </form>
-    <form action="/update" th:action="@{/update}" method="post" th:object="${memberKey}">
-        <div th:if="${not #lists.isEmpty(memberKey)}">
+
+  <form action="/update" th:action="@{/update}" th:object="${paymentForm}" method="post">
+      <div th:if="${paymentForm.memberID &gt; 0 and paymentForm.memberID &lt; 2}" >
             <h2 class="search-title">Update fine outstanding</h2>
-            <div th:each="m: ${memberKey}">
-                <label>Member Id:<input type="text" name="memberID" id="memberID" th:value="${m.memberID}"
-                                        readonly></label>
+            <div th:each="m: ${paymentForm}">
+                <label>Member Id:
+                  <input type="text" name="memberID" id="memberID" th:value="${m.memberID}" readonly>
+                </label>
             </div>
             <section class="container-search"></section>
             <label><b>Now please make a payment:</b>
                 <input type="text" name="finesOutstanding">
             </label>
+            <span class="form-error"
+                  th:if="${#fields.hasErrors('finesOutstanding')}"
+                  th:errors="*{finesOutstanding}">Invalid id</span>
             </section>
-            <input id="fine-button" type="submit" class="button" value="Submit" onclick="myFunction()">
+            <input id="fine-button" type="submit" class="button" value="Submit">
         </div>
     </form>
+
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

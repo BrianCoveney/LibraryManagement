@@ -1,62 +1,91 @@
 package ie.soft8020.librarymanagement.controller;
 
 import ie.soft8020.librarymanagement.domain.Member;
+import ie.soft8020.librarymanagement.forms.PaymentForm;
 import ie.soft8020.librarymanagement.service.IMemberService;
 import ie.soft8020.librarymanagement.util.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
 
-@Validated
 @Controller
 public class PaymentController {
 
-	@Autowired
-	IMemberService memberService;
+    @Autowired
+    IMemberService memberService;
 
-	private Member member;
+    private Member member;
 
+    /*
+    * First form
+    */
+    @RequestMapping(value = "/payment")
+    public String payment(PaymentForm paymentForm) {
+        return "payment";
+    }
 
-    @GetMapping(value="/payment")
-    public String payment(
-            @RequestParam(value = "member", required = false) @Min(0) @Max(50) Integer memberId,
-            Model model) {
+    @RequestMapping(value = "/payment", method = RequestMethod.POST)
+    public String payment(@ModelAttribute @Valid PaymentForm paymentForm,
+                          BindingResult bindingResult, Model model) {
 
-        if (memberId != null) {
-            member = memberService.getMemberWithBooks(memberId);
-            member.updateFine(member);
+        if (bindingResult.hasErrors()) {
+            System.out.println("Binding result error!");
+            return "payment";
+        } else {
+            Integer id = paymentForm.getMemberID();
+
+            if (id != null) {
+                member = memberService.getMemberWithBooks(id);
+                member.updateFine(member);
+            }
         }
-        model.addAttribute("memberKey", member);
+
+        model.addAttribute("paymentForm", member);
 
         return "payment";
     }
 
-    // The value matches the 'action' of the second form in payment.html
-    @PostMapping(value = "/update")
-    public String updateMember(
-            @RequestParam(required=false, name="memberID") @Min(0) Integer memberId,
-            @RequestParam(required=false, name="finesOutstanding") @Min(0) Double finesOutstanding) {
+    /*
+     * Second form
+     */
+    @RequestMapping(value = "/update")
+    public String updateMember(PaymentForm paymentForm) {
+        return "update";
+    }
 
-        if (memberId != null) {
-            member = memberService.getMemberWithBooks(memberId);
-            member.updateFine(member);
-            double currFine  = member.getFinesOutstanding();
-            if (finesOutstanding != null) {
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String updateMember(@ModelAttribute @Valid PaymentForm paymentForm,
+                               BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("Binding result error!");
+            return "payment";
+        } else {
+            Integer id = paymentForm.getMemberID();
+
+            if (id != null) {
+                Double finesOutstanding = paymentForm.getFinesOutstanding();
+
+                member = memberService.getMemberWithBooks(id);
+                member.updateFine(member);
+                double currFine = member.getFinesOutstanding();
+
                 double calc = currFine - finesOutstanding;
                 double fine = Const.round(calc, 2);
 
                 member.setFinesOutstanding(fine);
-
-                memberService.save(member);
             }
         }
-        return "redirect:/payment";
+
+        model.addAttribute("paymentForm", member);
+
+        return "payment";
     }
 }
+
