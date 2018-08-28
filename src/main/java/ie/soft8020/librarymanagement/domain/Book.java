@@ -21,9 +21,11 @@ public class Book {
 	private Date yearOfPublication;
 
 	private List<Member> members;
+	private List<Book> books;
 
 	public Book() {
 		members = Collections.<Member>emptyList();
+		books = Collections.emptyList();
 	}
 
 	public List<Member> getMembers() {
@@ -95,4 +97,14 @@ public class Book {
 		return "Book [bookID=" + bookID + ", title=" + title + ", isbn=" + isbn + ", author=" + author
 				+ ", publisher=" + publisher + ", edition=" + edition + ", yearOfPublication=" + yearOfPublication;
 	}
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+
 }

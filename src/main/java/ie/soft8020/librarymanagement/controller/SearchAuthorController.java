@@ -1,49 +1,50 @@
 package ie.soft8020.librarymanagement.controller;
 
 import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.forms.SearchForm;
+import ie.soft8020.librarymanagement.domain.BookList;
+import ie.soft8020.librarymanagement.forms.SearchAuthorForm;
 import ie.soft8020.librarymanagement.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.validation.Valid;
-
+import java.util.List;
 
 @Controller
-public class SearchController implements WebMvcConfigurer {
+public class SearchAuthorController {
 
     @Autowired
-    IBookService bookService;;
+    IBookService bookService;
 
-    private Book book;
+    private List<Book> books;
+    private BookList bookList = new BookList();
 
+    @RequestMapping(value = "/search")
+    public String searchBooksByAuthor(SearchAuthorForm searchAuthorForm) { return "search"; }
 
-    @RequestMapping(value = "/searchtitle")
-    public String searchBooksByTitle(SearchForm searchForm) { return "searchtitle"; }
-
-    @RequestMapping(value = "/searchtitle", method = RequestMethod.POST)
-    public String searchBooksByTitle(@ModelAttribute @Valid SearchForm searchForm,
-                                     BindingResult bindingResult, Model model) throws EmptyResultDataAccessException {
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String searchBooksByAuthor(@ModelAttribute @Valid SearchAuthorForm searchAuthorForm,
+                                      BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("Binding results error!");
-            return "searchtitle";
+            System.out.println("Binding result error!");
+            return "search";
         } else {
-            String sanitizedTitleStr = sanitizeForSearch(searchForm.getTitle());
-            book = bookService.getByTitle(sanitizedTitleStr);
+            String sanitizedAuthorStr = sanitizeForSearch(searchAuthorForm.getAuthor());
+            books = bookService.getBooksByAuthor(sanitizedAuthorStr);
+            for (Book book : books) {
+                model.addAttribute("searchAuthorForm", book);
+            }
         }
 
-        model.addAttribute("searchForm", book);
         model.addAttribute("booksAll", bookService.findAll());
 
-        return "searchtitle";
+        return "search";
     }
 
     private String sanitizeForSearch(String str) {

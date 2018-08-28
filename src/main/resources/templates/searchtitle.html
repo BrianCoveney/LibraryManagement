@@ -9,7 +9,7 @@
     <input name="title" id="search" type="text" placeholder="e.g, Clean Code">
     <span class="form-error"
           th:if="${#fields.hasErrors('title')}"
-          th:errors="*{title}">Invalid id</span>
+          th:errors="*{title}">Invalid title</span>
     <input id="submit" class="button" type="submit" value="Search" />
     </input>
     <div th:if="${not #lists.isEmpty(searchForm.author)}">

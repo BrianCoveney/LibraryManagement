@@ -4,21 +4,24 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-    <form id="form1" action="#" th:action="@{/search}" th:object="${bookAuthor}">
+    <form id="form1" action="#" th:action="@{/search}" th:object="${searchAuthorForm}", method="post">
       <label class="search-label">Find book(s) by author:</label>
-        <input name="book" id="search" type="text" placeholder="e.g, Robert Martin">
+        <input name="author" id="search" type="text" placeholder="e.g, Robert Martin">
+        <span class="form-error"
+              th:if="${#fields.hasErrors('author')}"
+              th:errors="*{author}">Invalid author</span>
         <input id="submit" class="button" type="submit" value="Search" />
         </input>
-        <div th:if="${not #lists.isEmpty(bookAuthor)}">
+        <div th:if="${not #lists.isEmpty(searchAuthorForm)}">
           <h3>Search results:</h3>
           <table class="members-table">
             <tr>
               <th>Title</th>
               <th>Author</th>
             </tr>
-            <tr th:each="b: ${bookAuthor}">
-              <td th:text="${b.title}">No Title!</td>
-              <td th:text="${b.author}">No Author!</td>
+            <tr th:each="b: ${searchAuthorForm}">
+              <td th:if="${b.title != null}" th:text="${b.title}"></td>
+              <td th:if="${b.author != null}" th:text="${b.author}"></td>
             </tr>
           </table>
         </div>
