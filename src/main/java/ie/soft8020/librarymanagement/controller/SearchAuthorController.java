@@ -1,7 +1,6 @@
 package ie.soft8020.librarymanagement.controller;
 
 import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.domain.BookList;
 import ie.soft8020.librarymanagement.forms.SearchAuthorForm;
 import ie.soft8020.librarymanagement.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ public class SearchAuthorController {
     @Autowired
     IBookService bookService;
 
-    private List<Book> books;
-    private BookList bookList = new BookList();
-
     @RequestMapping(value = "/search")
     public String searchBooksByAuthor(SearchAuthorForm searchAuthorForm) { return "search"; }
 
@@ -31,17 +27,18 @@ public class SearchAuthorController {
     public String searchBooksByAuthor(@ModelAttribute @Valid SearchAuthorForm searchAuthorForm,
                                       BindingResult bindingResult, Model model) {
 
+        Book book = new Book();
+
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");
             return "search";
         } else {
             String sanitizedAuthorStr = sanitizeForSearch(searchAuthorForm.getAuthor());
-            books = bookService.getBooksByAuthor(sanitizedAuthorStr);
-            for (Book book : books) {
-                model.addAttribute("searchAuthorForm", book);
-            }
+            List<Book>  bookList = bookService.getBooksByAuthor(sanitizedAuthorStr);
+            book.setBooks(bookList);
         }
 
+        model.addAttribute("searchAuthorForm", book);
         model.addAttribute("booksAll", bookService.findAll());
 
         return "search";
