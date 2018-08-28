@@ -53,6 +53,14 @@ public class BookRepositoryImpl implements IBookRepository {
 	}
 
     @Override
+    public List<Book> getByAuthorOrTitle(String author, String title) {
+        sql = "SELECT * FROM books WHERE (author = ?) " +
+                "UNION ALL " +
+                "SELECT * FROM books WHERE(title = ?)";
+        return jdbcTemplate.query(sql, new Object[] { author, title }, new BookRowMapper());
+    }
+
+    @Override
     public Book getByTitle(String title) {
         sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? LIMIT 1"; // We limit to 1 because queryForObject expects 1
         String str= "%" + title.toLowerCase().trim() + "%";

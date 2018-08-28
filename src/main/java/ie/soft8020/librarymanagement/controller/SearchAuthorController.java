@@ -1,7 +1,7 @@
 package ie.soft8020.librarymanagement.controller;
 
 import ie.soft8020.librarymanagement.domain.Book;
-import ie.soft8020.librarymanagement.forms.SearchAuthorForm;
+import ie.soft8020.librarymanagement.forms.SearchForm;
 import ie.soft8020.librarymanagement.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +21,10 @@ public class SearchAuthorController {
     IBookService bookService;
 
     @RequestMapping(value = "/search")
-    public String searchBooksByAuthor(SearchAuthorForm searchAuthorForm) { return "search"; }
+    public String searchBooksByAuthor(SearchForm searchForm) { return "search"; }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String searchBooksByAuthor(@ModelAttribute @Valid SearchAuthorForm searchAuthorForm,
+    public String searchBooksByAuthor(@ModelAttribute @Valid SearchForm searchForm,
                                       BindingResult bindingResult, Model model) {
 
         Book book = new Book();
@@ -33,12 +33,14 @@ public class SearchAuthorController {
             System.out.println("Binding result error!");
             return "search";
         } else {
-            String sanitizedAuthorStr = sanitizeForSearch(searchAuthorForm.getAuthor());
-            List<Book>  bookList = bookService.getBooksByAuthor(sanitizedAuthorStr);
+            String sanitizedAuthorStr = sanitizeForSearch(searchForm.getAuthor());
+            String sanitizedTitleStr = sanitizeForSearch(searchForm.getTitle());
+
+            List<Book> bookList = bookService.getBooksByAuthorOrTitle(sanitizedAuthorStr, sanitizedTitleStr);
             book.setBooks(bookList);
         }
 
-        model.addAttribute("searchAuthorForm", book);
+        model.addAttribute("searchForm", book);
         model.addAttribute("booksAll", bookService.findAll());
 
         return "search";
@@ -46,13 +48,14 @@ public class SearchAuthorController {
 
     private String sanitizeForSearch(String str) {
         if (str == null) {
-            throw new IllegalArgumentException("The argument cannot be null");
+            return null;
         }
         return str
                 // Remove punctuation
                 .replace("`", " ").replace("!", " ").replace("#", " ").replace("$", " ").replace("^", " ")
-                .replace("&", " ").replace("[", " ").replace("]", " ").replace("{", " ").replace("}", " ").replace("|", " ")
-                .replace(";", " ").replace("*", " ").replace(".", " ").replace("?", " ").replace("'", " ").replace("/", " ")
+                .replace("&", " ").replace("[", " ").replace("]", " ").replace("{", " ").replace("}", " ")
+                .replace("|", " ").replace(";", " ").replace("*", " ").replace(".", " ").replace("?", " ")
+                .replace("'", " ").replace("/", " ")
                 // Prevent injection
                 .replace("=", " ")
                 .replace("<", "&lt;")

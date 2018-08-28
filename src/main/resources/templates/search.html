@@ -4,15 +4,22 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-    <form id="form1" action="#" th:action="@{/search}" th:object="${searchAuthorForm}", method="post">
+    <form id="form1" action="#" th:action="@{/search}" th:object="${searchForm}", method="post">
+
       <label class="search-label">Find book(s) by author:</label>
-        <input name="author" id="search" type="text" placeholder="e.g, Robert Martin">
-      <span class="form-error"
+        <input name="author" id="search0" type="text" placeholder="e.g, Robert Martin">
+        <span class="form-error"
             th:if="${#fields.hasErrors('author')}"
             th:errors="*{author}">Invalid title</span>
+
+      <label class="search-label">Find book by title:</label>
+      <input name="title" id="search1" type="text" placeholder="e.g, Spring in action">
+      <span class="form-error"
+            th:if="${#fields.hasErrors('title')}"
+            th:errors="*{title}">Invalid title</span>
+
         <input id="submit" class="button" type="submit" value="Search" />
-        </input>
-        <div th:if="${not #lists.isEmpty(searchAuthorForm)}">
+      <div th:if="${not #lists.isEmpty(searchForm)}">
           <h3>Search results:</h3>
           <table class="members-table">
             <tr>
@@ -21,7 +28,7 @@
             </tr>
 
             <!--We get the books from the form-->
-            <tr th:each="b: ${searchAuthorForm.getBooks()}">
+            <tr th:each="b: ${searchForm.getBooks()}">
               <td th:if="${b.title != null}" th:text="${b.title}"></td>
               <td th:if="${b.author != null}" th:text="${b.author}"></td>
             </tr>

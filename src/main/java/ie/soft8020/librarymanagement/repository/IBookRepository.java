@@ -9,7 +9,10 @@ public interface IBookRepository {
 	void save(Book book);
 	void remove(Book book);
 	List<Book> findAll();
-	Book getByTitle(String title);
+
+    List<Book> getByAuthorOrTitle(String author, String title);
+
+    Book getByTitle(String title);
     Book getByAuthor(String author);
 	List<Book> getBooksByAuthor(String author);
 	List<Book> findBooksLoanedByMembers();

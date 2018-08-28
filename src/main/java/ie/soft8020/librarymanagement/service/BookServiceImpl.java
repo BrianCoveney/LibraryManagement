@@ -55,5 +55,8 @@ public class BookServiceImpl implements IBookService {
 		return iBookRepository.findBooksLoanedByMembers();
 	}
 
-
+    @Override
+    public List<Book> getBooksByAuthorOrTitle(String author, String title) {
+        return iBookRepository.getByAuthorOrTitle(author, title);
+    }
 }
