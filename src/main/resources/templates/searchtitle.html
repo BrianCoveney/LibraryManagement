@@ -4,62 +4,29 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-  <form id="form1" action="#" th:action="@{/searchtitle}" th:object="${bookTitle}">
+  <form id="form1" action="#" th:action="@{/searchtitle}" th:object="${searchForm}" method="post">
     <label class="search-label">Find book(s) by title:</label>
-    <input name="book" id="search" type="text" placeholder="e.g, Clean Code">
+    <input name="title" id="search" type="text" placeholder="e.g, Clean Code">
+    <span class="form-error"
+          th:if="${#fields.hasErrors('title')}"
+          th:errors="*{title}">Invalid id</span>
     <input id="submit" class="button" type="submit" value="Search" />
     </input>
-    <div th:if="${not #lists.isEmpty(bookTitle)}">
+    <div th:if="${not #lists.isEmpty(searchForm.author)}">
       <h3>Search results:</h3>
       <table class="members-table">
         <tr>
           <th>Title</th>
           <th>Author</th>
         </tr>
-        <tr>
-          <td th:if="${bookTitle.title != null}" th:text="${bookTitle.title}"></td>
-          <td th:if="${bookTitle.author != null}" th:text="${bookTitle.author}"></td>
-        </tr>
-      </table>
-    </div>
-  </form>
-  <form id="form2" action="#" th:action="@{/search}" th:object="${booksAll}">
-    <input type="button" class="button" id="find-all-button" value="Show All Books" onclick="findAllButtonClick()" />
-    <div id="all-books-cont" style="display: none">
-      <h3 id="all-books">All books:</h3>
-      <table class="members-table">
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-        </tr>
-        <tr th:each="b: ${booksAll}">
-          <td th:text="${b.title}">No Title!</td>
-          <td th:text="${b.author}">No Author!</td>
+        <tr th:each="b: ${searchForm}">
+          <td th:if="${b.title != null}" th:text="${b.title}"></td>
+          <td th:if="${b.author != null}" th:text="${b.author}"></td>
         </tr>
       </table>
     </div>
   </form>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
-
-<script>
-    function findAllButtonClick() {
-        var booksDivContainer = document.getElementById("all-books-cont");
-        var toggleButton = document.getElementById("find-all-button");
-
-        if(booksDivContainer.style.display === "none") {
-            booksDivContainer.style.display = "block";
-        } else {
-            booksDivContainer.style.display = "none";
-        }
-
-        if (toggleButton.value === "Show All Books") {
-            toggleButton.value = "Hide All Books"
-        } else {
-            toggleButton.value = "Show All Books"
-        }
-    }
-</script>
-
 </body>
 </html>

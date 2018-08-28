@@ -26,13 +26,13 @@ public class PaymentController {
     * First form
     */
     @RequestMapping(value = "/payment")
-    public String payment(PaymentForm paymentForm) {
+    public String findMember(PaymentForm paymentForm) {
         return "payment";
     }
 
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
-    public String payment(@ModelAttribute @Valid PaymentForm paymentForm,
-                          BindingResult bindingResult, Model model) {
+    public String findMember(@ModelAttribute @Valid PaymentForm paymentForm,
+                             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");

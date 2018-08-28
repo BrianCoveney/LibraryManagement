@@ -7,9 +7,9 @@
     <h2 class="search-title">Payment</h2>
 
   <form id="form-search-member" action="#" th:action="@{/payment}" th:object="${paymentForm}" method="post">
-        <label><b>First please enter Member Id:</b></label> <input name="memberID" id="member" type="text">
+        <label><b>First please enter Member Id:</b></label> <input name="memberId" id="member" type="text">
         <span class="form-error"
-              th:if="${#fields.hasErrors('memberID')}"
+              th:if="${#fields.hasErrors('memberId')}"
               th:errors="*{memberID}">Invalid id</span>
         <input id="submit" type="submit" class="button" value="Search"/>
         </input>
