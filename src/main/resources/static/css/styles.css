@@ -47,11 +47,11 @@ p {
 
 
 .title2, .title4 {
-    min-width: 400px;
+    min-width: 600px;
 }
 
 .title1, .title3, .title5 {
-    min-width: 400px;
+    min-width: 600px;
 }
 
 #title-container {
