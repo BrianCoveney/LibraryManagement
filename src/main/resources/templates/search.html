@@ -19,27 +19,33 @@
             th:errors="*{title}">Invalid title</span>
 
         <input id="submit" class="button" type="submit" value="Search" />
-      <div th:if="${not #lists.isEmpty(searchForm)}">
+      <div th:if="${not #lists.isEmpty(booksLoans)}">
           <h3>Search results:</h3>
           <table class="members-table">
             <tr>
               <th>Book ID</th>
               <th>Book Title</th>
               <th>On Loan to Member ID</th>
+              <th>On Loan to Member Name</th>
             </tr>
             <td>
-              <div th:each="element: ${mapLoans}">
+              <div th:each="element: ${booksLoans}">
                 <span class="search-span" th:text="${element.value.bookId}">No Id!</span>
               </div>
             </td>
             <td>
-              <div th:each="element: ${mapLoans}">
+              <div th:each="element: ${booksLoans}">
                 <span class="search-span" th:text="${element.key.title}">No Id!</span>
               </div>
             </td>
             <td>
-              <div th:each="element: ${mapLoans}">
+              <div th:each="element: ${booksLoans}">
                 <span class="search-span" th:text="${element.value.memberId}">No Id!</span>
+              </div>
+            </td>
+            <td>
+              <div th:each="element: ${loansMembers}">
+                <span class="search-span" th:text="${element.value.name}">No Id!</span>
               </div>
             </td>
           </table>

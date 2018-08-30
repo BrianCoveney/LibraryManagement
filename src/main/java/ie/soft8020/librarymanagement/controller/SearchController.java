@@ -42,8 +42,7 @@ public class SearchController {
         List<Loan> loans;
 
         Map<Book, Loan> mapBooksLoans = new LinkedHashMap<>();
-
-
+        Map<Loan, Member> mapLoansMember = new LinkedHashMap<>();
 
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");
@@ -57,18 +56,18 @@ public class SearchController {
 
             for (int i = 0; i < books.size(); i++) {
                 members = books.get(i).getMembers();
-                map.put(books.get(i), members.get(i));
-            }
-
-            for (int i =0 ; i < members.size(); i++) {
                 loans = members.get(i).getLoans();
                 mapBooksLoans.put(books.get(i), loans.get(i));
+                mapLoansMember.put(loans.get(i), members.get(i));
             }
         }
 
         model.addAttribute("searchForm", book);
 
-        model.addAttribute("mapLoans", mapBooksLoans);
+        // Ours maps created in the for loop above. Theses are used in the view to fill our table with
+        // details for a particular book, including whether it is on loan or on shelf.
+        model.addAttribute("booksLoans", mapBooksLoans);
+        model.addAttribute("loansMembers", mapLoansMember);
 
         model.addAttribute("booksAll", bookService.findAll());
 
