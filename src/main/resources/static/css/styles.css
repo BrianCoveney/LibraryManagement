@@ -203,3 +203,7 @@ h2, h4{
     margin-bottom: 15px;
 }
 
+.search-table {
+    float: left;
+}
+

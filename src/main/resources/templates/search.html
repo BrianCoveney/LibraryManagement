@@ -21,33 +21,25 @@
         <input id="submit" class="button" type="submit" value="Search" />
       <div th:if="${not #lists.isEmpty(booksLoans)}">
           <h3>Search results:</h3>
-          <table class="members-table">
+          <table class="members-table search-table">
             <tr>
               <th>Book ID</th>
               <th>Book Title</th>
               <th>On Loan to Member ID</th>
+            </tr>
+            <tr th:each="element, iterStat: ${booksLoans}">
+              <td th:text="${element.value.bookId}"></td>
+              <td th:text="${element.key.title}"></td>
+              <td th:text="${element.value.memberId}"></td>
+            </tr>
+          </table>
+          <table class="members-table search-table">
+            <tr>
               <th>On Loan to Member Name</th>
             </tr>
-            <td>
-              <div th:each="element: ${booksLoans}">
-                <span class="search-span" th:text="${element.value.bookId}">No Id!</span>
-              </div>
-            </td>
-            <td>
-              <div th:each="element: ${booksLoans}">
-                <span class="search-span" th:text="${element.key.title}">No Id!</span>
-              </div>
-            </td>
-            <td>
-              <div th:each="element: ${booksLoans}">
-                <span class="search-span" th:text="${element.value.memberId}">No Id!</span>
-              </div>
-            </td>
-            <td>
-              <div th:each="element: ${loansMembers}">
-                <span class="search-span" th:text="${element.value.name}">No Id!</span>
-              </div>
-            </td>
+            <tr th:each="element: ${loansMembers}">
+              <td th:text="${element.value.name}"></td>
+            </tr>
           </table>
       </div>
     </form>
