@@ -145,18 +145,15 @@ public class BookRepositoryImpl implements IBookRepository {
                 List<Member> members = new ArrayList<>();
                 List<Book> books = new ArrayList<>();
                 List<Loan> loans = new ArrayList<>();
-                Book book = null;
+
                 Member member;
                 Loan loan;
 
                 while (rs.next()) {
-                    if (book == null) {
-                        book = new Book();
-                        book.setBookID(rs.getInt("book_id"));
-                        book.setTitle(rs.getString("title"));
-                        book.setAuthor(rs.getString("author"));
-                        books.add(book);
-                    }
+                    Book book = new Book();
+                    book.setBookID(rs.getInt("book_id"));
+                    book.setTitle(rs.getString("title"));
+                    book.setAuthor(rs.getString("author"));
 
                     member = MemberFactory.createMember("name", new Date());
                     member.setMemberID(rs.getInt("member_id"));
@@ -167,9 +164,11 @@ public class BookRepositoryImpl implements IBookRepository {
                     loan.setBookId(rs.getInt("book_id"));
                     loan.setMemberId(rs.getInt("member_id"));
                     loans.add(loan);
+                    member.setLoans(loans);
 
+                    book.setMembers(members);
+                    books.add(book);
                 }
-                book.setMembers(members);
 
                 return books;
             }

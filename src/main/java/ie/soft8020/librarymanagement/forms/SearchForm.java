@@ -1,6 +1,7 @@
 package ie.soft8020.librarymanagement.forms;
 
 import ie.soft8020.librarymanagement.domain.Book;
+import ie.soft8020.librarymanagement.domain.Loan;
 import ie.soft8020.librarymanagement.domain.Member;
 import org.hibernate.validator.constraints.Length;
 
@@ -18,8 +19,25 @@ public class SearchForm {
     private String title;
 
     private List<Book> books;
-
     private Member member;
+    private Book book;
+    private Loan loan;
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public void setLoan(Loan loan) {
+        this.loan = loan;
+    }
 
     public Member getMember() {
         return member;

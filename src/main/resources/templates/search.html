@@ -23,31 +23,27 @@
           <h3>Search results:</h3>
           <table class="members-table">
             <tr>
+              <th>Book ID</th>
               <th>Book Title</th>
-              <th>Book Author</th>
               <th>On Loan to Member ID</th>
-              <th>On Loan to Member Name</th>
             </tr>
-
-            <!--We get the books from the form-->
-            <tr th:each="book: ${searchForm.books}">
-              <td th:if="${book.title != null}" th:text="${book.title}"></td>
-              <td th:if="${book.author != null}" th:text="${book.author}"></td>
-              <td>
-                <div th:each="element: ${bookmembermap}">
-                  <span id="search-span" class="title3" th:text="${element.value.memberID}">No Id!</span>
-                </div>
-              </td>
-              <td>
-                <div th:each="element: ${bookmembermap}">
-                  <span id="search-span" class="title3" th:text="${element.value.name}">No Id!</span>
-                </div>
-              </td>
-
-            </tr>
-
+            <td>
+              <div th:each="element: ${mapLoans}">
+                <span class="search-span" th:text="${element.value.bookId}">No Id!</span>
+              </div>
+            </td>
+            <td>
+              <div th:each="element: ${mapLoans}">
+                <span class="search-span" th:text="${element.key.title}">No Id!</span>
+              </div>
+            </td>
+            <td>
+              <div th:each="element: ${mapLoans}">
+                <span class="search-span" th:text="${element.value.memberId}">No Id!</span>
+              </div>
+            </td>
           </table>
-        </div>
+      </div>
     </form>
     <form id="form2" action="#" th:action="@{/search}" th:object="${booksAll}">
         <input type="button" class="button" id="find-all-button" value="Show All Books" onclick="findAllButtonClick()" />
