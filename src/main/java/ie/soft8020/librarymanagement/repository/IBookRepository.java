@@ -16,4 +16,6 @@ public interface IBookRepository {
     Book getByAuthor(String author);
 	List<Book> getBooksByAuthor(String author);
 	List<Book> findBooksLoanedByMembers();
+
+    List<Book> findBooksLoanedWithSearch(String author, String title);
 }

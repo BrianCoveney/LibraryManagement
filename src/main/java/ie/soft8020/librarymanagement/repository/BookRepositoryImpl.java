@@ -1,6 +1,7 @@
 package ie.soft8020.librarymanagement.repository;
 
 import ie.soft8020.librarymanagement.domain.Book;
+import ie.soft8020.librarymanagement.domain.Loan;
 import ie.soft8020.librarymanagement.domain.Member;
 import ie.soft8020.librarymanagement.domain.MemberFactory;
 import ie.soft8020.librarymanagement.rowmapper.BookRowMapper;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class BookRepositoryImpl implements IBookRepository {
@@ -103,7 +102,6 @@ public class BookRepositoryImpl implements IBookRepository {
                 + "from books b, members m, loan l WHERE b.book_id = l.book_id and m.member_id = l.member_id";
 
 		return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
-
 			@Override
 			public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 List<Member> members = new ArrayList<>();
@@ -126,22 +124,56 @@ public class BookRepositoryImpl implements IBookRepository {
 		});
 	}
 
-//    @Override
-//    public List<Book> getByTitle(String title) {
-//        sql = "SELECT title, author FROM books WHERE title = ?";
-//        return jdbcTemplate.query(sql, new Object[] { title }, new ResultSetExtractor<List<Book>>() {
-//
-//            @Override
-//            public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
-//                List<Book> books = new ArrayList<>();
-//                while (rs.next()) {
-//                    Book book = new Book();
-//                    book.setTitle(rs.getString("title"));
-//                    book.setAuthor(rs.getString("author"));
-//                    books.add(book);
-//                }
-//                return books;
-//            }
-//        });
-//    }
+
+    @Override
+    public List<Book> findBooksLoanedWithSearch(String author, String title) {
+        sql = "SELECT b.book_id, b.author, b.title, m.member_id, m.name " +
+                "FROM books b, members m, loan l " +
+                "WHERE b.book_id = l.book_id " +
+                "AND m.member_id = l.member_id " +
+                "AND b.author = ? " +
+                "UNION " +
+                "SELECT b.book_id, b.author, b.title, m.member_id, m.name " +
+                "FROM books b, members m, loan l " +
+                "WHERE b.book_id = l.book_id " +
+                "AND m.member_id = l.member_id " +
+                "AND b.title = ?";
+
+        return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
+            @Override
+            public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                List<Member> members = new ArrayList<>();
+                List<Book> books = new ArrayList<>();
+                List<Loan> loans = new ArrayList<>();
+                Book book = null;
+                Member member;
+                Loan loan;
+
+                while (rs.next()) {
+                    if (book == null) {
+                        book = new Book();
+                        book.setBookID(rs.getInt("book_id"));
+                        book.setTitle(rs.getString("title"));
+                        book.setAuthor(rs.getString("author"));
+                        books.add(book);
+                    }
+
+                    member = MemberFactory.createMember("name", new Date());
+                    member.setMemberID(rs.getInt("member_id"));
+                    member.setName(rs.getString("name"));
+                    members.add(member);
+
+                    loan = new Loan();
+                    loan.setBookId(rs.getInt("book_id"));
+                    loan.setMemberId(rs.getInt("member_id"));
+                    loans.add(loan);
+
+                }
+                book.setMembers(members);
+
+                return books;
+            }
+        }, author, title);
+    }
+
 }

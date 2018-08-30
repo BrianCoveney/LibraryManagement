@@ -51,7 +51,7 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public List<Book> findAllBooksOverdue() {
+	public List<Book> findBooksLoanedByMembers() {
 		return iBookRepository.findBooksLoanedByMembers();
 	}
 

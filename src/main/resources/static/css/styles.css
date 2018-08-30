@@ -198,3 +198,8 @@ h2, h4{
 #form-controls-container {
     display: inline;
 }
+
+#search-span {
+    margin-bottom: 15px;
+}
+

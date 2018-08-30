@@ -23,14 +23,27 @@
           <h3>Search results:</h3>
           <table class="members-table">
             <tr>
-              <th>Title</th>
-              <th>Author</th>
+              <th>Book Title</th>
+              <th>Book Author</th>
+              <th>On Loan to Member ID</th>
+              <th>On Loan to Member Name</th>
             </tr>
 
             <!--We get the books from the form-->
-            <tr th:each="b: ${searchForm.getBooks()}">
-              <td th:if="${b.title != null}" th:text="${b.title}"></td>
-              <td th:if="${b.author != null}" th:text="${b.author}"></td>
+            <tr th:each="book: ${searchForm.books}">
+              <td th:if="${book.title != null}" th:text="${book.title}"></td>
+              <td th:if="${book.author != null}" th:text="${book.author}"></td>
+              <td>
+                <div th:each="element: ${bookmembermap}">
+                  <span id="search-span" class="title3" th:text="${element.value.memberID}">No Id!</span>
+                </div>
+              </td>
+              <td>
+                <div th:each="element: ${bookmembermap}">
+                  <span id="search-span" class="title3" th:text="${element.value.name}">No Id!</span>
+                </div>
+              </td>
+
             </tr>
 
           </table>

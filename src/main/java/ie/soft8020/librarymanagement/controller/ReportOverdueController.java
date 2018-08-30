@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.*;
 
 @Controller
-public class ReportBooksOverdue {
+public class ReportOverdueController {
 
     @Autowired
     IBookService bookService;
@@ -25,7 +25,7 @@ public class ReportBooksOverdue {
 		Map<Book, Member> map = new LinkedHashMap<>();
 
 		// We create a book list that retrieves data from the db
-		List<Book> books = bookService.findAllBooksOverdue();
+		List<Book> books = bookService.findBooksLoanedByMembers();
 
 		// For each book retrieved, we find the associated member(s).
         // Then we copy the list of members to our ArrayList.

@@ -12,6 +12,6 @@ public interface IBookService {
 	Book getByTitle(String title);
     Book getByAuthor(String author);
 	List<Book> getBooksByAuthor(String author);
-	List<Book> findAllBooksOverdue();
+	List<Book> findBooksLoanedByMembers();
     List<Book> getBooksByAuthorOrTitle(String author, String title);
 }
