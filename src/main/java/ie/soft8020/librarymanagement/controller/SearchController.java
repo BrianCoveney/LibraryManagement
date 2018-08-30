@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +36,7 @@ public class SearchController {
                                       BindingResult bindingResult, Model model) {
 
         Book book = new Book();
-        Map<Book, Member> map = new LinkedHashMap<>();
-        List<Member> members = new ArrayList<>();
+        List<Member> members;
         List<Loan> loans;
 
         Map<Book, Loan> mapBooksLoans = new LinkedHashMap<>();
@@ -62,6 +60,7 @@ public class SearchController {
             }
         }
 
+        // For search form, including sanitizing and validating
         model.addAttribute("searchForm", book);
 
         // Ours maps created in the for loop above. Theses are used in the view to fill our table with

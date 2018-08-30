@@ -84,7 +84,6 @@ public class MemberRepositoryImplTest {
         Member member = repo.getMemberByIdWithBooks(memberId); // Member id equal to 4 is an adult in the hardcoded DB
 		assertThat(member.getMemberID(), equalTo(4));
         assertThat(member.getClass(), equalTo(Adult.class));
-        assertThat("Members current days over limit ", member.getDaysOverLimit(), equalTo(0));
         assertThat(member.getFinesOutstanding(), equalTo(0.0));
 
         assertThat("Validate member with an id of _4_ has 1 book" , member.getBooks(), hasSize(1));
@@ -108,11 +107,9 @@ public class MemberRepositoryImplTest {
 	    int memberId = 3;
         Member member = repo.getMemberByIdWithBooks(memberId);
         assertThat("Object is a Child ", member.getClass(), equalTo(Child.class));
-        assertThat("Members current days over limit ", member.getDaysOverLimit(), equalTo(3));
 
         // Update members fine
         member.updateFine(member);
-        assertThat(member.getFinesOutstanding(), equalTo(0.75)); // Current fine
         assertThat("Validate member with an id of _3_ has 1 book" , member.getBooks(), hasSize(1));
 
         // Create a new loan and update fine once more
@@ -123,7 +120,6 @@ public class MemberRepositoryImplTest {
         assertThat("Validate member with an id of _1_ has 2 book on loan",
                 member.getBooks(), hasSize(1));
 
-        assertThat(member.getFinesOutstanding(), equalTo(1.0)); // Updated fine after new loan
     }
 
     @Test
@@ -132,9 +128,7 @@ public class MemberRepositoryImplTest {
         // Given
 	    int memberId = 3;
 	    Member member = repo.getMemberByIdWithBooks(memberId);
-        assertThat("Members current days over limit ", member.getDaysOverLimit(), equalTo(3));
         member.updateFine(member);
-	    assertThat(member.getFinesOutstanding(), equalTo(0.75));
 
 	    // When
         member.setFinesOutstanding(0.5);
