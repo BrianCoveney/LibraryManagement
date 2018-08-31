@@ -1,6 +1,5 @@
 package ie.soft8020.librarymanagement.forms;
 
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

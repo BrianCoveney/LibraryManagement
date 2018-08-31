@@ -204,7 +204,7 @@ public class BookRepositoryImpl implements IBookRepository {
                 "AND m.member_id = l.member_id " +
                 "AND m.member_id  = ? " +
                 "UNION " +
-                "SELECT b.book_id, b.author, b.title, m.member_id, m.name, m.fines_outstanding  " +
+                "SELECT b.book_id, b.author, b.title, m.member_id, m.name, m.fines_outstanding " +
                 "FROM books b, members m, loan l " +
                 "WHERE b.book_id = l.book_id " +
                 "AND m.member_id = l.member_id " +
@@ -229,7 +229,7 @@ public class BookRepositoryImpl implements IBookRepository {
                     member = MemberFactory.createMember("name", new Date());
                     member.setMemberID(rs.getInt("member_id"));
                     member.setName(rs.getString("name"));
-                    member.setFinesOutstanding(rs.getInt("finesOutstanding"));
+                    member.setFinesOutstanding(rs.getDouble("fines_outstanding"));
                     members.add(member);
 
                     loan = new Loan();

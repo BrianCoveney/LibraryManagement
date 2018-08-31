@@ -22,6 +22,8 @@ public class LoanForm {
     private Member member;
     private Book book;
     private Loan loan;
+    private double finesOutstanding;
+    private String name;
 
     public Integer getMemberID() {
         return memberID;
@@ -69,5 +71,21 @@ public class LoanForm {
 
     public void setLoan(Loan loan) {
         this.loan = loan;
+    }
+
+    public double getFinesOutstanding() {
+        return finesOutstanding;
+    }
+
+    public void setFinesOutstanding(double finesOutstanding) {
+        this.finesOutstanding = finesOutstanding;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -15,6 +15,7 @@ public abstract class Member {
 	private String name;
 	private String address;
 	private Date dateOfBirth;
+	private double finesOutstanding;
 	private List<Loan> loans;
 	private List<Book> books;
 
@@ -35,10 +36,6 @@ public abstract class Member {
 	public abstract int getLoanLength();
 
 	public abstract void setLoanLength(int loanLength);
-
-    public abstract double getFinesOutstanding();
-
-    public abstract void setFinesOutstanding(double finesOutstanding);
 
     public abstract double calculateFine(Member members);
 
@@ -96,4 +93,12 @@ public abstract class Member {
 	public void setLoans(List<Loan> loans) {
 		this.loans = loans;
 	}
+
+    public double getFinesOutstanding() {
+        return finesOutstanding;
+    }
+
+    public void setFinesOutstanding(double finesOutstanding) {
+        this.finesOutstanding = finesOutstanding;
+    }
 }

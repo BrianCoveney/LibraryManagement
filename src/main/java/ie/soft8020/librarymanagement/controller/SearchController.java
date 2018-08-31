@@ -48,13 +48,13 @@ public class SearchController {
             List<Book> booksAvailable = bookService.searchBooks_NotOnLoan(sanitizedTitle, sanitizedAuthor);
             bookAvailable.setBooks(booksAvailable);
 
-            List<Book> booksOnLoan = bookService.searchBooks_OnLoan(sanitizedAuthor, sanitizedTitle);
-            bookOnLoan.setBooks(booksOnLoan);
+            List<Book> books = bookService.searchBooks_OnLoan(sanitizedAuthor, sanitizedTitle);
+            bookOnLoan.setBooks(books);
 
-            for (int i = 0; i < booksOnLoan.size(); i++) {
-                members = booksOnLoan.get(i).getMembers();
+            for (int i = 0; i < books.size(); i++) {
+                members = books.get(i).getMembers();
                 loans = members.get(i).getLoans();
-                mapBooksLoans.put(booksOnLoan.get(i), loans.get(i));
+                mapBooksLoans.put(books.get(i), loans.get(i));
                 mapLoansMember.put(loans.get(i), members.get(i));
             }
         }

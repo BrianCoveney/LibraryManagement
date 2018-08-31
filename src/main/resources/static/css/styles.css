@@ -222,7 +222,7 @@ h2, h4{
 }
 
 #member-loan, #book-loan {
-    width: 300px;
+    width: 475px;
 }
 
 #label-book {
@@ -232,4 +232,8 @@ h2, h4{
 .form-error {
     font-style: italic;
     color: red;
+}
+
+.span-label {
+    margin-left: 30px;
 }

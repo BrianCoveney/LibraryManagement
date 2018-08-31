@@ -9,11 +9,8 @@ import java.util.stream.Collectors;
 
 
 public class Adult extends Member {
-
     private int loanLimit;
     private int loanLength;
-    private double finesOutstanding;
-
 
     public Adult(String name, Date dateOfBirth) {
         super(name, dateOfBirth);
@@ -39,16 +36,6 @@ public class Adult extends Member {
     @Override
     public void setLoanLength(int loanLength) {
         this.loanLength = loanLength;
-    }
-
-    @Override
-    public double getFinesOutstanding() {
-        return finesOutstanding;
-    }
-
-    @Override
-    public void setFinesOutstanding(double finesOutstanding) {
-        this.finesOutstanding = finesOutstanding;
     }
 
     @Override

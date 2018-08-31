@@ -13,18 +13,18 @@ import javax.validation.Valid;
 @Controller
 public class LoginController {
 
-    @RequestMapping("index")
+    @RequestMapping("/login")
     public String addUser(UserForm userForm) {
-        return "index";
+        return "login";
     }
 
-    @RequestMapping(value = "/users/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String addUser(@ModelAttribute @Valid UserForm newUserForm,
             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");
-            return "index";
+            return "login";
         } else {
 
             String userName = newUserForm.getUsername();

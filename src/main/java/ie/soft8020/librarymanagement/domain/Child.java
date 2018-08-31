@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Child extends Member {
-
 	private int loanLimit;
 	private int loanLength;
-    private double finesOutstanding;
 
 
     public Child(String name, Date dateOfBirth) {
@@ -39,16 +37,6 @@ public class Child extends Member {
 	public void setLoanLength(int loanLength) {
 		this.loanLength = loanLength;
 	}
-
-    @Override
-    public double getFinesOutstanding() {
-        return finesOutstanding;
-    }
-
-    @Override
-    public void setFinesOutstanding(double finesOutstanding) {
-        this.finesOutstanding = finesOutstanding;
-    }
 
     @Override
     public double calculateFine(Member member) {
