@@ -207,3 +207,11 @@ h2, h4{
     float: left;
 }
 
+.search-table {
+    margin-bottom: 30px;
+}
+
+#form-show-all {
+    display: block;
+    margin-top: 50px;
+}

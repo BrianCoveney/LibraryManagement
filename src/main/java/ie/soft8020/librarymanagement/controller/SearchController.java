@@ -4,7 +4,6 @@ import ie.soft8020.librarymanagement.domain.Book;
 import ie.soft8020.librarymanagement.domain.Loan;
 import ie.soft8020.librarymanagement.domain.Member;
 import ie.soft8020.librarymanagement.forms.SearchForm;
-import ie.soft8020.librarymanagement.repository.IBookRepository;
 import ie.soft8020.librarymanagement.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,9 +24,6 @@ public class SearchController {
     @Autowired
     IBookService bookService;
 
-    @Autowired
-    IBookRepository bookRepository;
-
     @RequestMapping(value = "/search")
     public String searchBooksByAuthor(SearchForm searchForm) { return "search"; }
 
@@ -37,10 +33,8 @@ public class SearchController {
 
         Book bookOnLoan = new Book();
         Book bookAvailable = new Book();
-
         List<Member> members;
         List<Loan> loans;
-
         Map<Book, Loan> mapBooksLoans = new LinkedHashMap<>();
         Map<Loan, Member> mapLoansMember = new LinkedHashMap<>();
 
@@ -51,9 +45,8 @@ public class SearchController {
             String sanitizedAuthor = sanitizeForSearch(searchForm.getAuthor());
             String sanitizedTitle = sanitizeForSearch(searchForm.getTitle());
 
-            List<Book> booksAvailable = bookRepository.searchBooks_NotOnLoan(sanitizedTitle, sanitizedAuthor);
+            List<Book> booksAvailable = bookService.searchBooks_NotOnLoan(sanitizedTitle, sanitizedAuthor);
             bookAvailable.setBooks(booksAvailable);
-            System.out.println(bookAvailable);
 
             List<Book> booksOnLoan = bookService.searchBooks_OnLoan(sanitizedAuthor, sanitizedTitle);
             bookOnLoan.setBooks(booksOnLoan);
@@ -68,7 +61,6 @@ public class SearchController {
 
         // For search form, including sanitizing and validating
         model.addAttribute("searchForm", bookOnLoan);
-
         model.addAttribute("availableBooks", bookAvailable);
 
         // Ours maps created in the for loop above. Theses are used in the view to fill our table with

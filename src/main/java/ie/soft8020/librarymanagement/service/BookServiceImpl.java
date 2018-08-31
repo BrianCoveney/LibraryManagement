@@ -59,4 +59,9 @@ public class BookServiceImpl implements IBookService {
     public List<Book> searchBooks_OnLoan(String author, String title) {
         return iBookRepository.searchForBooksOnLoan(author, title);
     }
+
+    @Override
+    public List<Book> searchBooks_NotOnLoan(String title, String author) {
+        return iBookRepository.searchBooks_NotOnLoan(title, author);
+    }
 }
