@@ -6,7 +6,10 @@ REPLACE INTO books VALUES (1, 'Spring in action', '161729120X, 9781617291203', '
 (6, 'Clean Code', '978-0132350884, 0132350882', 'Robert Martin', 'Prentice Hall', 'First edition', '2008-01-01'),
 (7, 'Design patterns', '978-0201633610, 0201633612', 'Erich Gamma', 'Addison Wesley', 'First edition', '1994-01-01'),
 (8, 'The Clean Coder', '978-0137081073, 0137081073', 'Robert Martin', 'Prentice Hall', 'First edition', '2011-01-01'),
-(9, 'Clean Architecture', '978-0134494166, 0134494164', 'Robert Martin', 'Prentice Hall', 'First edition', '2017-01-01');
+(9, 'Clean Architecture', '978-0134494166, 0134494164', 'Robert Martin', 'Prentice Hall', 'First edition', '2017-01-01'),
+(10, 'Secure architectures with OpenBSD', '9780321193667, 0321193660', 'Brandon Palmer, et al', 'Addison-Wesley', 'First edition', '2004-01-01'),
+(11, 'The age of the economist', '9780321088123, 0321088123', 'Daniel R Fusfeld', 'Addison-Wesley', 'Ninth edition', '2002-01-01'),
+(12, 'Hadoop in action', '1935182196, 9781935182191', 'Chuck Lam', 'Manning Publications', 'First edition', '2011-01-01');
 
 REPLACE INTO members VALUES (1, 'Brian Bloggs', '123 Glen Village Douglas, Cork', '1977-09-18', 4, 14, 0.0),
 (2, 'John Smyth', 'Monkstown Cork', '2001-03-01', 4, 7, 0.0),

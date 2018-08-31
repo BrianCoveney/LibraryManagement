@@ -35,7 +35,9 @@ public class SearchController {
     public String searchBooksByAuthor(@ModelAttribute @Valid SearchForm searchForm,
                                       BindingResult bindingResult, Model model) {
 
-        Book book = new Book();
+        Book bookOnLoan = new Book();
+        Book bookAvailable = new Book();
+
         List<Member> members;
         List<Loan> loans;
 
@@ -49,22 +51,28 @@ public class SearchController {
             String sanitizedAuthor = sanitizeForSearch(searchForm.getAuthor());
             String sanitizedTitle = sanitizeForSearch(searchForm.getTitle());
 
-            List<Book> books = bookRepository.findBooksLoanedWithSearch(sanitizedAuthor, sanitizedTitle);
-            book.setBooks(books);
+            List<Book> booksAvailable = bookRepository.searchBooks_NotOnLoan(sanitizedTitle);
+            bookAvailable.setBooks(booksAvailable);
+            System.out.println(bookAvailable);
 
-            for (int i = 0; i < books.size(); i++) {
-                members = books.get(i).getMembers();
+            List<Book> booksOnLoan = bookService.searchBooks_OnLoan(sanitizedAuthor, sanitizedTitle);
+            bookOnLoan.setBooks(booksOnLoan);
+
+            for (int i = 0; i < booksOnLoan.size(); i++) {
+                members = booksOnLoan.get(i).getMembers();
                 loans = members.get(i).getLoans();
-                mapBooksLoans.put(books.get(i), loans.get(i));
+                mapBooksLoans.put(booksOnLoan.get(i), loans.get(i));
                 mapLoansMember.put(loans.get(i), members.get(i));
             }
         }
 
         // For search form, including sanitizing and validating
-        model.addAttribute("searchForm", book);
+        model.addAttribute("searchForm", bookOnLoan);
+
+        model.addAttribute("availableBooks", bookAvailable);
 
         // Ours maps created in the for loop above. Theses are used in the view to fill our table with
-        // details for a particular book, including whether it is on loan or on shelf.
+        // details for a particular bookOnLoan, including whether it is on loan or on shelf.
         model.addAttribute("booksLoans", mapBooksLoans);
         model.addAttribute("loansMembers", mapLoansMember);
 

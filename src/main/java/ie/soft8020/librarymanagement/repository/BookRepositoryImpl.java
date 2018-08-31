@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public class BookRepositoryImpl implements IBookRepository {
@@ -50,14 +52,6 @@ public class BookRepositoryImpl implements IBookRepository {
 		sql = "SELECT * from books";
         return jdbcTemplate.query(sql, new BookRowMapper());
 	}
-
-    @Override
-    public List<Book> getByAuthorOrTitle(String author, String title) {
-        sql = "SELECT * FROM books WHERE (author = ?) " +
-                "UNION ALL " +
-                "SELECT * FROM books WHERE(title = ?)";
-        return jdbcTemplate.query(sql, new Object[] { author, title }, new BookRowMapper());
-    }
 
     @Override
     public Book getByTitle(String title) {
@@ -124,16 +118,15 @@ public class BookRepositoryImpl implements IBookRepository {
 		});
 	}
 
-
     @Override
-    public List<Book> findBooksLoanedWithSearch(String author, String title) {
-        sql = "SELECT b.book_id, b.author, b.title, m.member_id, m.name " +
+    public List<Book> searchForBooksOnLoan(String author, String title) {
+        sql = "SELECT b.book_id, b.author, b.title, m.member_id, m.name, l.loan_date " +
                 "FROM books b, members m, loan l " +
                 "WHERE b.book_id = l.book_id " +
                 "AND m.member_id = l.member_id " +
                 "AND b.author = ? " +
                 "UNION " +
-                "SELECT b.book_id, b.author, b.title, m.member_id, m.name " +
+                "SELECT b.book_id, b.author, b.title, m.member_id, m.name, l.loan_date " +
                 "FROM books b, members m, loan l " +
                 "WHERE b.book_id = l.book_id " +
                 "AND m.member_id = l.member_id " +
@@ -163,6 +156,7 @@ public class BookRepositoryImpl implements IBookRepository {
                     loan = new Loan();
                     loan.setBookId(rs.getInt("book_id"));
                     loan.setMemberId(rs.getInt("member_id"));
+                    loan.setLoanDate(rs.getDate("loan_date"));
                     loans.add(loan);
                     member.setLoans(loans);
 
@@ -173,6 +167,45 @@ public class BookRepositoryImpl implements IBookRepository {
                 return books;
             }
         }, author, title);
+    }
+
+    @Override
+    public List<Book> searchBooks_NotOnLoan(String title) {
+        sql = "SELECT b.book_id, b.author, b.title, m.member_id FROM books b, members m WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND title=?";
+
+        return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
+            @Override
+            public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                List<Member> members = new ArrayList<>();
+                List<Book> books = new ArrayList<>();
+                List<Loan> loans = new ArrayList<>();
+
+                Member member;
+                Loan loan;
+
+                while (rs.next()) {
+                    Book book = new Book();
+                    book.setBookID(rs.getInt("book_id"));
+                    book.setTitle(rs.getString("title"));
+                    book.setAuthor(rs.getString("author"));
+
+                    member = MemberFactory.createMember("name", new Date());
+                    member.setMemberID(rs.getInt("member_id"));
+                    members.add(member);
+
+                    loan = new Loan();
+                    loan.setBookId(rs.getInt("book_id"));
+                    loan.setMemberId(rs.getInt("member_id"));
+                    loans.add(loan);
+                    member.setLoans(loans);
+
+                    book.setMembers(members);
+                    books.add(book);
+                }
+
+                return books;
+            }
+        }, title);
     }
 
 }

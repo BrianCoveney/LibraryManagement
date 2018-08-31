@@ -21,18 +21,20 @@
         <input id="submit" class="button" type="submit" value="Search" />
       <div th:if="${not #lists.isEmpty(booksLoans)}">
           <h3>Search results:</h3>
+
           <table class="members-table search-table">
             <tr>
               <th>Book ID</th>
               <th>Book Title</th>
               <th>On Loan to Member ID</th>
             </tr>
-            <tr th:each="element, iterStat: ${booksLoans}">
+            <tr th:each="element: ${booksLoans}">
               <td th:text="${element.value.bookId}"></td>
               <td th:text="${element.key.title}"></td>
               <td th:text="${element.value.memberId}"></td>
             </tr>
           </table>
+
           <table class="members-table search-table">
             <tr>
               <th>On Loan to Member Name</th>
@@ -41,6 +43,17 @@
               <td th:text="${element.value.name}"></td>
             </tr>
           </table>
+
+          <table class="members-table search-table">
+            <tr>
+              <th>Available Books</th>
+            </tr>
+            <tr th:each="b: ${availableBooks.books[0]}">
+              <td th:text="${b.title}"></td>
+              <td th:text="${b.author}"></td>
+            </tr>
+          </table>
+
       </div>
     </form>
     <form id="form2" action="#" th:action="@{/search}" th:object="${booksAll}">
