@@ -170,8 +170,10 @@ public class BookRepositoryImpl implements IBookRepository {
     }
 
     @Override
-    public List<Book> searchBooks_NotOnLoan(String title) {
-        sql = "SELECT b.book_id, b.author, b.title, m.member_id FROM books b, members m WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND title=?";
+    public List<Book> searchBooks_NotOnLoan(String title, String author) {
+        sql = "SELECT b.book_id, b.author, b.title, m.member_id FROM books b, members m WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND title=? " +
+                "UNION " +
+                "SELECT b.book_id, b.author, b.title, m.member_id FROM books b, members m WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND author=?";
 
         return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
             @Override
@@ -205,7 +207,7 @@ public class BookRepositoryImpl implements IBookRepository {
 
                 return books;
             }
-        }, title);
+        }, title, author);
     }
 
 }

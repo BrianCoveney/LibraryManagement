@@ -51,7 +51,7 @@ public class SearchController {
             String sanitizedAuthor = sanitizeForSearch(searchForm.getAuthor());
             String sanitizedTitle = sanitizeForSearch(searchForm.getTitle());
 
-            List<Book> booksAvailable = bookRepository.searchBooks_NotOnLoan(sanitizedTitle);
+            List<Book> booksAvailable = bookRepository.searchBooks_NotOnLoan(sanitizedTitle, sanitizedAuthor);
             bookAvailable.setBooks(booksAvailable);
             System.out.println(bookAvailable);
 
