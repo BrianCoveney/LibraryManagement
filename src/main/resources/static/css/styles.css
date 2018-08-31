@@ -213,5 +213,23 @@ h2, h4{
 
 #form-show-all {
     display: block;
-    margin-top: 50px;
+    margin-top: 150px;
+}
+
+#form-search-loan {
+    display: flex;
+    flex-direction: column;
+}
+
+#member-loan, #book-loan {
+    width: 300px;
+}
+
+#label-book {
+    margin-top: 40px;
+}
+
+.form-error {
+    font-style: italic;
+    color: red;
 }

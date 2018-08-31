@@ -15,4 +15,5 @@ public interface IBookService {
 	List<Book> findBooksLoanedByMembers();
     List<Book> searchBooks_OnLoan(String author, String title);
     List<Book> searchBooks_NotOnLoan(String title, String author);
+    List<Book> searchBooksUnavailable(int memberID, int bookID);
 }

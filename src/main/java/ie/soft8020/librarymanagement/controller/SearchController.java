@@ -25,11 +25,11 @@ public class SearchController {
     IBookService bookService;
 
     @RequestMapping(value = "/search")
-    public String searchBooksByAuthor(SearchForm searchForm) { return "search"; }
+    public String searchBooks(SearchForm searchForm) { return "search"; }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String searchBooksByAuthor(@ModelAttribute @Valid SearchForm searchForm,
-                                      BindingResult bindingResult, Model model) {
+    public String searchBooks(@ModelAttribute @Valid SearchForm searchForm,
+                              BindingResult bindingResult, Model model) {
 
         Book bookOnLoan = new Book();
         Book bookAvailable = new Book();

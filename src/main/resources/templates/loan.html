@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/head :: head"></head>
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<main>
+    <h2 class="search-title">Loan</h2>
+
+    <form id="form-search-loan" action="#" th:action="@{/loan}" th:object="${loanForm}" method="post">
+      <label><b>Please enter Member Id:</b></label>
+      <input name="memberID" id="member-loan" type="text">
+      <span class="form-error"
+            th:if="${#fields.hasErrors('memberID')}"
+            th:errors="*{memberID}">Invalid id</span>
+      <label id="label-book"><b>Please enter Book Id:</b></label>
+      <input name="bookID" id="book-loan" type="text" >
+      <span class="form-error"
+            th:if="${#fields.hasErrors('bookID')}"
+            th:errors="*{bookID}">Invalid id</span>
+
+
+      <input id="submit" type="submit" class="button" value="Search"/></input>
+
+    </form>
+
+	</main>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

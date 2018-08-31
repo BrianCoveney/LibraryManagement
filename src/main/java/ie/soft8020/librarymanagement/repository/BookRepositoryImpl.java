@@ -191,10 +191,60 @@ public class BookRepositoryImpl implements IBookRepository {
                     book.setAuthor(rs.getString("author"));
                     books.add(book);
                 }
-
                 return books;
             }
         }, title, author);
+    }
+
+    @Override
+    public List<Book> searchBooksUnavailable(int memberID, int bookID) {
+        sql = "SELECT b.book_id, b.author, b.title, m.member_id, m.name, m.fines_outstanding " +
+                "FROM books b, members m, loan l " +
+                "WHERE b.book_id = l.book_id " +
+                "AND m.member_id = l.member_id " +
+                "AND m.member_id  = ? " +
+                "UNION " +
+                "SELECT b.book_id, b.author, b.title, m.member_id, m.name, m.fines_outstanding  " +
+                "FROM books b, members m, loan l " +
+                "WHERE b.book_id = l.book_id " +
+                "AND m.member_id = l.member_id " +
+                "AND b.book_id = ?";
+
+        return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
+            @Override
+            public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                List<Member> members = new ArrayList<>();
+                List<Book> books = new ArrayList<>();
+                List<Loan> loans = new ArrayList<>();
+
+                Member member;
+                Loan loan;
+
+                while (rs.next()) {
+                    Book book = new Book();
+                    book.setBookID(rs.getInt("book_id"));
+                    book.setTitle(rs.getString("title"));
+                    book.setAuthor(rs.getString("author"));
+
+                    member = MemberFactory.createMember("name", new Date());
+                    member.setMemberID(rs.getInt("member_id"));
+                    member.setName(rs.getString("name"));
+                    member.setFinesOutstanding(rs.getInt("finesOutstanding"));
+                    members.add(member);
+
+                    loan = new Loan();
+                    loan.setBookId(rs.getInt("book_id"));
+                    loan.setMemberId(rs.getInt("member_id"));
+                    loans.add(loan);
+                    member.setLoans(loans);
+
+                    book.setMembers(members);
+                    books.add(book);
+                }
+
+                return books;
+            }
+        }, memberID, bookID);
     }
 
 }

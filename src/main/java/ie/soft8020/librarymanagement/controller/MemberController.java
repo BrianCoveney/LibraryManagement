@@ -20,7 +20,7 @@ public class MemberController {
 	public String index(Model model) {
 		List<Member> members = memberService.findAll();
 		model.addAttribute("memberskey", members);
-		return "index";
+		return "loan";
 	}
 
 }

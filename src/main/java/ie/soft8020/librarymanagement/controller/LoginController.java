@@ -13,9 +13,9 @@ import javax.validation.Valid;
 @Controller
 public class LoginController {
 
-    @RequestMapping("/users/login")
+    @RequestMapping("index")
     public String addUser(UserForm userForm) {
-        return "users/login";
+        return "index";
     }
 
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
@@ -24,10 +24,19 @@ public class LoginController {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");
-            return "users/login";
+            return "index";
         } else {
-            model.addAttribute("user", newUserForm);
-            return "redirect:/";
+
+            String userName = newUserForm.getUsername();
+            String password = newUserForm.getPassword();
+
+            if (userName.equals("admin") && password.equals("password")) {
+                return "redirect:/payment";
+            }
+
+            model.addAttribute("userForm", newUserForm);
+            return "redirect:/search";
+
         }
     }
 }
