@@ -171,37 +171,24 @@ public class BookRepositoryImpl implements IBookRepository {
 
     @Override
     public List<Book> searchBooks_NotOnLoan(String title, String author) {
-        sql = "SELECT b.book_id, b.author, b.title, m.member_id FROM books b, members m WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND title=? " +
+        sql = "SELECT b.book_id, b.author, b.title, m.member_id " +
+                "FROM books b, members m " +
+                "WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND title=? " +
                 "UNION " +
-                "SELECT b.book_id, b.author, b.title, m.member_id FROM books b, members m WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND author=?";
+                "SELECT b.book_id, b.author, b.title, m.member_id " +
+                "FROM books b, members m " +
+                "WHERE NOT EXISTS(Select * FROM loan l WHERE b.book_id = l.book_id) AND author=?";
 
         return jdbcTemplate.query(sql, new ResultSetExtractor<List<Book>>() {
             @Override
             public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                List<Member> members = new ArrayList<>();
                 List<Book> books = new ArrayList<>();
-                List<Loan> loans = new ArrayList<>();
-
-                Member member;
-                Loan loan;
 
                 while (rs.next()) {
                     Book book = new Book();
                     book.setBookID(rs.getInt("book_id"));
                     book.setTitle(rs.getString("title"));
                     book.setAuthor(rs.getString("author"));
-
-                    member = MemberFactory.createMember("name", new Date());
-                    member.setMemberID(rs.getInt("member_id"));
-                    members.add(member);
-
-                    loan = new Loan();
-                    loan.setBookId(rs.getInt("book_id"));
-                    loan.setMemberId(rs.getInt("member_id"));
-                    loans.add(loan);
-                    member.setLoans(loans);
-
-                    book.setMembers(members);
                     books.add(book);
                 }
 
