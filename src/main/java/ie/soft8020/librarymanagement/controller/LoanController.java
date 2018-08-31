@@ -23,11 +23,11 @@ public class LoanController {
     @Autowired
     IBookService bookService;
 
-    @RequestMapping(value = "/bookloan")
-    public String searchLoans(LoanForm loanForm) { return "bookloan"; }
+    @RequestMapping(value = "/loan")
+    public String searchLoans(LoanForm loanForm) { return "loan"; }
 
 
-    @RequestMapping(value = "/bookloan", method = RequestMethod.POST)
+    @RequestMapping(value = "/loan", method = RequestMethod.POST)
     public String searchLoans(@ModelAttribute @Valid LoanForm loanForm,
                               BindingResult bindingResult, Model model) {
 
@@ -37,7 +37,7 @@ public class LoanController {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Binding result error!");
-            return "bookloan";
+            return "loan";
         } else {
             int memberID = loanForm.getMemberID();
             int bookID = loanForm.getBookID();
@@ -54,6 +54,6 @@ public class LoanController {
         model.addAttribute("loanForm", loanForm);
         model.addAttribute("booksMembers", mapBooksMembers);
 
-        return "bookloan";
+        return "loan";
     }
 }
