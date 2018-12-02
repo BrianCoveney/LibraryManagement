@@ -88,6 +88,15 @@
         </dependency>
 	</dependencies>
 
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal repo</name>
+			<url>file:///spring/LibraryManagement/bin
+			</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
