@@ -92,7 +92,7 @@
 		<repository>
 			<id>internal.repo</id>
 			<name>Internal repo</name>
-			<url>file:///spring/LibraryManagement/bin
+			<url>file:///home/brian/spring/LibraryManagement/bin
 			</url>
 		</repository>
 	</distributionManagement>
