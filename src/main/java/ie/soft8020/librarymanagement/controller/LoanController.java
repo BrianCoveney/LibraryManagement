@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -28,7 +29,7 @@ public class LoanController {
 
 
     @RequestMapping(value = "/loan", method = RequestMethod.POST)
-    public String searchLoans(@ModelAttribute @Valid LoanForm loanForm,
+    public String searchLoans(@RequestBody @ModelAttribute @Valid LoanForm loanForm,
                               BindingResult bindingResult, Model model) {
 
         Book book = new Book();

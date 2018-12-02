@@ -2,11 +2,15 @@ package ie.soft8020.librarymanagement.controller;
 
 import ie.soft8020.librarymanagement.domain.Member;
 import ie.soft8020.librarymanagement.service.IMemberService;
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import reactor.core.publisher.Mono;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,14 +31,12 @@ public class ReportFinesController {
 
 		List<Member> members = memberService.findMembersWithFines();
 
-		for (int i = 0; i < members.size(); i++) {
-		    Member member = members.get(i);
-		    map.put(member.getName(), member.getFinesOutstanding());
+		for (Member member : members) {
+			map.put(member.getName(), member.getFinesOutstanding());
 		}
 
 		model.addAttribute("memberLoanMap", map);
 
 		return "reportfines";
 	}
-
 }

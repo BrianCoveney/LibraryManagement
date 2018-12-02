@@ -27,7 +27,7 @@ public class SearchController {
     @RequestMapping(value = "/search")
     public String searchBooks(SearchForm searchForm) { return "search"; }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String searchBooks(@ModelAttribute @Valid SearchForm searchForm,
                               BindingResult bindingResult, Model model) {
 

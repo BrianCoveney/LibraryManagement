@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -19,7 +20,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute @Valid UserForm newUserForm,
+    public String addUser(@RequestBody @ModelAttribute @Valid UserForm newUserForm,
             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -36,7 +37,6 @@ public class LoginController {
 
             model.addAttribute("userForm", newUserForm);
             return "redirect:/search";
-
         }
     }
 }

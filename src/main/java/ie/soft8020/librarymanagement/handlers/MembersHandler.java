@@ -14,7 +14,7 @@ public class MembersHandler {
     @Autowired
     IMemberService memberService;
 
-    @RequestMapping(value = "/members/{memberID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/member/{memberID}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Member getMembersEndpoint(@PathVariable("memberID") int id) {
         Member member = memberService.getMemberWithBooks(id);

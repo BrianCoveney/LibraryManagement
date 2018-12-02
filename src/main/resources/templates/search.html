@@ -5,7 +5,7 @@
 <header th:replace="fragments/header :: header"></header>
 <main>
   <h2 class="search-title">Search</h2>
-    <form id="form1" action="#" th:action="@{/search}" th:object="${searchForm}", method="post">
+    <form id="form1" action="#" th:action="@{/search}" th:object="${searchForm}", method="get">
 
       <label class="search-label">Find book(s) by author:</label>
         <input name="author" id="search0" type="text" placeholder="e.g, Robert Martin">

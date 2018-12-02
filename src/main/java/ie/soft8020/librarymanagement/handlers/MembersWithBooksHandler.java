@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class LoanHandler {
+public class MembersWithBooksHandler {
 
     @Autowired
     IBookService bookService;
 
     @RequestMapping(value = "/loan/{memberIDParam}/{bookIDParam}", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Map<Book, Member> searchLoans(
+    public @ResponseBody Map<Book, Member> searchLoansEndpoint(
                             @PathVariable long memberIDParam,
                             @PathVariable long bookIDParam) {
 

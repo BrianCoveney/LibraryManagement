@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class ReportFinesHandler {
+public class MembersWithFinesHandler {
 
     @Autowired
     IMemberService memberService;
@@ -29,7 +29,7 @@ public class ReportFinesHandler {
 	 */
 	@RequestMapping(value="/reportfines/all", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody Map<String, Double> reportFines() {
+	public @ResponseBody Map<String, Double> reportFinesEndpoint() {
 
 		List<Member> members = memberService.findMembersWithFines();
 
